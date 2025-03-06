@@ -8,7 +8,7 @@ MoLaMaZoGAMES es una plataforma web diseñada para la gestión interna de assets
 
 
 ## IMPORTANTE PARA LA INSTALACIÓN
-### Backend
+### Backend Parte 1
 1. Entrar en la carpeta backend y ejecutar el siguiente código:
     ```terminal
     npm install express mongoose dotenv cors
@@ -22,3 +22,13 @@ MoLaMaZoGAMES es una plataforma web diseñada para la gestión interna de assets
     npm run dev
     ```
 4. Os saldrá el mensaje de `Corriendo en el Puerto 5000`
+
+
+### Backend Parte 2
+
+1. En la carpeta de backend ejecutar:
+    ```terminal
+    npm install mongodb
+    ```
+2. Si no hay ningún archivo .env, crearlo dentro de backend
+3. Copiar nombre y contraseña.
