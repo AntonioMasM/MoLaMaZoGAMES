@@ -63,7 +63,9 @@ const usuarioSchema = new mongoose.Schema({
     ultimoInicioSesion: {
         type: Date,
         default: null // Se actualizará cada vez que inicie sesión
-    }
+    },
+    seguidores: [{ type: String }], // Lista de emails de seguidores
+    siguiendo: [{ type: String }], // Lista de emails de usuarios seguidos
 });
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
