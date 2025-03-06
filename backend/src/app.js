@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db'); // Conectar a MongoDB
+const swaggerDocs = require('./config/swagger'); // Importar Swagger
+
 require('dotenv').config();
 
 const app = express();
@@ -11,6 +13,11 @@ connectDB();
 // Middlewares
 app.use(express.json());
 app.use(cors());
+
+
+// Documentación de Swagger
+swaggerDocs(app);
+
 
 // Rutas
 app.use('/api/usuarios', require('./routes/UsuarioRoutes'));

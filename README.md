@@ -32,3 +32,11 @@ MoLaMaZoGAMES es una plataforma web diseñada para la gestión interna de assets
     ```
 2. Si no hay ningún archivo .env, crearlo dentro de backend
 3. Copiar nombre y contraseña.
+
+## Backend Parte 3
+1. En la carpeta backend ejecutar:
+    ```terminal
+npm install swagger-jsdoc swagger-ui-express
+    ```
+
+2. Esto es para las llamadas API al Backend.
