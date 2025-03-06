@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
+
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    background-color: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+  }
+  
+  /* Logo de la empresa */
+  .navbar-logo {
+    font-family: 'Jersey 10', sans-serif;
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Barra de búsqueda */
+  .navbar-search {
+    flex-grow: 1;
+    max-width: 400px;
+    margin-left: 20px;
+  }
+  
+  .navbar-search input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+  }
+  
+  /* Contenedor de los botones */
+  .navbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Botones */
+  .navbar-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .navbar-button:hover {
+    text-decoration: underline;
+  }
+  
+  /* Icono de configuración */
+  .navbar-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  

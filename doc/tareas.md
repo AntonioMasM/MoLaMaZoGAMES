@@ -20,3 +20,5 @@
 
 
 ## Frontend
+
+- **NavBar**: Corregir Estilo (añadir constantes)
