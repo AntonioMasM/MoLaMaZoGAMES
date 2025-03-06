@@ -36,7 +36,7 @@ MoLaMaZoGAMES es una plataforma web diseñada para la gestión interna de assets
 ## Backend Parte 3
 1. En la carpeta backend ejecutar:
     ```terminal
-npm install swagger-jsdoc swagger-ui-express
+    npm install swagger-jsdoc swagger-ui-express
     ```
 
 2. Esto es para las llamadas API al Backend.
