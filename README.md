@@ -45,7 +45,7 @@ npm install swagger-jsdoc swagger-ui-express
 ## Backend Parte 4
 1. En la carpeta backend ejecutar:
     ```terminal
-npm install bcryptjs jsonwebtoken crypto
+    npm install bcryptjs jsonwebtoken crypto
     ```
 
 2. Esto es para encriptar las contraseñas en la base de datos (más profesional)
