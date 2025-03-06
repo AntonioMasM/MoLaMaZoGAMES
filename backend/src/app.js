@@ -1,23 +1,20 @@
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db'); // Importamos la conexión a MongoDB
+const connectDB = require('./config/db'); // Conectar a MongoDB
 require('dotenv').config();
 
 const app = express();
 
-// Conectar a MongoDB
+// Conectar a la BD
 connectDB();
 
 // Middlewares
 app.use(express.json());
 app.use(cors());
 
-// Ruta de prueba
-app.get('/', (req, res) => {
-    res.send('Servidor funcionando con MongoDB');
-});
+// Rutas
+app.use('/api/usuarios', require('./routes/UsuarioRoutes'));
 
-// Iniciar servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
