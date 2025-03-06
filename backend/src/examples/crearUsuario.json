@@ -1,0 +1,22 @@
+{
+    "nombreCompleto": "Juan Pérez",
+    "nickname": "juanperez",
+    "email": "juan@example.com",
+    "password": "123456",
+    "ubicacion": {
+        "pais": "España",
+        "municipio": "Madrid"
+    },
+    "formacion": {
+        "universidad": "Universidad Complutense",
+        "carrera": "Diseño Gráfico"
+    },
+    "cargo": "Diseñador Senior",
+    "fotoPerfil": "https://ejemplo.com/foto.jpg",
+    "bio": "Soy diseñador gráfico con más de 10 años de experiencia.",
+    "redesSociales": {
+        "linkedin": "https://linkedin.com/in/juanperez",
+        "artstation": "https://www.artstation.com/juanperez"
+    },
+    "modo": "claro"
+}
