@@ -49,3 +49,23 @@ MoLaMaZoGAMES es una plataforma web diseñada para la gestión interna de assets
     ```
 
 2. Esto es para encriptar las contraseñas en la base de datos (más profesional)
+
+## Frontend Parte 1
+1. En la carpeta frontend ejecutar este código para instalar las dependencias:
+    ```terminal
+    npm install 
+    ```
+
+2. Ahora ejecutar esto para la navegación entre páginas:
+    ```terminal
+    npm install react-router-dom
+    ```
+
+3. Ahora ejecutar esto para la gestión de API:
+    ```terminal
+    npm install axios
+    ```
+3. Por último instalar Bootstrap para estilos:
+    ```terminal
+    npm install bootstrap
+    ```
