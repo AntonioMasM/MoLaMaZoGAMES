@@ -10,3 +10,7 @@ body {
   background-color: var(--background-color);
   font-family: var(--font-primary);
 }
+
+#app-container{
+  background-color: var(--background-color);
+}

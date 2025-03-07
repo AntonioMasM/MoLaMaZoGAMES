@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
-import { FaSearch, FaCog, FaBars, FaTimes, FaLayerGroup, FaCompass, FaEnvelope, FaUser } from "react-icons/fa"; // Iconos
+import { FaSearch, FaCog, FaBars, FaTimes, FaLayerGroup, FaCompass, FaEnvelope, FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ const Navbar = () => {
   return (
     <header className="navbar">
       {/* Logo de la empresa */}
-      <a href="/" className="navbar-logo">MoLaMaZoGAMES</a>
+      <Link to="/" className="navbar-logo">MoLaMaZoGAMES</Link>
 
       {/* Barra de búsqueda con icono */}
       <div className="navbar-search">
@@ -37,9 +38,9 @@ const Navbar = () => {
         <button className="navbar-button">
           <FaEnvelope /> {!isSmallScreen && " Contacto"}
         </button>
-        <button className="navbar-button">
+        <Link to="/login" className="navbar-button">
           <FaUser /> {!isSmallScreen && " Inicio Sesión / Registro"}
-        </button>
+        </Link>
         <FaCog className="navbar-icon" />
       </div>
 
@@ -54,7 +55,7 @@ const Navbar = () => {
           <button className="dropdown-item">Categorías</button>
           <button className="dropdown-item">Explorar</button>
           <button className="dropdown-item">Contacto</button>
-          <button className="dropdown-item">Inicio Sesión / Registro</button>
+          <Link to="/login" className="dropdown-item">Inicio Sesión / Registro</Link>
         </nav>
       )}
     </header>

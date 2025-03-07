@@ -83,6 +83,7 @@
   border: none;
   color: var(--text-color);
   font-size: var(--button-font-size);
+  text-decoration: none;
   cursor: pointer;
   display: flex;
   align-items: center;
