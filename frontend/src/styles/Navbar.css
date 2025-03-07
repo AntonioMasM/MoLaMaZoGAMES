@@ -1,67 +1,96 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
-
+@import "./Variables.css"; /* Importamos las variables */
 
 .navbar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 60px;
-    background-color: #333333;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    z-index: 1000;
-  }
+  position: sticky;
+  left: 0;
+  width: 100vw;
+  height: var(--navbar-height);
+  background-color: var(--primary-color);
+  z-index: 1000;
   
-  /* Logo de la empresa */
-  .navbar-logo {
-    font-family: 'Jersey 10', sans-serif;
-    font-size: 24px;
-    color: white;
-    text-decoration: none;
-  }
+}
+
+/* Logo de la empresa */
+.navbar-logo {
+  font-family: var(--font-logo);
+  font-size: 32px;
+  margin-left: 2%;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+
+.navbar-logo:hover {
+  transition: transform 0.2s ease, color 0.2s ease;
+  transform: scale(1.1);
+
+}
+
+/* Barra de búsqueda */
+.navbar-search {
   
-  /* Barra de búsqueda */
-  .navbar-search {
-    flex-grow: 1;
-    max-width: 400px;
-    margin-left: 20px;
-  }
-  
-  .navbar-search input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-  }
-  
-  /* Contenedor de los botones */
-  .navbar-buttons {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  /* Botones */
-  .navbar-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .navbar-button:hover {
-    text-decoration: underline;
-  }
-  
-  /* Icono de configuración */
-  .navbar-icon {
-    font-size: 20px;
-    cursor: pointer;
-    color: white;
-  }
-  
-  
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 40%; /* Ajustamos el tamaño */
+  background-color: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.navbar-search input {
+  width: 100%;
+  padding: 8px 35px 8px 10px; /* Espacio para la lupa */
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Icono de búsqueda */
+.navbar-search-icon {
+  position: absolute;
+  right: 10px;
+  color: var(--text-color);
+  font-size: var(--icon-size);
+  pointer-events: none; /* Evita que el usuario haga clic en la lupa */
+}
+
+
+/* Contenedor de los botones */
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-right: 2%;
+}
+
+/* Botones */
+.navbar-button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: var(--button-font-size);
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease; /* Suaviza el cambio */
+}
+
+/* Efecto hover */
+.navbar-button:hover {
+  transform: scale(1.1); /* Aumenta el tamaño ligeramente */
+  color: var(--hover-color); /* Cambia al color del título */
+}
+
+/* Icono de configuración también con hover */
+.navbar-icon {
+  font-size: var(--icon-size);
+  cursor: pointer;
+  color: var(--text-color);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.navbar-icon:hover {
+  transform: scale(1.1);
+  color: var(--hover-color);
+}

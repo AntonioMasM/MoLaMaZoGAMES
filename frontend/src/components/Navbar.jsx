@@ -1,16 +1,17 @@
 import React from "react";
 import "../styles/Navbar.css";
-import { FaCog } from "react-icons/fa"; // Importar el icono de configuración
+import { FaSearch, FaCog } from "react-icons/fa"; // Importamos los iconos
 
 const Navbar = () => {
   return (
-    <div className="navbar">
+    <nav className="navbar">
       {/* Logo de la empresa */}
       <a href="/" className="navbar-logo">MoLaMaZoGAMES</a>
 
-      {/* Barra de búsqueda */}
+      {/* Barra de búsqueda con icono */}
       <div className="navbar-search">
         <input type="text" placeholder="Buscar..." />
+        <FaSearch className="navbar-search-icon" /> {/* Icono de lupa */}
       </div>
 
       {/* Botones de navegación */}
@@ -21,7 +22,7 @@ const Navbar = () => {
         <button className="navbar-button">Inicio Sesión / Registro</button>
         <FaCog className="navbar-icon" />
       </div>
-    </div>
+    </nav>
   );
 };
 
