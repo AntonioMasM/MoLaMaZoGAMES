@@ -21,4 +21,6 @@
 
 ## Frontend
 
-- **NavBar**: Corregir Estilo (añadir constantes)
+- **NavBar**: Corregir Media Queries
+- **Footer**: Hacer Media Queries
+- **Hero Section**: Hacer Media Queries, cambiar imgs (webp)

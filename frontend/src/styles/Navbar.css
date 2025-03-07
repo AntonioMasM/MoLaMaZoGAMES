@@ -1,15 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
 @import "./Variables.css"; /* Importamos las variables */
 
+
+
 .navbar {
+  all: unset; /* Restablece todos los estilos heredados de Bootstrap */
   position: sticky;
-  left: 0;
-  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   height: var(--navbar-height);
   background-color: var(--primary-color);
   z-index: 1000;
-  
+  flex-wrap: wrap;
+  padding: 0 2%;
 }
+
+
 
 /* Logo de la empresa */
 .navbar-logo {
@@ -35,6 +43,7 @@
   align-items: center;
   position: relative;
   width: 40%; /* Ajustamos el tamaño */
+  height: auto;
   background-color: white;
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -62,17 +71,21 @@
 .navbar-buttons {
   display: flex;
   align-items: center;
+  margin-right: 3%;
   gap: 15px;
   margin-right: 2%;
 }
 
 /* Botones */
 .navbar-button {
+  padding: 2px;
   background: none;
   border: none;
   color: var(--text-color);
   font-size: var(--button-font-size);
   cursor: pointer;
+  display: flex;
+  align-items: center;
   transition: transform 0.2s ease, color 0.2s ease; /* Suaviza el cambio */
 }
 
@@ -93,4 +106,63 @@
 .navbar-icon:hover {
   transform: scale(1.1);
   color: var(--hover-color);
+}
+
+
+
+/* Menú hamburguesa */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+/* ----- Responsive ----- */
+
+/* Tamaño del icono cuando el texto no aparece */
+@media (max-width: 1270px) {
+  .navbar-button {
+    font-size: 24px; /* Hace que los iconos sean más visibles */
+  }
+}
+
+
+@media (max-width: 768px) {
+  .navbar-search {
+    width: 50%;
+  }
+
+
+    .navbar-buttons {
+      display: none;
+      flex-direction: column;
+      position: fixed; /* Fija la posición */
+      top: var(--navbar-height);
+      left: 0;
+      width: 100%;
+      background-color: var(--primary-color);
+      text-align: center;
+      padding: 10px 0;
+      gap: 10px;
+      transition: transform 0.3s ease;
+    }
+  
+  
+
+  /* Mostrar menú cuando está abierto */
+  .navbar-buttons.open {
+    display: flex;
+  }
+
+  .navbar-button {
+    font-size: 18px;
+  }
+
+  /* Mostrar menú hamburguesa en móviles */
+  .menu-toggle {
+    display: block;
+  }
 }

@@ -1,0 +1,94 @@
+@import "./variables.css"; /* Importamos las variables */
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Asegura que todo quede centrado */
+    gap: 40px; /* Espaciado uniforme entre imagen y texto */
+    padding: 40px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+
+  .hero-image {
+    flex: 1; /* Permite que la imagen se ajuste dentro del espacio */
+    max-width: 50%; /* No ocupa más del 50% del contenedor */
+    display: flex;
+    justify-content: center; /* Centra la imagen dentro del contenedor */
+  }
+  
+  .hero-image img {
+    width: 100%;
+    border-radius: 15px;
+    border: 1px solid var(--text-color);
+  }
+  
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-title {
+  font-size: 24px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.hero-description {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.hero-link {
+  color: var(--hover-color);
+  text-decoration: none;
+}
+
+.hero-link:hover {
+  text-decoration: underline;
+}
+
+.hero-divider {
+  width: 80%;
+  height: 1px;
+  background-color: gray;
+  margin: 20px 0;
+}
+
+.hero-categories-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hero-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+    grid-template-rows: repeat(2, auto); /* 2 filas con altura automática */
+    justify-content: center; /* Centra las categorías horizontalmente */
+    align-items: center; /* Alinea las categorías verticalmente */
+    margin-top: 30px;
+    width: 100%; /* Asegura que el grid ocupe todo el espacio disponible */
+  }
+  
+  .category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+
+.category-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid var(--text-color);
+}
+
+.category-name {
+  font-size: 16px;
+  margin-top: 5px;
+  font-weight: bold;
+}

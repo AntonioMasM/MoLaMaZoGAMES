@@ -1,5 +1,9 @@
 @import "./Variables.css";
 
+
+:root{
+  all: unset;
+}
 body {
   margin: 0;
   padding: 0;
