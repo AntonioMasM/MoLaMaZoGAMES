@@ -1,5 +1,7 @@
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
+import AssetSection from "./components/AssetSection";
+
 import Footer from "./components/Footer";
 import "./styles/global.css";
       
@@ -9,6 +11,7 @@ function App() {
     <>
       <Navbar />
       <HeroSection />
+      <AssetSection />
       <Footer />
     </>
   );
