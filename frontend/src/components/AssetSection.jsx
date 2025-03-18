@@ -1,4 +1,5 @@
 import React from "react";
+import { FaStar } from "react-icons/fa";
 import AssetCard from "./AssetCard";
 import "../styles/AssetSection.css";
 
@@ -36,7 +37,9 @@ const assets = [
 const AssetSection = () => {
   return (
     <section className="asset-section">
-      <h2 className="section-title">⭐ Lo Más Popular</h2>
+      <h2 className="section-title">
+        <FaStar /> Lo Más Popular
+      </h2>
       <div className="asset-grid">
         {assets.map((asset, index) => (
           <AssetCard key={index} {...asset} />
