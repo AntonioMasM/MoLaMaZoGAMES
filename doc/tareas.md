@@ -2,10 +2,11 @@
 
 ## Backend
 
+
 ### Definición de Modelos de Datos
 
 #### Modelos Fundamentales:
-- **Usuario**: Acabado a falta de revisión. Falta añadir aún más llamadas y datos.
+- **Usuario**: Aspectos que funcionan: Operaciones CRUD, Iniciar Sesión, Cerrar Sesión, Seguir Usuario, Dejar de Seguir Usuario
 - **Asset**: Por hacer
 - **Mensaje**: Por hacer
 - **Grupo de Trabajo**: Por hacer

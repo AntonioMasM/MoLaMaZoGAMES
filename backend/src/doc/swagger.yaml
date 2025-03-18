@@ -1,0 +1,755 @@
+openapi: 3.0.0
+info:
+  title: API de Usuarios
+  description: API para gestionar usuarios, autenticación y redes sociales
+  version: 1.0.0
+paths:
+  # Rutas de usuarios
+  /api/usuarios:
+    post:
+      summary: Crear un nuevo usuario
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombreCompleto
+                - nickname
+                - email
+                - password
+                - cargo
+              properties:
+                nombreCompleto:
+                  type: string
+                  example: "Juan Pérez"
+                nickname:
+                  type: string
+                  example: "juanperez"
+                email:
+                  type: string
+                  example: "juan@example.com"
+                password:
+                  type: string
+                  example: "123456"
+                cargo:
+                  type: string
+                  example: "Diseñador Senior"
+      responses:
+        201:
+          description: Usuario creado con éxito
+        400:
+          description: El usuario ya existe
+        500:
+          description: Error en el servidor
+
+    get:
+      summary: Obtener todos los usuarios
+      tags: [Usuarios]
+      responses:
+        200:
+          description: Lista de usuarios obtenida correctamente
+        500:
+          description: Error en el servidor
+
+  /api/usuarios/{email}:
+    get:
+      summary: Obtener un usuario por email
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      responses:
+        200:
+          description: Usuario encontrado con éxito
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+    put:
+      summary: Actualizar información de un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombreCompleto:
+                  type: string
+                  example: "Juan Pérez Modificado"
+                nickname:
+                  type: string
+                  example: "juanperez2"
+                cargo:
+                  type: string
+                  example: "Director de Arte"
+                modo:
+                  type: string
+                  enum: ["claro", "oscuro", "texto grande"]
+                  example: "claro"
+      responses:
+        200:
+          description: Usuario actualizado con éxito
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+    delete:
+      summary: Eliminar un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      responses:
+        200:
+          description: Usuario eliminado con éxito
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  # Rutas de redes sociales y foto de perfil
+  /api/usuarios/{email}/foto:
+    put:
+      summary: Actualizar la foto de perfil de un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fotoPerfil:
+                  type: string
+                  example: "https://ejemplo.com/foto.jpg"
+      responses:
+        200:
+          description: Foto de perfil actualizada con éxito
+        400:
+          description: La URL de la foto de perfil es obligatoria
+        404:
+          description: Usuario no encontrado
+
+  /api/usuarios/{email}/redes:
+    put:
+      summary: Actualizar las redes sociales de un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                redesSociales:
+                  type: object
+                  properties:
+                    linkedin:
+                      type: string
+                      example: "https://www.linkedin.com/in/juanperez"
+                    artstation:
+                      type: string
+                      example: "https://www.artstation.com/juanperez"
+                    twitter:
+                      type: string
+                      example: "https://twitter.com/juanperez"
+                    instagram:
+                      type: string
+                      example: "https://instagram.com/juanperez"
+      responses:
+        200:
+          description: Redes sociales actualizadas con éxito
+        400:
+          description: Las redes sociales son obligatorias
+        404:
+          description: Usuario no encontrado
+
+  # Rutas de autenticación
+  /api/usuarios/login:
+    post:
+      summary: Iniciar sesión de usuario
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: "juan@example.com"
+                password:
+                  type: string
+                  example: "123456"
+      responses:
+        200:
+          description: Inicio de sesión exitoso, devuelve un token JWT
+        401:
+          description: Contraseña incorrecta
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/usuarios/logout:
+    post:
+      summary: Cerrar sesión de usuario
+      tags: [Usuarios]
+      responses:
+        200:
+          description: Sesión cerrada correctamente
+        500:
+          description: Error al cerrar sesión
+
+  /api/usuarios/recuperar:
+    post:
+      summary: Solicitar recuperación de contraseña
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: "juan@example.com"
+      responses:
+        200:
+          description: Token de recuperación generado con éxito
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/usuarios/restablecer:
+    put:
+      summary: Restablecer contraseña con un token de recuperación
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - nuevaPassword
+              properties:
+                token:
+                  type: string
+                  example: "abc123xyz456"
+                nuevaPassword:
+                  type: string
+                  example: "nuevaContraseña123"
+      responses:
+        200:
+          description: Contraseña restablecida con éxito
+        400:
+          description: Token inválido o expirado
+        500:
+          description: Error en el servidor
+
+  /api/usuarios/cambiar-clave/{email}:
+    put:
+      summary: Cambiar contraseña desde la cuenta (requiere contraseña actual)
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - passwordActual
+                - nuevaPassword
+              properties:
+                passwordActual:
+                  type: string
+                  example: "contraseñaAntigua123"
+                nuevaPassword:
+                  type: string
+                  example: "nuevaContraseña456"
+      responses:
+        200:
+          description: Contraseña cambiada con éxito
+        401:
+          description: Contraseña actual incorrecta
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+# Rutas de seguimiento de usuarios
+  /api/usuarios/{email}/seguir:
+    post:
+      summary: Seguir a un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - seguidorEmail
+              properties:
+                seguidorEmail:
+                  type: string
+                  example: "seguidor@example.com"
+      responses:
+        200:
+          description: Ahora sigues a este usuario
+        400:
+          description: Ya sigues a este usuario o no puedes seguirte a ti mismo
+        404:
+          description: Uno o ambos usuarios no existen
+        500:
+          description: Error en el servidor
+
+  /api/usuarios/{email}/dejar-seguir:
+    delete:
+      summary: Dejar de seguir a un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - seguidorEmail
+              properties:
+                seguidorEmail:
+                  type: string
+                  example: "seguidor@example.com"
+      responses:
+        200:
+          description: Has dejado de seguir a este usuario
+        400:
+          description: No sigues a este usuario
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  # Rutas para obtener seguidores y seguidos
+  /api/usuarios/{email}/seguidores:
+    get:
+      summary: Obtener lista de seguidores de un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      responses:
+        200:
+          description: Lista de seguidores obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  seguidores:
+                    type: array
+                    items:
+                      type: string
+                    example: ["seguidor1@example.com", "seguidor2@example.com"]
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/usuarios/{email}/siguiendo:
+    get:
+      summary: Obtener lista de usuarios que sigue un usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: email
+          required: true
+          schema:
+            type: string
+          example: "juan@example.com"
+      responses:
+        200:
+          description: Lista de usuarios seguidos obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  siguiendo:
+                    type: array
+                    items:
+                      type: string
+                    example: ["usuario1@example.com", "usuario2@example.com"]
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  # Ruta de búsqueda de usuarios
+  /api/usuarios/buscar:
+    get:
+      summary: Buscar usuarios por nombre, nickname o email
+      tags: [Usuarios]
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+          example: "juan"
+      responses:
+        200:
+          description: Lista de usuarios encontrados
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resultados:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nombreCompleto:
+                          type: string
+                          example: "Juan Pérez"
+                        nickname:
+                          type: string
+                          example: "juanperez"
+                        email:
+                          type: string
+                          example: "juan@example.com"
+        400:
+          description: El parámetro de búsqueda es obligatorio
+        500:
+          description: Error en el servidor
+
+  # Ruta para obtener un usuario por su nickname
+  /api/usuarios/perfil/{nickname}:
+    get:
+      summary: Obtener un usuario por su nickname
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: nickname
+          required: true
+          schema:
+            type: string
+          example: "juanperez"
+      responses:
+        200:
+          description: Información del usuario obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nombreCompleto:
+                    type: string
+                    example: "Juan Pérez"
+                  nickname:
+                    type: string
+                    example: "juanperez"
+                  email:
+                    type: string
+                    example: "juan@example.com"
+                  cargo:
+                    type: string
+                    example: "Diseñador Senior"
+        404:
+          description: Usuario no encontrado
+        500:
+          description: Error en el servidor
+  /api/assets:
+    post:
+      summary: Crear un nuevo asset
+      tags: [Assets]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - titulo
+                - descripcion
+                - autor
+                - imagenPrincipal
+                - usuarioCreador
+              properties:
+                titulo:
+                  type: string
+                  example: "Asset de Ejemplo"
+                descripcion:
+                  type: string
+                  example: "Una descripción del asset de ejemplo."
+                autor:
+                  type: string
+                  example: "Juan Pérez"
+                imagenPrincipal:
+                  type: string
+                  example: "https://example.com/imagen.jpg"
+                galeriaMultimedia:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tipo:
+                        type: string
+                        enum: [foto, video]
+                        example: "foto"
+                      url:
+                        type: string
+                        example: "https://example.com/imagen2.jpg"
+                formatos:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tipo:
+                        type: string
+                        example: "zip"
+                      tamaño:
+                        type: number
+                        example: 100
+                      url:
+                        type: string
+                        example: "https://example.com/asset.zip"
+                categorias:
+                  type: array
+                  items:
+                    type: string
+                    example: "Diseño"
+                usuarioCreador:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d1" # ID del usuario creador
+      responses:
+        201:
+          description: Asset creado con éxito
+        400:
+          description: Error al crear el asset
+        500:
+          description: Error en el servidor
+    get:
+      summary: Obtener todos los assets
+      tags: [Assets]
+      responses:
+        200:
+          description: Lista de assets obtenida con éxito
+        500:
+          description: Error en el servidor
+
+  /api/assets/{id}:
+    get:
+      summary: Obtener un asset por su ID
+      tags: [Assets]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      responses:
+        200:
+          description: Asset encontrado
+        404:
+          description: Asset no encontrado
+        500:
+          description: Error en el servidor
+
+    put:
+      summary: Actualizar un asset por su ID
+      tags: [Assets]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                  example: "Asset de Ejemplo Actualizado"
+                descripcion:
+                  type: string
+                  example: "Descripción actualizada del asset."
+                autor:
+                  type: string
+                  example: "Juan Pérez"
+                imagenPrincipal:
+                  type: string
+                  example: "https://example.com/imagen_nueva.jpg"
+                galeriaMultimedia:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tipo:
+                        type: string
+                        enum: [foto, video]
+                        example: "video"
+                      url:
+                        type: string
+                        example: "https://example.com/video.mp4"
+                formatos:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tipo:
+                        type: string
+                        example: "pdf"
+                      tamaño:
+                        type: number
+                        example: 50
+                      url:
+                        type: string
+                        example: "https://example.com/asset.pdf"
+                categorias:
+                  type: array
+                  items:
+                    type: string
+                    example: "Animación"
+      responses:
+        200:
+          description: Asset actualizado con éxito
+        400:
+          description: Error al actualizar el asset
+        404:
+          description: Asset no encontrado
+        500:
+          description: Error en el servidor
+
+    delete:
+      summary: Eliminar un asset por su ID
+      tags: [Assets]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      responses:
+        200:
+          description: Asset eliminado con éxito
+        404:
+          description: Asset no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/assets/buscar:
+    get:
+      summary: Buscar assets por título, descripción, autor o categoría
+      tags: [Assets]
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+          example: "Diseño"
+      responses:
+        200:
+          description: Lista de assets encontrados
+        400:
+          description: El parámetro de búsqueda es obligatorio
+        500:
+          description: Error en el servidor
+
+  /api/assets/{id}/vistas:
+    put:
+      summary: Actualizar las vistas de un asset
+      tags: [Assets]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      responses:
+        200:
+          description: Vistas actualizadas con éxito
+        404:
+          description: Asset no encontrado
+        500:
+          description: Error en el servidor

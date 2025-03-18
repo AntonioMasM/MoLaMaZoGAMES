@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');  // Para la encriptación de contraseñas
 
 const usuarioSchema = new mongoose.Schema({
     nombreCompleto: {
@@ -16,11 +17,14 @@ const usuarioSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true
+        trim: true,
+        lowercase: true, // Aseguramos que el email esté en minúsculas
+        match: [/.+@.+\..+/, 'Por favor ingresa un correo electrónico válido'] // Validación del correo
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: [6, 'La contraseña debe tener al menos 6 caracteres'] // Validación de longitud mínima
     },
     fechaRegistro: {
         type: Date,
@@ -46,7 +50,7 @@ const usuarioSchema = new mongoose.Schema({
     bio: {
         type: String,
         trim: true,
-        maxlength: 300, // Limitamos la bio a 300 caracteres
+        maxlength: [300, 'La bio no puede tener más de 300 caracteres'],
         default: ""
     },
     redesSociales: {
@@ -64,9 +68,23 @@ const usuarioSchema = new mongoose.Schema({
         type: Date,
         default: null // Se actualizará cada vez que inicie sesión
     },
-    seguidores: [{ type: String }], // Lista de emails de seguidores
-    siguiendo: [{ type: String }], // Lista de emails de usuarios seguidos
+    seguidores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }], // Lista de referencias a usuarios seguidos
+    siguiendo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }], // Lista de referencias a usuarios seguidores
 });
+
+// Eliminar el middleware pre('save') para evitar el doble cifrado
+// usuarioSchema.pre('save', async function(next) {
+//     if (this.isModified('password') || this.isNew) {
+//         this.password = await bcrypt.hash(this.password, 10);
+//     }
+//     next();
+// });
+
+// Método para comparar contraseñas durante el inicio de sesión
+usuarioSchema.methods.comparePassword = async function(candidatePassword) {
+    return bcrypt.compare(candidatePassword, this.password); // Comparar la contraseña proporcionada con la almacenada
+};
+
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 module.exports = Usuario;

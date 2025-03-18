@@ -8,7 +8,7 @@ import "./styles/global.css";
 function App() {
   return (
     <Router>
-      <div className="app-container">
+      <div className="c">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
