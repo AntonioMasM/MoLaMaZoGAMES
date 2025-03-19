@@ -72,14 +72,6 @@ const usuarioSchema = new mongoose.Schema({
     siguiendo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }], // Lista de referencias a usuarios seguidores
 });
 
-// Eliminar el middleware pre('save') para evitar el doble cifrado
-// usuarioSchema.pre('save', async function(next) {
-//     if (this.isModified('password') || this.isNew) {
-//         this.password = await bcrypt.hash(this.password, 10);
-//     }
-//     next();
-// });
-
 // Método para comparar contraseñas durante el inicio de sesión
 usuarioSchema.methods.comparePassword = async function(candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password); // Comparar la contraseña proporcionada con la almacenada
