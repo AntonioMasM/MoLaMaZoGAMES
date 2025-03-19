@@ -27,3 +27,5 @@
 - **Hero Section**: Hacer Media Queries, cambiar imgs (webp)
 - **Registro**: Funcional a falta de mejorar la disposición.
 - **Inicio de Sesión**: Funcional a falta de mejorar la disposición.
+- **Perfil de Usuario**: Por hacer
+- **Info de Usuario**: Corregir CSS

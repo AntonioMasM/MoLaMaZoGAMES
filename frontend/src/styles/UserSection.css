@@ -1,0 +1,20 @@
+.user-section {
+    padding: 20px;
+    background-color: var(--background-color);
+  }
+  
+  .user-section h2 {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }
+  
+  .user-section-cards {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto; /* Permite desplazamiento horizontal si hay muchos assets */
+    padding-bottom: 10px;
+  }

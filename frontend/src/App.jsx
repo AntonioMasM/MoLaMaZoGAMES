@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
+
 import "./styles/global.css";
 
 function App() {
