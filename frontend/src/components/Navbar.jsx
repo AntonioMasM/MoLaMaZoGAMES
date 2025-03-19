@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
-import { FaSearch, FaCog, FaBars, FaTimes, FaLayerGroup, FaCompass, FaEnvelope, FaUser } from "react-icons/fa";
+import { FaSearch, FaCog, FaBars, FaTimes, FaLayerGroup, FaCompass, FaEnvelope, FaUser, FaSignOutAlt } from "react-icons/fa";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1270);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // Para redireccionar al usuario después de cerrar sesión
 
   // Detecta cambios en el tamaño de pantalla y actualiza el estado
   useEffect(() => {
@@ -15,6 +17,22 @@ const Navbar = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Verificar si hay un usuario autenticado en localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Convertir de string a objeto
+    }
+  }, []);
+
+  // Cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Eliminar el token
+    localStorage.removeItem("user"); // Eliminar los datos del usuario
+    setUser(null); // Limpiar el estado del usuario
+    navigate("/"); // Redirigir a la página de inicio
+  };
 
   return (
     <header className="navbar">
@@ -30,17 +48,33 @@ const Navbar = () => {
       {/* Menú de navegación */}
       <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
         <button className="navbar-button">
-          <FaLayerGroup /> {!isSmallScreen && " Categorías"}
+          {isSmallScreen && <FaLayerGroup />} {!isSmallScreen && " Categorías"}
         </button>
         <button className="navbar-button">
-          <FaCompass /> {!isSmallScreen && " Explorar"}
+        {isSmallScreen && <FaCompass />} {!isSmallScreen && " Explorar"}
         </button>
         <button className="navbar-button">
-          <FaEnvelope /> {!isSmallScreen && " Contacto"}
+        {isSmallScreen && <FaEnvelope />} {!isSmallScreen && " Contacto"}
         </button>
-        <Link to="/login" className="navbar-button">
-          <FaUser /> {!isSmallScreen && " Inicio Sesión / Registro"}
-        </Link>
+
+        {/* Mostrar el usuario autenticado o la opción de inicio de sesión */}
+        {user ? (
+          <div className="user-menu">
+            <button className="navbar-button user-dropdown">
+            {isSmallScreen && <FaUser />} {!isSmallScreen && ` ${user.nickname}`}
+            </button>
+            <div className="dropdown-content">
+              <button className="dropdown-item" onClick={handleLogout}>
+              {isSmallScreen && <FaSignOutAlt />} Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        ) : (
+          <Link to="/login" className="navbar-button">
+            {isSmallScreen && <FaUser />} {!isSmallScreen && " Inicio Sesión / Registro"}
+          </Link>
+        )}
+
         <FaCog className="navbar-icon" />
       </div>
 
@@ -49,13 +83,21 @@ const Navbar = () => {
         {menuOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-      {/* Menú desplegable con texto completo */}
+      {/* Menú desplegable en móvil */}
       {menuOpen && (
         <nav className="dropdown-menu">
           <button className="dropdown-item">Categorías</button>
           <button className="dropdown-item">Explorar</button>
           <button className="dropdown-item">Contacto</button>
-          <Link to="/login" className="dropdown-item">Inicio Sesión / Registro</Link>
+          {user ? (
+            <>
+              <button className="dropdown-item" onClick={handleLogout}>
+                <FaSignOutAlt /> Cerrar Sesión
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="dropdown-item">Inicio Sesión / Registro</Link>
+          )}
         </nav>
       )}
     </header>

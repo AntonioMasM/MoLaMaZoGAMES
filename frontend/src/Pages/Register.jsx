@@ -9,6 +9,7 @@ const Register = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cargo, setCargo] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // Para mostrar errores
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,12 +24,22 @@ const Register = ({ onClose }) => {
         cargo
       };
 
-      // Hacer la solicitud POST a la API de backend
+      // Hacer la solicitud POST a la API de backend para registrar el usuario
       const response = await axios.post("http://localhost:5000/api/usuarios/", newUser);
 
-      // Si la respuesta es exitosa, mostrar mensaje o redirigir
+      // Si el registro es exitoso, proceder al inicio de sesión automático
       console.log(response.data.mensaje);
       alert("Usuario creado con éxito!");
+
+      // Intentar iniciar sesión automáticamente con el mismo email y contraseña
+      const loginResponse = await axios.post("http://localhost:5000/api/usuarios/login", { email, password });
+
+      // Si la respuesta es exitosa, almacenar el token JWT en localStorage
+      localStorage.setItem("token", loginResponse.data.token);
+      localStorage.setItem("user", JSON.stringify({ nickname: nickname }));
+      
+      alert("Usuario registrado e iniciado sesión!");
+      window.location.href = "/"; // Redirigir a la página principal
 
       // Limpiar el formulario si es necesario
       setNombreCompleto("");
@@ -36,10 +47,13 @@ const Register = ({ onClose }) => {
       setEmail("");
       setPassword("");
       setCargo("");
+
+      // Redirigir a otra página si lo deseas, por ejemplo, a la página principal
+      // window.location.href = "/home"; // O usar React Router para redirigir
     } catch (error) {
       // Manejar errores si los hay
       console.error(error);
-      alert("Error al crear usuario");
+      setErrorMessage(error.response ? error.response.data.mensaje : "Error al crear usuario");
     }
   };
 
@@ -108,6 +122,9 @@ const Register = ({ onClose }) => {
           value={cargo}
           onChange={(e) => setCargo(e.target.value)}
         />
+
+        {/* Mensaje de error */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         {/* Botón de Registro */}
         <button className="register-button" onClick={handleSubmit}>Registrarse</button>

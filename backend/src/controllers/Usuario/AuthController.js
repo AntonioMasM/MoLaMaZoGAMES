@@ -19,7 +19,6 @@ const iniciarSesion = async (req, res) => {
         // Comparar la contraseña proporcionada con el hash almacenado en la base de datos
         console.log("Hash en la base de datos:", usuario.password);  // Ver el hash almacenado
 
-        // Comparar la contraseña proporcionada con el hash almacenado en la base de datos
         const passwordValida = await bcrypt.compare(password, usuario.password);
         if (!passwordValida) {
             return res.status(401).json({ mensaje: "Contraseña incorrecta" });
@@ -30,12 +29,13 @@ const iniciarSesion = async (req, res) => {
             expiresIn: "7d" // El token expira en 7 días
         });
 
-        // Responder con el token generado
-        res.status(200).json({ mensaje: "Inicio de sesión exitoso", token });
+        // Responder con el token generado y el nickname del usuario
+        res.status(200).json({ mensaje: "Inicio de sesión exitoso", token, nickname: usuario.nickname });
     } catch (error) {
         res.status(500).json({ mensaje: "Error en el inicio de sesión", error: error.message });
     }
 };
+
 
 // Cerrar sesión
 const cerrarSesion = (req, res) => {

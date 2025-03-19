@@ -21,22 +21,27 @@ const Login = ({ onClose }) => {
       // Hacer la solicitud POST a la API de backend
       const response = await axios.post("http://localhost:5000/api/usuarios/login", userCredentials);
 
-      // Si la respuesta es exitosa, guardar el token en localStorage (o sessionStorage)
+      // Si la respuesta es exitosa, guardar el token y el nickname en localStorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify({ nickname: response.data.nickname }));
 
       // Mostrar mensaje de éxito y redirigir si es necesario
-      alert("Inicio de sesión exitoso!");
+      alert(`Bienvenido, ${response.data.nickname}!`);
 
       // Limpiar el formulario
       setEmail("");
       setPassword("");
       setErrorMessage("");
+
+      // Redirigir a la página principal
+      window.location.href = "/";
     } catch (error) {
       // Manejar errores si los hay
       console.error(error);
       setErrorMessage(error.response ? error.response.data.mensaje : "Error al iniciar sesión");
     }
   };
+
 
   return (
     <div className="login-container">
