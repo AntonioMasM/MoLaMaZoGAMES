@@ -7,9 +7,13 @@
     font-size: 22px;
     font-weight: bold;
     padding: 10px 0;
+    padding-left: 15px;
     margin-bottom: 15px;
     background-color: var(--primary-color);
     color: var(--text-color);
+    margin-left: -1.1vw;
+    margin-right: -1.1vw;
+    
   }
   
   .asset-grid {
