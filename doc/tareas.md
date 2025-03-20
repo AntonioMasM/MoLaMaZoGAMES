@@ -29,3 +29,4 @@
 - **Inicio de Sesión**: He hecho un inicio sesion donde comprueba si todos los campos si son correctos, sino lo son saldrá un error en esos dichos campos
 - **Perfil de Usuario**: Inicio y galería empezados, falta arreglar conexión a BD y resto de páginas.
 - **Info de Usuario**: Corregir CSS
+- **Asset Section**: Media queris, carrusel con assets y título asset arreglado. 

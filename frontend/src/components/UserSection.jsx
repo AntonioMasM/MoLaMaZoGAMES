@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaUser } from "react-icons/fa"; // Importa los íconos de estrella y usuario
 import axios from "axios";
 import UserCard from "./UserCard"; // Importar el componente UserCard
 import "../styles/UserSection.css"; // Asegúrate de tener los estilos adecuados
@@ -22,7 +23,9 @@ const UserSection = () => {
 
   return (
     <div className="user-section">
-      <h2>Creadores Destacados</h2>
+      <h2>
+        <span className="user-icon"><FaUser /></span> Creadores Destacados
+      </h2>
       <div className="user-section-cards">
         {usuarios.map((usuario) => (
           <UserCard

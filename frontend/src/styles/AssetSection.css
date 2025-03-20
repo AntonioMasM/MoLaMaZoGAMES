@@ -1,6 +1,7 @@
-.asset-section {
+  .asset-section {
     padding: 20px;
     background-color: var(--background-color);
+    position: relative;
   }
   
   .section-title {
@@ -13,13 +14,98 @@
     color: var(--text-color);
     margin-left: -1.1vw;
     margin-right: -1.1vw;
+
+    .star-icon {
+      position: relative;
+      top: -6px; 
+    }
+
+    .clock-icon {
+      position: relative;
+      top: -5px; 
+    }
     
+  }
+
+  .star-icon {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .clock-icon {
+    vertical-align: middle;
+    margin-right: 5px;
   }
   
   .asset-grid {
     display: flex;
     gap: 15px;
-    overflow-x: auto; /* Permite desplazamiento horizontal si hay muchos assets */
+    overflow-x: hidden;
     padding-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease-in-out;
+  }
+
+
+
+  .asset-grid2 {
+    display: flex;
+    gap: 15px;
+    overflow-x: hidden; /* Asegura que no se desborden */
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease-in-out; /* Suaviza el deslizamiento */
   }
   
+  .asset-grid.slide-left {
+    transform: translateX(-100%);
+  }
+  
+  .asset-grid.slide-right {
+    transform: translateX(100%);
+  }
+
+  .asset-grid2.slide-left {
+    transform: translateX(-100%); /* Mueve los assets a la derecha */
+  }
+  
+  .asset-grid2.slide-right {
+    transform: translateX(100%); /* Mueve los assets a la izquierda */
+  }
+  
+  .carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 15px;
+  }
+  
+  .carousel-button:first-child {
+    margin-left: -40px;
+  }
+  
+  .carousel-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    color: gray;
+    transition: transform 0.2s;
+  }
+  
+  .carousel-button:hover {
+    transform: scale(1.2);
+  }
+  
+  .carousel-button:disabled {
+    color: var(--primary-color);
+    cursor: not-allowed;
+  }
