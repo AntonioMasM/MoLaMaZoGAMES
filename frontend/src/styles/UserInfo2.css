@@ -1,0 +1,101 @@
+@import "./Variables.css"; /* Importamos las variables */
+
+/* Contenedor principal */
+.user-info {
+  background-color: var(--secondary-color);
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Sección de la cabecera del usuario */
+.user-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Avatar del usuario */
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: var(--text-color);
+  position: relative;
+}
+
+/* Icono de edición sobre el avatar */
+.edit-icon {
+  position: absolute;
+  top: 70px;
+  right: -5px;
+  background-color: var(--hover-color);
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+}
+
+/* Nombre del usuario */
+.user-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Estadísticas del usuario */
+.user-header p {
+  font-size: 14px;
+  color: gray;
+}
+
+/* Información adicional del usuario */
+.user-details {
+  width: 100%;
+  background-color: var(--primary-color);
+  padding: 15px;
+  border-radius: 5px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Títulos de secciones */
+.user-details h3 {
+  font-size: 18px;
+  color: var(--text-color);
+  margin-bottom: 10px;
+}
+
+/* Tarjeta de detalles */
+.user-detail-card {
+  background-color: var(--secondary-color);
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Elementos dentro de la tarjeta de detalles */
+.user-detail-card p {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: gray;
+  gap: 8px;
+}

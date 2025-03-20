@@ -1,0 +1,86 @@
+@import "./Variables.css"; /* Importamos las variables */
+
+/* Contenedor principal de la barra lateral */
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-color);
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 100px;
+  }
+  
+  .sidebar ul li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  /* Estilo cuando el usuario pasa el cursor */
+  .sidebar ul li:hover {
+    background-color: var(--hover-color);
+  }
+  
+  /* Estilo cuando la página está activa */
+  .sidebar ul li.active {
+    font-weight: bold;
+    background-color: var(--hover-color);
+    color: white;
+  }
+  
+  /* Aplicar color blanco a los enlaces dentro de la sección activa */
+  .sidebar ul li.active a {
+    color: white;
+  }
+
+/* Íconos dentro de los elementos del menú */
+.sidebar li svg {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+
+
+/* Espaciado en la parte inferior del menú */
+.sidebar li:last-child {
+  margin-top: auto;
+}
+
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+      width: 60px; /* Reducimos el tamaño en pantallas pequeñas */
+    }
+  
+    .profile-content {
+      margin-left: 60px; /* Ajustamos el margen acorde al nuevo tamaño */
+    }
+  
+    .sidebar ul li {
+      justify-content: center; /* Centrar iconos si el sidebar es pequeño */
+      font-size: 12px; /* Reducimos el tamaño del texto */
+    }
+  
+    .sidebar ul li svg {
+      margin-right: 0; /* Quitamos el espacio de los iconos */
+    }
+  }
+  

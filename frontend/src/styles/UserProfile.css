@@ -1,0 +1,62 @@
+@import "./Variables.css"; /* Importamos las variables */
+
+/* Contenedor principal del perfil de usuario */
+.user-profile {
+  display: flex;
+  height: 100vh;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+/* Contenedor principal del contenido del perfil */
+/* Ajustar el espacio de la barra lateral */
+.profile-content {
+    flex: 1; /* Ocupa el resto del espacio */
+    margin-left: 250px; /* Ajuste para que no quede debajo de la barra */
+    padding: 20px;
+    overflow-y: auto; /* Permite scroll si el contenido es largo */
+  }
+  
+
+/* Secciones dentro del perfil */
+.user-info-section, 
+.profile-comments-section, 
+.upload-asset-section {
+  background-color: var(--secondary-color);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Ajustes generales de los títulos */
+.profile-content h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Ajustes para el área de comentarios */
+.profile-comments-section {
+  flex: 1;
+}
+
+/* Ajustes del área de subida de assets */
+.upload-asset-section {
+  text-align: center;
+}
+
+/* Botón de cerrar sesión */
+.logout-button {
+  background: none;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
