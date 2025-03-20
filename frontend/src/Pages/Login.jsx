@@ -6,17 +6,43 @@ const Login = ({ onClose }) => {
   // Estado para almacenar los datos del formulario
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [serverError, setServerError] = useState("");
+
+  // Expresión regular para validar un email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Expresión regular para validar una contraseña segura
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let isValid = true;
+    setEmailError("");
+    setPasswordError("");
+    setServerError("");
+
+    // Validar Email
+    if (!emailRegex.test(email)) {
+      setEmailError("Introduce un correo válido.");
+      isValid = false;
+    }
+
+    // Validar Contraseña
+    if (!passwordRegex.test(password)) {
+      setPasswordError(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+      );
+      isValid = false;
+    }
+
+    if (!isValid) return; // No enviar si hay errores
+
     try {
       // Crear objeto con los datos del formulario
-      const userCredentials = {
-        email,
-        password,
-      };
+      const userCredentials = { email, password };
 
       // Hacer la solicitud POST a la API de backend
       const response = await axios.post("http://localhost:5000/api/usuarios/login", userCredentials);
@@ -31,19 +57,14 @@ const Login = ({ onClose }) => {
       // Limpiar el formulario
       setEmail("");
       setPassword("");
-      setErrorMessage("");
-
-      // Redirigir a la página principal
-      window.location.href = "/";
     } catch (error) {
-      // Manejar errores si los hay
       console.error(error);
-      setErrorMessage(error.response ? error.response.data.mensaje : "Error al iniciar sesión");
+      setServerError(error.response ? error.response.data.mensaje : "Error al iniciar sesión");
     }
   };
 
-
   return (
+    <div className="contenedor-principal"> 
     <div className="login-container">
       {/* Sección de Imagen */}
       <div className="login-image">
@@ -68,6 +89,7 @@ const Login = ({ onClose }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {emailError && <p className="error-message">{emailError}</p>} {/* Error bajo email */}
 
         {/* Campo Contraseña */}
         <label htmlFor="password">Contraseña</label>
@@ -78,20 +100,22 @@ const Login = ({ onClose }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        {/* Mensaje de error */}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {passwordError && <p className="error-message">{passwordError}</p>} {/* Error bajo contraseña */}
 
         <a href="/recuperar" className="forgot-password">¿Se te ha olvidado la contraseña?</a>
 
         {/* Botón de Iniciar Sesión */}
         <button className="login-button" onClick={handleSubmit}>Iniciar Sesión</button>
 
+        {/* Mensaje de error general (Servidor) */}
+        {serverError && <p className="error-message server-error">{serverError}</p>}
+
         {/* Enlace para Registrarse */}
         <p className="register-text">
           ¿No tienes cuenta? <a href="/register" className="register-link">Regístrate</a>
         </p>
       </div>
+    </div>
     </div>
   );
 };

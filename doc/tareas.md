@@ -25,7 +25,7 @@
 - **NavBar**: Corregir Media Queries
 - **Footer**: Hacer Media Queries
 - **Hero Section**: Hacer Media Queries, cambiar imgs (webp)
-- **Registro**: Funcional a falta de mejorar la disposición.
-- **Inicio de Sesión**: Funcional a falta de mejorar la disposición.
+- **Registro**: He hecho un registro  donde comprueba si todos los campos si son correctos, sino lo son saldrá un error en esos dichos campos
+- **Inicio de Sesión**: He hecho un inicio sesion donde comprueba si todos los campos si son correctos, sino lo son saldrá un error en esos dichos campos
 - **Perfil de Usuario**: Por hacer
 - **Info de Usuario**: Corregir CSS

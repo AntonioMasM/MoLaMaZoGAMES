@@ -2,39 +2,65 @@
 
 
 
+/* Contenedor Principal - Ocupa toda la pantalla */
+.contenedor-principal {
+  display: flex;
+  justify-content: center;  /* Centrar horizontalmente */
+  align-items: center;  /* Centrar verticalmente */
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  background-color: var(--background-color); /* Fondo */
+}
+
+/* Contenedor del Login - Más alto */
 .login-container {
   display: flex;
-  padding: 5% 20%;
-  background-color: var(--background-color);
+  min-height: 80vh; /* Aumenta la altura del contenedor */
+  width: 60%; /* Ajusta el ancho para que no sea muy grande */
+  background-color: var(--text-color);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Agrega un pequeño sombreado */
+  border-radius: 10px; /* Bordes redondeados */
   overflow: hidden;
 }
 
 
-/* Imagen con texto a la izquierda */
+
+/* Ajustes en la imagen con el texto */
 .login-image {
   flex: 1;
-  background: url("/assets/main.webp") center/cover no-repeat;
+  background: url("/assets/img_login.webp") center/cover no-repeat;
   padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   color: white;
+  text-align: left;
+  padding-left: 50px; /* Mayor separación de los bordes */
 }
 
+/* Estilo del título "MoLaMaZoGAMES" */
 .login-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Efecto de sombra */
+}
+
+/* Estilo del subtítulo "DESCUBRE LA MAYOR GALERÍA DE ASSETS DEL MUNDO" */
+.login-subtitle {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 10px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
 }
 
-.login-subtitle {
-  font-size: 18px;
-  font-weight: bold;
-}
-
+/* Descripción */
 .login-description {
-  font-size: 14px;
+  font-size: 16px;
+  max-width: 80%;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
+
 
 /* Formulario a la derecha */
 .login-form {
@@ -115,4 +141,32 @@ input {
 
 .register-link:hover {
   text-decoration: underline;
+}
+
+/* Estilo para mensajes de error */
+/* Estilo para mensajes de error específicos */
+.error-message {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Icono de advertencia en los mensajes de error */
+.error-message::before {
+  content: "⚠";
+  font-size: 16px;
+}
+
+/* Para que los errores estén alineados correctamente debajo de cada input */
+input + .error-message {
+  margin-bottom: 10px;
+}
+
+/* Error de servidor separado del resto */
+.server-error {
+  text-align: center;
+  font-weight: bold;
 }
