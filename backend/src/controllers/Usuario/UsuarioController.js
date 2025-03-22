@@ -26,7 +26,7 @@ const crearUsuario = async (req, res) => {
             ubicacion: ubicacion || { pais: "", municipio: "" },
             formacion: formacion || { universidad: "", carrera: "" },
             cargo,
-            fotoPerfil: fotoPerfil || "",
+            fotoPerfil: fotoPerfil || "assets/default-user.webp",
             bio: bio || "",
             redesSociales: redesSociales || {
                 linkedin: "", artstation: "", twitter: "", instagram: ""

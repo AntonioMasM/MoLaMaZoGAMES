@@ -7,6 +7,8 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1270);
   const [user, setUser] = useState(null);
+  const [showSettings, setShowSettings] = useState(false);
+
   const navigate = useNavigate(); // Para redireccionar al usuario después de cerrar sesión
 
   // Detecta cambios en el tamaño de pantalla y actualiza el estado
@@ -23,6 +25,7 @@ const Navbar = () => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser)); // Convertir de string a objeto
+
     }
   }, []);
 
@@ -61,13 +64,14 @@ const Navbar = () => {
         {user ? (
           <div className="user-menu">
             <button className="navbar-button user-dropdown">
-            {isSmallScreen && <FaUser />} {!isSmallScreen && ` ${user.nickname}`}
+              <img
+                src={user.fotoPerfil}
+                alt="Foto de perfil"
+                className="user-profile-pic"
+              />
             </button>
-            <div className="dropdown-content">
-              <button className="dropdown-item" onClick={handleLogout}>
-              {isSmallScreen && <FaSignOutAlt />} Cerrar Sesión
-              </button>
-            </div>
+
+
           </div>
         ) : (
           <Link to="/login" className="navbar-button">
@@ -75,7 +79,17 @@ const Navbar = () => {
           </Link>
         )}
 
-        <FaCog className="navbar-icon" />
+        <button className="navbar-icon settings-icon" onClick={() => setShowSettings(!showSettings)}>
+          <FaCog />
+        </button>
+        {showSettings && user &&(
+          <div className="settings-dropdown">
+            <button className="dropdown-item" onClick={handleLogout}>
+              <FaSignOutAlt /> Cerrar Sesión
+            </button>
+          </div>
+        )}
+
       </div>
 
       {/* Menú hamburguesa (sólo visible en móviles) */}

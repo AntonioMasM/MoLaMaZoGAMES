@@ -30,7 +30,7 @@ const iniciarSesion = async (req, res) => {
         });
 
         // Responder con el token generado y el nickname del usuario
-        res.status(200).json({ mensaje: "Inicio de sesión exitoso", token, nickname: usuario.nickname });
+        res.status(200).json({ mensaje: "Inicio de sesión exitoso", token, nickname: usuario.nickname, fotoPerfil: usuario.fotoPerfil, email: usuario.email });
     } catch (error) {
         res.status(500).json({ mensaje: "Error en el inicio de sesión", error: error.message });
     }

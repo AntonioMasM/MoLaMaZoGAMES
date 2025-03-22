@@ -45,7 +45,7 @@ const usuarioSchema = new mongoose.Schema({
     },
     fotoPerfil: {
         type: String, // URL de la imagen
-        default: "" // Se puede dejar vacío hasta que el usuario suba una imagen
+        default: "assets/default-user.webp" // Se puede dejar vacío hasta que el usuario suba una imagen
     },
     bio: {
         type: String,

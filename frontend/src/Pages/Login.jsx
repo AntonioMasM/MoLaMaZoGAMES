@@ -40,8 +40,8 @@ const Login = ({ onClose }) => {
       const response = await axios.post("http://localhost:5000/api/usuarios/login", userCredentials);
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify({ nickname: response.data.nickname }));
-
+      localStorage.setItem("user", JSON.stringify({ nickname: response.data.nickname, fotoPerfil: response.data.fotoPerfil }));
+      console.log(response.data);
       alert(`Bienvenido, ${response.data.nickname}!`);
       setEmail("");
       setPassword("");

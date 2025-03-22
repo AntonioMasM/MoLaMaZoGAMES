@@ -17,6 +17,13 @@
   padding: 0 2%;
 }
 
+.user-profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 5px;
+}
 
 
 /* Logo de la empresa */
@@ -64,6 +71,31 @@
   color: var(--text-color);
   font-size: var(--icon-size);
   pointer-events: none; /* Evita que el usuario haga clic en la lupa */
+}
+
+
+.settings-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.settings-dropdown .dropdown-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.settings-dropdown .dropdown-item:hover {
+  background-color: #f0f0f0;
 }
 
 
