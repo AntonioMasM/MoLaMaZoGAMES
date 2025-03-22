@@ -20,8 +20,8 @@ const Register = ({ onClose }) => {
 
   // Expresiones regulares para validación
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  const cargoRegex = /^[a-zA-Z\s]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  const cargoRegex = /^[a-zA-ZÁÉÍÓÚÜÑáéíóúüñ\s]+$/;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

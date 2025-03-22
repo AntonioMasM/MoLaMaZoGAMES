@@ -114,6 +114,19 @@ input {
   margin-bottom: 15px;
 }
 
+input:invalid {
+  border-color: red;
+}
+
+input:focus:invalid {
+  outline-color: red;
+}
+
+input:valid {
+  border-color: green;
+}
+
+
 .login-button {
   background-color: black;
   color: white;
