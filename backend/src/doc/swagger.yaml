@@ -950,7 +950,6 @@ paths:
         500:
           description: Error en el servidor
 
-components:
   schemas:
     Mensaje:
       type: object
@@ -974,3 +973,291 @@ components:
         conversacion:
           type: string
           description: ID de la conversación a la que pertenece el mensaje (opcional)
+
+  # Rutas para los Grupos de Trabajo
+  /api/grupos:
+    post:
+      summary: Crear un nuevo grupo de trabajo
+      tags: [Grupos de Trabajo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - titulo
+                - descripcion
+                - usuarios
+                - creador
+              properties:
+                titulo:
+                  type: string
+                  example: "Grupo de Desarrollo"
+                descripcion:
+                  type: string
+                  example: "Este grupo es para el desarrollo de nuevas funcionalidades."
+                usuarios:
+                  type: array
+                  items:
+                    type: string
+                  example: ["60d9e6b5c13a2e001f02b3d1"]
+                creador:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d1"
+      responses:
+        201:
+          description: Grupo creado con éxito
+        400:
+          description: Datos inválidos
+        500:
+          description: Error en el servidor
+
+  /api/grupos/{id}:
+    get:
+      summary: Obtener información de un grupo de trabajo
+      tags: [Grupos de Trabajo]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      responses:
+        200:
+          description: Información del grupo obtenida con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grupo'
+        404:
+          description: Grupo no encontrado
+        500:
+          description: Error en el servidor
+
+    put:
+      summary: Actualizar información de un grupo de trabajo
+      tags: [Grupos de Trabajo]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                  example: "Grupo de Desarrollo Mejorado"
+                descripcion:
+                  type: string
+                  example: "Este grupo es para el desarrollo de nuevas funcionalidades con un enfoque mejorado."
+      responses:
+        200:
+          description: Grupo actualizado con éxito
+        404:
+          description: Grupo no encontrado
+        500:
+          description: Error en el servidor
+
+    delete:
+      summary: Eliminar un grupo de trabajo
+      tags: [Grupos de Trabajo]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"
+      responses:
+        200:
+          description: Grupo eliminado con éxito
+        404:
+          description: Grupo no encontrado
+        500:
+          description: Error en el servidor
+
+  # Rutas para las invitaciones
+  /api/grupos/invitar:
+    post:
+      summary: Invitar a un usuario a un grupo
+      tags: [Grupos de Trabajo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - grupoId
+                - usuarioId
+              properties:
+                grupoId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d2"
+                usuarioId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d3"
+      responses:
+        200:
+          description: Invitación enviada con éxito
+        404:
+          description: Grupo no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/grupos/aceptar-invitacion:
+    put:
+      summary: Aceptar una invitación a un grupo
+      tags: [Grupos de Trabajo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - grupoId
+                - usuarioId
+              properties:
+                grupoId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d2"
+                usuarioId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d3"
+      responses:
+        200:
+          description: Invitación aceptada con éxito
+        404:
+          description: Grupo o usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/grupos/rechazar-invitacion:
+    put:
+      summary: Rechazar una invitación a un grupo
+      tags: [Grupos de Trabajo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - grupoId
+                - usuarioId
+              properties:
+                grupoId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d2"
+                usuarioId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d3"
+      responses:
+        200:
+          description: Invitación rechazada con éxito
+        404:
+          description: Grupo o usuario no encontrado
+        500:
+          description: Error en el servidor
+
+  # Rutas para los assets
+  /api/grupos/assets:
+    post:
+      summary: Agregar un asset a un grupo de trabajo
+      tags: [Grupos de Trabajo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - grupoId
+                - assetId
+              properties:
+                grupoId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d2"
+                assetId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d4"
+      responses:
+        200:
+          description: Asset agregado con éxito
+        404:
+          description: Grupo o asset no encontrado
+        500:
+          description: Error en el servidor
+    delete:
+      summary: Eliminar un asset de un grupo de trabajo
+      tags: [Grupos de Trabajo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - grupoId
+                - assetId
+              properties:
+                grupoId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d2"
+                assetId:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d4"
+      responses:
+        200:
+          description: Asset eliminado con éxito
+        404:
+          description: Grupo o asset no encontrado
+        500:
+          description: Error en el servidor
+components:
+  schemas:
+    Grupo:
+      type: object
+      properties:
+        titulo:
+          type: string
+          example: "Grupo de Desarrollo"
+        descripcion:
+          type: string
+          example: "Este grupo es para el desarrollo de nuevas funcionalidades."
+        usuarios:
+          type: array
+          items:
+            type: string
+          example: ["60d9e6b5c13a2e001f02b3d1"]
+        assets:
+          type: array
+          items:
+            type: string
+          example: ["60d9e6b5c13a2e001f02b3d4"]
+        creador:
+          type: string
+          example: "60d9e6b5c13a2e001f02b3d1"
+        fechaCreacion:
+          type: string
+          format: date-time
+          example: "2025-03-26T10:00:00Z"
+        fechaActualizacion:
+          type: string
+          format: date-time
+          example: "2025-03-26T10:30:00Z"
+        invitacionesPendientes:
+          type: array
+          items:
+            type: string
+          example: ["60d9e6b5c13a2e001f02b3d3"]

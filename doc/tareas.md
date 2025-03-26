@@ -41,7 +41,20 @@
     - 🔴Enviar Notificación de Nuevo Mensaje
     - 🟡Búsqueda de Mensajes por Contenido o Usuario
 
-- 🔴 **Grupo de Trabajo**: Pendiente de desarrollo  
+- 🟡 Grupo de Trabajo: Implementado a falta de mejoras
+    - 🟢Crear Grupo (Título, Descripción, Miembros)
+    - 🟢Invitar Usuarios al Grupo
+    - 🔴Aceptar Invitación de Usuario
+    - 🔴Rechazar Invitación de Usuario
+    - 🟢Eliminar Usuario del Grupo
+    - 🔴Agregar Assets al Grupo
+    - 🔴Eliminar Assets del Grupo
+    - 🟢Ver Información del Grupo
+    - 🟢Actualizar Información del Grupo (Título, Descripción)
+    - 🟢Eliminar Grupo de Trabajo
+    - 🔴Visualizar los Grupos a los que un Usuario Pertenece
+    - 🔴Notificaciones para Invitaciones y Actualizaciones del Grupo (pendiente de implementación)
+
 
 #### **Modelos de Interacciones**  
 - 🔴 **Comentario**: Pendiente  
