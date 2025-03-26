@@ -82,7 +82,7 @@ const Register = ({ onClose }) => {
 
       // Si la respuesta es exitosa, almacenar el token JWT en localStorage
       localStorage.setItem("token", loginResponse.data.token);
-      localStorage.setItem("user", JSON.stringify({ nickname }));
+      localStorage.setItem("user", JSON.stringify({ nickname: loginResponse.data.nickname, fotoPerfil: loginResponse.data.fotoPerfil }));
 
       alert("Usuario registrado e iniciado sesión!");
       window.location.href = "/";

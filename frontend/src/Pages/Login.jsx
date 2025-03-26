@@ -45,6 +45,7 @@ const Login = ({ onClose }) => {
       alert(`Bienvenido, ${response.data.nickname}!`);
       setEmail("");
       setPassword("");
+      window.location.href = "/";
     } catch (error) {
       console.error(error);
       setServerError(error.response?.data?.mensaje || "Error al iniciar sesión");

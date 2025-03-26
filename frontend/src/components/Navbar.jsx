@@ -26,6 +26,7 @@ const Navbar = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser)); // Convertir de string a objeto
 
+
     }
   }, []);
 
@@ -34,7 +35,7 @@ const Navbar = () => {
     localStorage.removeItem("token"); // Eliminar el token
     localStorage.removeItem("user"); // Eliminar los datos del usuario
     setUser(null); // Limpiar el estado del usuario
-    navigate("/"); // Redirigir a la página de inicio
+    window.location.href = "/";
   };
 
   return (
@@ -66,6 +67,7 @@ const Navbar = () => {
             <button className="navbar-button user-dropdown">
               <img
                 src={user.fotoPerfil}
+                
                 alt="Foto de perfil"
                 className="user-profile-pic"
               />
