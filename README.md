@@ -1,5 +1,7 @@
-# 📌 MoLaMaZoGAMES
-
+  # MoLaMaZoGAMES
+<p align="center">
+  <img src="frontend/public/assets/logo.png" alt="MoLaMaZoGAMES Logo" style="width:100px;"/>
+</p>
 <p align="center">
   <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
   <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express">
