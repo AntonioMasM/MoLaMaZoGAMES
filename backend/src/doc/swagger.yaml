@@ -753,3 +753,224 @@ paths:
           description: Asset no encontrado
         500:
           description: Error en el servidor
+  /api/mensajes:
+    post:
+      summary: Crear un nuevo mensaje
+      tags: [Mensajes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - remitente
+                - destinatario
+                - contenido
+              properties:
+                remitente:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d1"  # ID del remitente
+                destinatario:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d2"  # ID del destinatario
+                contenido:
+                  type: string
+                  example: "Hola, ¿cómo estás?"
+                conversacion:
+                  type: string
+                  example: "60d9e6b5c13a2e001f02b3d3"  # ID de la conversación (opcional)
+      responses:
+        201:
+          description: Mensaje creado con éxito
+        400:
+          description: Faltan parámetros requeridos
+        500:
+          description: Error en el servidor
+
+    get:
+      summary: Obtener todos los mensajes
+      tags: [Mensajes]
+      responses:
+        200:
+          description: Lista de mensajes obtenida con éxito
+        500:
+          description: Error en el servidor
+
+  /api/mensajes/{id}:
+    get:
+      summary: Obtener un mensaje por su ID
+      tags: [Mensajes]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d4"
+      responses:
+        200:
+          description: Mensaje encontrado con éxito
+        404:
+          description: Mensaje no encontrado
+        500:
+          description: Error en el servidor
+
+    put:
+      summary: Actualizar un mensaje por su ID
+      tags: [Mensajes]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d4"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contenido:
+                  type: string
+                  example: "Mensaje actualizado."
+      responses:
+        200:
+          description: Mensaje actualizado con éxito
+        404:
+          description: Mensaje no encontrado
+        500:
+          description: Error en el servidor
+
+    delete:
+      summary: Eliminar un mensaje por su ID
+      tags: [Mensajes]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d4"
+      responses:
+        200:
+          description: Mensaje eliminado con éxito
+        404:
+          description: Mensaje no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/mensajes/{id}/leido:
+    put:
+      summary: Marcar mensaje como leído
+      tags: [Mensajes]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d4"
+      responses:
+        200:
+          description: Mensaje marcado como leído
+        404:
+          description: Mensaje no encontrado
+        500:
+          description: Error en el servidor
+
+  /api/mensajes/buscar:
+    get:
+      summary: Buscar mensajes por contenido o usuario
+      tags: [Mensajes]
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          example: "Hola"
+      responses:
+        200:
+          description: Mensajes encontrados
+        400:
+          description: El parámetro de búsqueda es obligatorio
+        500:
+          description: Error en el servidor
+
+  /api/mensajes/remitente/{remitenteId}:
+    get:
+      summary: Obtener mensajes por remitente
+      tags: [Mensajes]
+      parameters:
+        - in: path
+          name: remitenteId
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d1"  # ID del remitente
+      responses:
+        200:
+          description: Lista de mensajes enviados por el remitente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mensaje'
+        404:
+          description: No se encontraron mensajes para este remitente
+        500:
+          description: Error en el servidor
+
+  /api/mensajes/destinatario/{destinatarioId}:
+    get:
+      summary: Obtener mensajes por destinatario
+      tags: [Mensajes]
+      parameters:
+        - in: path
+          name: destinatarioId
+          required: true
+          schema:
+            type: string
+          example: "60d9e6b5c13a2e001f02b3d2"  # ID del destinatario
+      responses:
+        200:
+          description: Lista de mensajes recibidos por el destinatario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mensaje'
+        404:
+          description: No se encontraron mensajes para este destinatario
+        500:
+          description: Error en el servidor
+
+components:
+  schemas:
+    Mensaje:
+      type: object
+      properties:
+        remitente:
+          type: string
+          description: ID del usuario que envió el mensaje
+        destinatario:
+          type: string
+          description: ID del usuario que recibe el mensaje
+        contenido:
+          type: string
+          description: Contenido del mensaje
+        fechaEnvio:
+          type: string
+          format: date-time
+          description: Fecha en la que se envió el mensaje
+        leido:
+          type: boolean
+          description: Estado de lectura del mensaje
+        conversacion:
+          type: string
+          description: ID de la conversación a la que pertenece el mensaje (opcional)

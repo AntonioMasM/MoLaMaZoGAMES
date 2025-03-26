@@ -20,6 +20,7 @@ swaggerDocs(app);
 // Rutas
 app.use('/api/usuarios', require('./routes/UsuarioRoutes'));
 app.use('/api/assets', require('./routes/AssetRoutes'));
+app.use('/api/mensajes', require('./routes/MensajeRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
