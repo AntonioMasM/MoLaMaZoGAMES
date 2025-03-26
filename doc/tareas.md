@@ -67,7 +67,10 @@
 
 ## 🎨 Frontend  
 
-- 🟡 **NavBar**: Corregir media queries  
+- 🟡 **NavBar**:
+    - 🟢Elementos colocados correctamente
+    - 🟢CSS Implementado Correctamente
+    - 🟡Falta añadir Media Queries / CSS para el Menú Hamburguesa
 - 🟡 **Footer**: Implementar media queries  
 - 🟡 **Hero Section**: Mejorar media queries y cambiar imágenes a formato WebP  
 - 🟢 **Registro**: Validación de campos implementada con mensajes de error  

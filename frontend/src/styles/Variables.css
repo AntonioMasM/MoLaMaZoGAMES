@@ -4,9 +4,9 @@
     --secondary-color: #222222;
     --text-color: white;
     --background-color: #222222;
-    --hover-color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); /* Color que tomará el título y los botones al hacer hover */
+    --hover-color: #338bff; /* Color que tomará el título y los botones al hacer hover */
 
-  
+    --bs-link-color-rgb: #338bff;
     /* Tipografía */
     --font-primary: Arial, sans-serif;
     --font-logo: 'Jersey 10', sans-serif;
