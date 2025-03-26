@@ -1,32 +1,38 @@
-# Tareas 
+# ✅ Tareas de Desarrollo  
 
-## Backend
+## 🛠 Backend  
 
+### 📌 Definición de Modelos de Datos  
 
-### Definición de Modelos de Datos
+#### **Modelos Fundamentales**  
+- 🟢 **Usuario**: ✅ CRUD completo, ✅ Iniciar/Cerrar sesión, ✅ Seguir/Dejar de seguir usuarios  
+- 🟡 **Asset**: Implementado, pendiente de mejoras  
+- 🔴 **Mensaje**: Pendiente de desarrollo  
+- 🔴 **Grupo de Trabajo**: Pendiente de desarrollo  
 
-#### Modelos Fundamentales:
-- **Usuario**: Aspectos que funcionan: Operaciones CRUD, Iniciar Sesión, Cerrar Sesión, Seguir Usuario, Dejar de Seguir Usuario
-- **Asset**: Realizado a falta de mejoras.
-- **Mensaje**: Por hacer
-- **Grupo de Trabajo**: Por hacer
+#### **Modelos de Interacciones**  
+- 🔴 **Comentario**: Pendiente  
+- 🔴 **Like de Comentario**: Pendiente  
+- 🔴 **Categoría de Asset**: Pendiente  
+- 🔴 **Favorito**: Pendiente (dentro del modelo de usuario)  
+- 🔴 **Notificación**: Pendiente  
 
-#### Modelos de interacciones
+---
 
-- **Comentario**: Por hacer
-- **Like de Comentario**: Por hacer
-- **Categoría de Asset**: Por hacer
-- **Favorito**: Por hacer
-- **Notificación**: Por hacer
+## 🎨 Frontend  
 
+- 🟡 **NavBar**: Corregir media queries  
+- 🟡 **Footer**: Implementar media queries  
+- 🟡 **Hero Section**: Mejorar media queries y cambiar imágenes a formato WebP  
+- 🟢 **Registro**: Validación de campos implementada con mensajes de error  
+- 🟢 **Inicio de Sesión**: Validación de campos implementada con mensajes de error  
+- 🟡 **Perfil de Usuario**: Inicio y galería en progreso, falta conexión con la BD  
+- 🟡 **Info de Usuario**: Corregir estilos CSS  
+- 🟡 **Asset Section**: Mejorar media queries, implementar carrusel de assets y corregir título  
+- 🔴 **Grupo de Trabajo**: Por Implementar 
+---
 
-## Frontend
-
-- **NavBar**: Corregir Media Queries
-- **Footer**: Hacer Media Queries
-- **Hero Section**: Hacer Media Queries, cambiar imgs (webp)
-- **Registro**: He hecho un registro  donde comprueba si todos los campos si son correctos, sino lo son saldrá un error en esos dichos campos
-- **Inicio de Sesión**: He hecho un inicio sesion donde comprueba si todos los campos si son correctos, sino lo son saldrá un error en esos dichos campos
-- **Perfil de Usuario**: Inicio y galería empezados, falta arreglar conexión a BD y resto de páginas.
-- **Info de Usuario**: Corregir CSS
-- **Asset Section**: Media queris, carrusel con assets y título asset arreglado. 
+Las tareas están organizadas con emojis de estado:  
+- 🟢 **Completado**  
+- 🟡 **En progreso / mejoras necesarias**  
+- 🔴 **Pendiente**  

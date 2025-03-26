@@ -1,71 +1,59 @@
-# MoLaMaZoGAMES
-## Descripción del Proyecto
+# 📌 MoLaMaZoGAMES
+
+<p align="center">
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
+</p>
+
 MoLaMaZoGAMES es una plataforma web diseñada para la gestión interna de assets digitales en la empresa de videojuegos AAA MoLaMaZoGAMES. La plataforma facilita la colaboración entre desarrolladores, artistas y diseñadores, permitiendo la organización eficiente de contenido digital en diversos formatos, incluyendo modelos 3D, texturas, animaciones, código fuente, música y efectos de sonido.
-## Creadores
-- Antonio Pascual Mas Martínez
-- Gabriel Llorca Martínez
-- Joan Asensio Adsuar
+
+---
+
+## 👥 Autores
+
+- **Antonio Pascual Mas Martínez**
+- **Gabriel Llorca Martínez**
+- **Joan Asensio Adsuar**
+
+---
+
+## 🚀 Tecnologías Utilizadas
+
+Este proyecto ha sido desarrollado con la pila **MERN (MongoDB, Express, React, Node.js)**:
+
+- ✅ **Backend:** Construido con **Node.js y Express**, utilizando **MongoDB** como base de datos. El código del backend se encuentra en la carpeta `backend`.
+- ✅ **Frontend:** Desarrollado con **React**, ubicado en la carpeta `frontend`.
+- ✅ **Documentación:** Toda la documentación del proyecto se encuentra en la carpeta `doc`.
+
+---
+
+## 📦 Instalación
+
+### 🔧 Backend
+```bash
+# Entrar en la carpeta del backend
+cd backend
+
+# Instalar dependencias
+npm install
+
+# Iniciar el servidor
+npm start
+```
+
+### 🎨 Frontend
+```bash
+# Entrar en la carpeta del frontend
+cd frontend
+
+# Instalar dependencias
+npm install
+
+# Iniciar la aplicación
+npm start
+```
 
 
-## IMPORTANTE PARA LA INSTALACIÓN
-### Backend Parte 1
-1. Entrar en la carpeta backend y ejecutar el siguiente código:
-    ```terminal
-    npm install express mongoose dotenv cors
-    ```
-2. Después ejecutar esta en la misma carpeta:
-    ```terminal
-    npm install nodemon --save-dev
-    ```
-3. Para iniciar el server ejecutar:
-    ```terminal
-    npm run dev
-    ```
-4. Os saldrá el mensaje de `Corriendo en el Puerto 5000`
-
-
-### Backend Parte 2
-
-1. En la carpeta de backend ejecutar:
-    ```terminal
-    npm install mongodb
-    ```
-2. Si no hay ningún archivo .env, crearlo dentro de backend
-3. Copiar nombre y contraseña.
-
-## Backend Parte 3
-1. En la carpeta backend ejecutar:
-    ```terminal
-    npm install swagger-jsdoc swagger-ui-express
-    ```
-
-2. Esto es para las llamadas API al Backend.
-
-
-## Backend Parte 4
-1. En la carpeta backend ejecutar:
-    ```terminal
-    npm install bcryptjs jsonwebtoken crypto
-    ```
-
-2. Esto es para encriptar las contraseñas en la base de datos (más profesional)
-
-## Frontend Parte 1
-1. En la carpeta frontend ejecutar este código para instalar las dependencias:
-    ```terminal
-    npm install 
-    ```
-
-2. Ahora ejecutar esto para la navegación entre páginas:
-    ```terminal
-    npm install react-router-dom
-    ```
-
-3. Ahora ejecutar esto para la gestión de API:
-    ```terminal
-    npm install axios
-    ```
-3. Por último instalar Bootstrap para estilos:
-    ```terminal
-    npm install bootstrap
-    ```
+---
