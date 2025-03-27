@@ -6,6 +6,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import UserProfile from "./Pages/UserProfile";
 import Gallery from "./Pages/Gallery";
+import Contact from "./Pages/Contact";
 
 
 import "./styles/global.css";
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </div>

@@ -25,8 +25,6 @@ const Navbar = () => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser)); // Convertir de string a objeto
-
-
     }
   }, []);
 
@@ -35,7 +33,7 @@ const Navbar = () => {
     localStorage.removeItem("token"); // Eliminar el token
     localStorage.removeItem("user"); // Eliminar los datos del usuario
     setUser(null); // Limpiar el estado del usuario
-    window.location.href = "/";
+    window.location.href = "/"; // Redirigir a la página de inicio
   };
 
   return (
@@ -55,11 +53,13 @@ const Navbar = () => {
           {isSmallScreen && <FaLayerGroup />} {!isSmallScreen && " Categorías"}
         </button>
         <button className="navbar-button">
-        {isSmallScreen && <FaCompass />} {!isSmallScreen && " Explorar"}
+          {isSmallScreen && <FaCompass />} {!isSmallScreen && " Explorar"}
         </button>
-        <button className="navbar-button">
-        {isSmallScreen && <FaEnvelope />} {!isSmallScreen && " Contacto"}
-        </button>
+        
+        {/* Redirigir a la página de contacto */}
+        <Link to="/contact" className="navbar-button">
+          {isSmallScreen && <FaEnvelope />} {!isSmallScreen && " Contacto"}
+        </Link>
 
         {/* Mostrar el usuario autenticado o la opción de inicio de sesión */}
         {user ? (
@@ -67,13 +67,10 @@ const Navbar = () => {
             <button className="navbar-button user-dropdown">
               <img
                 src={user.fotoPerfil}
-                
                 alt="Foto de perfil"
                 className="user-profile-pic"
               />
             </button>
-
-
           </div>
         ) : (
           <Link to="/login" className="navbar-button">
@@ -84,7 +81,7 @@ const Navbar = () => {
         <button className="navbar-icon settings-icon" onClick={() => setShowSettings(!showSettings)}>
           <FaCog />
         </button>
-        {showSettings && user &&(
+        {showSettings && user && (
           <div className="settings-dropdown">
             <button className="dropdown-item" onClick={handleLogout}>
               <FaSignOutAlt /> Cerrar Sesión
@@ -104,7 +101,7 @@ const Navbar = () => {
         <nav className="dropdown-menu">
           <button className="dropdown-item">Categorías</button>
           <button className="dropdown-item">Explorar</button>
-          <button className="dropdown-item">Contacto</button>
+          <Link to="/contacto" className="dropdown-item">Contacto</Link>
           {user ? (
             <>
               <button className="dropdown-item" onClick={handleLogout}>

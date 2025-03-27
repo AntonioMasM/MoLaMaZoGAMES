@@ -1,0 +1,148 @@
+@import "./Variables.css";
+
+/* Contact.css */
+
+/* Estilos generales */
+.contenedor-principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #333333, #666666);
+  padding: 20px;
+}
+
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: rgba(215, 215, 215, 0.185);
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 900px;
+  transition: transform 0.3s ease-in-out;
+  margin-top: 50px;
+}
+
+.contact-container:hover {
+  transform: scale(1.02);
+}
+
+.contact-image {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.contact-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: white; /* Cambiado a blanco */
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.contact-subtitle {
+  font-size: 22px;
+  color: white; /* Cambiado a blanco */
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.contact-description {
+  font-size: 16px;
+  color: white; /* Cambiado a blanco */
+  margin-top: 10px;
+  text-align: left;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Redes sociales */
+.social-media {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Más espacio entre los cuadros */
+  justify-content: center;
+  width: 100%;
+}
+
+.social-media a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px; /* Tamaño aumentado de los cuadros */
+  height: 150px; /* Tamaño aumentado de los cuadros */
+  color: #ffffff; /* Color blanco para el texto */
+  text-decoration: none;
+  font-size: 24px;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #333; /* Fondo oscuro para el cuadro */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  justify-content: center; /* Centrado de íconos */
+}
+
+.social-media a:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.social-media a > svg {
+  font-size: 45px; /* Tamaño más grande para los íconos */
+}
+
+/* Correo electrónico */
+.email {
+  margin-top: 25px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white; /* Color blanco para el texto */
+}
+
+.email a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.email a:hover {
+  text-decoration: underline;
+}
+
+/* Estilos del botón de cierre */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #777;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #ff6347;
+}
+
+/* Animación de contenedor */
+.contact-container {
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
