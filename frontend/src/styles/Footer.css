@@ -31,3 +31,15 @@
   color: var(--hover-color);
   text-decoration: underline;
 }
+
+
+@media (max-width: 425px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-link {
+    font-size: 16px;
+  }
+}
