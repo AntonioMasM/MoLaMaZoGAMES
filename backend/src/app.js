@@ -22,6 +22,8 @@ app.use('/api/usuarios', require('./routes/UsuarioRoutes'));
 app.use('/api/assets', require('./routes/AssetRoutes'));
 app.use('/api/mensajes', require('./routes/MensajeRoutes'));
 app.use('/api/grupos', require('./routes/GrupoRoutes'));
+app.use('/api/usuarios', require('./routes/UsuarioRoutes'));
+app.use('/api/comentarios', require('./routes/ComentarioRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

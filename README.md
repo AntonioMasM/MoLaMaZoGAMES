@@ -42,7 +42,7 @@ cd backend
 npm install
 
 # Iniciar el servidor
-npm start
+npm run dev
 ```
 
 ### 🎨 Frontend
@@ -54,7 +54,7 @@ cd frontend
 npm install
 
 # Iniciar la aplicación
-npm start
+npm run dev
 ```
 
 

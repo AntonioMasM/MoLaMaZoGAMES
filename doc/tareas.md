@@ -58,6 +58,18 @@
 
 #### **Modelos de Interacciones**  
 - 🔴 **Comentario**: Pendiente  
+    - 🔴 Crear Comentario (Sobre un asset)
+    - 🔴 Obtener Comentarios por Asset
+    - 🔴 Obtener Comentario por ID
+    - 🔴 Actualizar Comentario por ID (Editar un comentario existente)
+    - 🔴 Eliminar Comentario por ID
+    - 🔴 Obtener Comentarios por Usuario (Comentarios de un usuario específico)
+    - 🔴 Buscar Comentarios por Contenido
+    - 🔴 Dar Like a un Comentario
+    - 🔴 Eliminar Like de un Comentario (Quitar like de un comentario)
+    - 🔴 Notificación por Nuevo Comentario en Asset (Notificar al autor del asset)
+    - 🔴 Notificación por Like en Comentario (Notificar al autor del comentario)
+    - 🔴 Notificación por Respuesta a un Comentario (Notificar al autor de un comentario cuando le respondan)
 - 🔴 **Like de Comentario**: Pendiente  
 - 🔴 **Categoría de Asset**: Pendiente  
 - 🔴 **Favorito**: Pendiente (dentro del modelo de usuario)  
