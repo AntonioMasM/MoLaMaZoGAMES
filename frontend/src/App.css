@@ -1,14 +1,26 @@
 html, body {
-  margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden; /* Evita barras de desplazamiento horizontales */
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
+/* Estructura principal de la app */
 #root {
-  width: 100vw; /* Asegura que ocupa el ancho completo de la ventana */
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* Opcional: Estilo base para contenedores principales */
+.container,
+.page-container {
+  flex: 1;
+  padding: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
 }

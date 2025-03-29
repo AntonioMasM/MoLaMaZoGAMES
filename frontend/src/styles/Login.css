@@ -1,52 +1,57 @@
 @import "./Variables.css";
 
+/* ========================
+   CONTENEDOR PRINCIPAL
+======================== */
 
-
-/* Contenedor Principal - Ocupa toda la pantalla */
 .contenedor-principal {
   display: flex;
-  justify-content: center;  /* Centrar horizontalmente */
-  align-items: center;  /* Centrar verticalmente */
-  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
-  background-color: var(--background-color); /* Fondo */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
 }
 
-/* Contenedor del Login - Más alto */
+/* ========================
+   CONTENEDOR LOGIN
+======================== */
+
 .login-container {
   display: flex;
-  min-height: 80vh; /* Aumenta la altura del contenedor */
-  width: 60%; /* Ajusta el ancho para que no sea muy grande */
+  min-height: 80vh;
+  width: 60%;
   background-color: var(--text-color);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Agrega un pequeño sombreado */
-  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
   overflow: hidden;
+
+  /* Nueva animación aplicada */
+  animation: elegantFadeIn 0.6s ease-out both;
 }
 
+/* ========================
+   PANEL IZQUIERDO (IMAGEN)
+======================== */
 
-
-/* Ajustes en la imagen con el texto */
 .login-image {
   flex: 1;
   background: url("/assets/img_login.webp") center/cover no-repeat;
-  padding: 30px;
+  padding: 30px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   color: white;
   text-align: left;
-  padding-left: 50px; /* Mayor separación de los bordes */
 }
 
-/* Estilo del título "MoLaMaZoGAMES" */
 .login-title {
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 15px;
   text-transform: uppercase;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Efecto de sombra */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* Estilo del subtítulo "DESCUBRE LA MAYOR GALERÍA DE ASSETS DEL MUNDO" */
 .login-subtitle {
   font-size: 24px;
   font-weight: bold;
@@ -54,18 +59,18 @@
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
 }
 
-/* Descripción */
 .login-description {
   font-size: 16px;
   max-width: 80%;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
+/* ========================
+   PANEL DERECHO (FORMULARIO)
+======================== */
 
-/* Formulario a la derecha */
 .login-form {
-background-color: var(--text-color);
-
+  background-color: var(--text-color);
   flex: 1;
   padding: 30px;
   position: relative;
@@ -80,12 +85,18 @@ background-color: var(--text-color);
   right: 15px;
   border: none;
   background: none;
-  font-size: 18px;
+  font-size: 20px;
+  color: gray;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
+  color: black;
 }
 
 .form-title {
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -101,10 +112,23 @@ label {
 
 input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
+  font-size: 1rem;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Validación visual */
+input:invalid {
+  border-color: #d9534f;
+  box-shadow: 0 0 5px rgba(217, 83, 79, 0.3);
+}
+
+input:valid {
+  border-color: #5cb85c;
+  box-shadow: 0 0 5px rgba(92, 184, 92, 0.3);
 }
 
 .forgot-password {
@@ -114,37 +138,31 @@ input {
   margin-bottom: 15px;
 }
 
-input:invalid {
-  border-color: red;
-}
-
-input:focus:invalid {
-  outline-color: red;
-}
-
-input:valid {
-  border-color: green;
-}
-
-
 .login-button {
   background-color: black;
   color: white;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .login-button:hover {
   background-color: #333;
+  transform: scale(1.02);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .register-text {
   text-align: center;
   font-size: 14px;
+  margin-top: 10px;
 }
 
 .register-link {
@@ -156,8 +174,10 @@ input:valid {
   text-decoration: underline;
 }
 
-/* Estilo para mensajes de error */
-/* Estilo para mensajes de error específicos */
+/* ========================
+   ERRORES
+======================== */
+
 .error-message {
   color: #d9534f;
   font-size: 14px;
@@ -167,19 +187,54 @@ input:valid {
   gap: 5px;
 }
 
-/* Icono de advertencia en los mensajes de error */
 .error-message::before {
   content: "⚠";
   font-size: 16px;
 }
 
-/* Para que los errores estén alineados correctamente debajo de cada input */
 input + .error-message {
   margin-bottom: 10px;
 }
 
-/* Error de servidor separado del resto */
 .server-error {
   text-align: center;
   font-weight: bold;
+  margin-top: 10px;
+}
+
+/* ========================
+   ANIMACIÓN DE ENTRADA ELEGANTE
+======================== */
+
+@keyframes elegantFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ========================
+   RESPONSIVE (MÓVIL)
+======================== */
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    width: 90%;
+    min-height: auto;
+  }
+
+  .login-image {
+    display: none;
+  }
+
+  .login-form {
+    padding: 20px;
+  }
 }

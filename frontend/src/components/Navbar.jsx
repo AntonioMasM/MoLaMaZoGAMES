@@ -1,115 +1,119 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
-import { FaSearch, FaCog, FaBars, FaTimes, FaLayerGroup, FaCompass, FaEnvelope, FaUser, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaSearch, FaCog, FaBars, FaTimes, FaSignOutAlt,
+  FaLayerGroup, FaCompass, FaEnvelope, FaUser,
+  FaPalette, FaUniversalAccess, FaQuestionCircle
+} from "react-icons/fa";
+
+import { useUser } from "../context/UserContext";
+import useIsSmallScreen from "../hooks/useIsSmallScreen";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1270);
-  const [user, setUser] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
+  const isSmallScreen = useIsSmallScreen();
+  const { user, logout } = useUser();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Para redireccionar al usuario después de cerrar sesión
-
-  // Detecta cambios en el tamaño de pantalla y actualiza el estado
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 1270);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Verificar si hay un usuario autenticado en localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Convertir de string a objeto
-    }
-  }, []);
-
-  // Cerrar sesión
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Eliminar el token
-    localStorage.removeItem("user"); // Eliminar los datos del usuario
-    setUser(null); // Limpiar el estado del usuario
-    window.location.href = "/"; // Redirigir a la página de inicio
+    logout();
+    navigate("/");
   };
+
+  const navItems = [
+    { label: "Categorías", icon: <FaLayerGroup />, to: "/" },
+    { label: "Explorar", icon: <FaCompass />, to: "/" },
+    { label: "Contacto", icon: <FaEnvelope />, to: "/contact" },
+  ];
 
   return (
     <header className="navbar">
-      {/* Logo de la empresa */}
+      {/* Logo */}
       <Link to="/" className="navbar-logo">MoLaMaZoGAMES</Link>
 
-      {/* Barra de búsqueda con icono */}
+      {/* Búsqueda */}
       <div className="navbar-search">
         <input type="text" placeholder="Buscar assets, categorías..." />
         <FaSearch className="navbar-search-icon" />
       </div>
 
-      {/* Menú de navegación */}
+      {/* Botones */}
       <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
-        <button className="navbar-button">
-          {isSmallScreen && <FaLayerGroup />} {!isSmallScreen && " Categorías"}
-        </button>
-        <button className="navbar-button">
-          {isSmallScreen && <FaCompass />} {!isSmallScreen && " Explorar"}
-        </button>
-        
-        {/* Redirigir a la página de contacto */}
-        <Link to="/contact" className="navbar-button">
-          {isSmallScreen && <FaEnvelope />} {!isSmallScreen && " Contacto"}
-        </Link>
+        {navItems.map(({ label, icon, to }) => (
+          <Link key={label} to={to} className="navbar-button" title={label}>
+            {isSmallScreen ? icon : label}
+          </Link>
+        ))}
 
-        {/* Mostrar el usuario autenticado o la opción de inicio de sesión */}
+        {/* Usuario */}
         {user ? (
-          <div className="user-menu">
-            <button className="navbar-button user-dropdown">
-              <img
-                src={user.fotoPerfil}
-                alt="Foto de perfil"
-                className="user-profile-pic"
-              />
-            </button>
-          </div>
+          <Link to="/profile" className="navbar-button user-dropdown" title="Perfil">
+            <img
+              src={user.fotoPerfil}
+              alt="Foto de perfil"
+              className="user-profile-pic"
+            />
+          </Link>
         ) : (
-          <Link to="/login" className="navbar-button">
-            {isSmallScreen && <FaUser />} {!isSmallScreen && " Inicio Sesión / Registro"}
+          <Link to="/login" className="navbar-button" title="Inicio de sesión">
+            {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
           </Link>
         )}
 
-        <button className="navbar-icon settings-icon" onClick={() => setShowSettings(!showSettings)}>
+        {/* Configuración */}
+        <button
+          className="navbar-icon settings-icon"
+          onClick={() => setShowSettings(!showSettings)}
+          title="Configuración"
+        >
           <FaCog />
         </button>
-        {showSettings && user && (
+
+        {/* Menú de configuración */}
+        {showSettings && (
           <div className="settings-dropdown">
-            <button className="dropdown-item" onClick={handleLogout}>
-              <FaSignOutAlt /> Cerrar Sesión
+            {user && (
+              <button className="dropdown-item" onClick={handleLogout}>
+                <FaSignOutAlt style={{ marginRight: 8 }} /> Cerrar Sesión
+              </button>
+            )}
+            <button className="dropdown-item" onClick={() => alert("Próximamente: cambiar tema")}>
+              <FaPalette style={{ marginRight: 8 }} /> Cambiar Tema
+            </button>
+            <button className="dropdown-item" onClick={() => alert("Opciones de accesibilidad próximamente")}>
+              <FaUniversalAccess style={{ marginRight: 8 }} /> Accesibilidad
+            </button>
+            <button className="dropdown-item" onClick={() => navigate("/ayuda")}>
+              <FaQuestionCircle style={{ marginRight: 8 }} /> Ayuda / Soporte
             </button>
           </div>
         )}
-
       </div>
 
-      {/* Menú hamburguesa (sólo visible en móviles) */}
-      <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+      {/* Menú móvil */}
+      <button
+        className="menu-toggle"
+        onClick={() => setMenuOpen(!menuOpen)}
+        title="Abrir menú"
+      >
         {menuOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-      {/* Menú desplegable en móvil */}
       {menuOpen && (
         <nav className="dropdown-menu">
-          <button className="dropdown-item">Categorías</button>
-          <button className="dropdown-item">Explorar</button>
-          <Link to="/contacto" className="dropdown-item">Contacto</Link>
+          {navItems.map(({ label, to }) => (
+            <Link key={label} to={to} className="dropdown-item">{label}</Link>
+          ))}
           {user ? (
-            <>
-              <button className="dropdown-item" onClick={handleLogout}>
-                <FaSignOutAlt /> Cerrar Sesión
-              </button>
-            </>
+            <button className="dropdown-item" onClick={handleLogout}>
+              <FaSignOutAlt /> Cerrar Sesión
+            </button>
           ) : (
-            <Link to="/login" className="dropdown-item">Inicio Sesión / Registro</Link>
+            <Link to="/login" className="dropdown-item">
+              <FaUser /> Inicio Sesión / Registro
+            </Link>
           )}
         </nav>
       )}
