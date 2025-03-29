@@ -1,7 +1,7 @@
-import React, { useState } from "react"; 
-import { FaStar, FaRegClock, FaChevronLeft, FaChevronRight } from "react-icons/fa"; 
-import AssetCard from "./AssetCard"; 
-import AssetCarousel from "./AssetCarousel"; 
+import React from "react";
+import { FaStar, FaRegClock } from "react-icons/fa";
+import Carousel from "./Carousel";
+import AssetCard from "./AssetCard";
 import "../styles/AssetSection.css";
 
 const assets = [
@@ -95,16 +95,20 @@ const assets = [
 const AssetSection = () => {
   return (
     <>
-      <AssetCarousel
+      <Carousel
         title="Lo Más Popular"
         icon={<FaStar />}
-        assets={assets}
+        items={assets}
+        renderItem={(asset, index) => <AssetCard key={index} {...asset} />}
+        gridClassName="asset-grid"
       />
 
-      <AssetCarousel
+      <Carousel
         title="Lo Más Reciente"
         icon={<FaRegClock />}
-        assets={assets}
+        items={assets}
+        renderItem={(asset, index) => <AssetCard key={index} {...asset} />}
+        gridClassName="asset-grid"
         className="recent-carousel"
       />
     </>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import axios from "axios";
-import UserCarousel from "./UserCarousel";
+import Carousel from "./Carousel";
+import UserCard from "./UserCard";
 import "../styles/UserSection.css";
 
 const UserSection = () => {
@@ -21,10 +22,14 @@ const UserSection = () => {
   }, []);
 
   return (
-    <UserCarousel
+    <Carousel
       title="Creadores Destacados"
       icon={<FaUser />}
-      users={usuarios}
+      items={usuarios}
+      renderItem={(usuario, index) => (
+        <UserCard key={usuario._id || index} {...usuario} />
+      )}
+      gridClassName="user-grid"
     />
   );
 };
