@@ -1,111 +1,148 @@
-  .asset-section {
-    padding: 20px;
-    background-color: var(--background-color);
-    position: relative;
-  }
-  
-  .section-title {
-    font-size: 22px;
-    font-weight: bold;
-    padding: 10px 0;
-    padding-left: 15px;
-    margin-bottom: 15px;
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    margin-left: -1.1vw;
-    margin-right: -1.1vw;
+/* ========================
+   SECCIÓN DE ASSETS
+======================== */
 
-    .star-icon {
-      position: relative;
-      top: -6px; 
-    }
+.asset-section {
+  padding: 20px;
+  background-color: var(--background-color);
+  position: relative;
+}
 
-    .clock-icon {
-      position: relative;
-      top: -5px; 
-    }
-    
-  }
+/* ========================
+   TÍTULOS DE SECCIÓN
+======================== */
 
-  .star-icon {
-    vertical-align: middle;
-    margin-right: 5px;
-  }
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px 0;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  margin-left: -1.1vw;
+  margin-right: -1.1vw;
+}
 
-  .clock-icon {
-    vertical-align: middle;
-    margin-right: 5px;
-  }
-  
-  .asset-grid {
-    display: flex;
-    gap: 15px;
-    overflow-x: hidden;
-    padding-bottom: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.5s ease-in-out;
-  }
+.section-icon {
+  vertical-align: middle;
+  margin-right: 5px;
+  position: relative;
+  top: -5px;
+}
 
+/* ========================
+   GRID DE ASSETS
+======================== */
 
+.asset-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 10px;
+  overflow-x: hidden;
+  transition: opacity 0.3s ease;
+}
 
-  .asset-grid2 {
-    display: flex;
-    gap: 15px;
-    overflow-x: hidden; /* Asegura que no se desborden */
-    padding-bottom: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.5s ease-in-out; /* Suaviza el deslizamiento */
-  }
-  
-  .asset-grid.slide-left {
-    transform: translateX(-100%);
-  }
-  
-  .asset-grid.slide-right {
-    transform: translateX(100%);
-  }
+/* ========================
+   ANIMACIONES FADE
+======================== */
 
-  .asset-grid2.slide-left {
-    transform: translateX(-100%); /* Mueve los assets a la derecha */
+.fade-out {
+  animation: fadeOut 0.3s forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
   }
-  
-  .asset-grid2.slide-right {
-    transform: translateX(100%); /* Mueve los assets a la izquierda */
+  to {
+    opacity: 0;
   }
-  
-  .carousel-controls {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-    padding: 0 15px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .carousel-button:first-child {
-    margin-left: -40px;
+  to {
+    opacity: 1;
   }
-  
-  .carousel-button {
-    background-color: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
-    color: gray;
-    transition: transform 0.2s;
+}
+
+/* ========================
+   CONTROLES DEL CARRUSEL
+======================== */
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  padding: 0 15px;
+}
+
+.carousel-button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  color: gray;
+  transition: transform 0.2s;
+}
+
+.carousel-button:hover {
+  transform: scale(1.2);
+}
+
+.carousel-button:disabled {
+  color: var(--primary-color);
+  cursor: not-allowed;
+}
+
+.carousel-button:first-child {
+  margin-left: -40px;
+}
+
+/* ========================
+   ANIMACIONES DIRECCIONALES
+======================== */
+
+.fade-left {
+  animation: fadeLeft 0.3s ease forwards;
+}
+
+.fade-right {
+  animation: fadeRight 0.3s ease forwards;
+}
+
+@keyframes fadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
   }
-  
-  .carousel-button:hover {
-    transform: scale(1.2);
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .carousel-button:disabled {
-    color: var(--primary-color);
-    cursor: not-allowed;
+}
+
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
