@@ -1,4 +1,4 @@
-const Comentario = require('../models/Comentario');
+const Comentario = require('../../models/Comentario');
 
 // Dar like a un comentario
 exports.darLike = async (req, res) => {

@@ -1,6 +1,6 @@
-const Notificacion = require('../models/Notificacion');
-const Comentario = require('../models/Comentario');
-const Usuario = require('../models/Usuario');
+const Notificacion = require('../../models/Notificacion');
+const Comentario = require('../../models/Comentario');
+const Usuario = require('../../models/Usuario');
 
 // Enviar una notificación por nuevo comentario en un asset
 exports.notificarNuevoComentario = async (comentario) => {

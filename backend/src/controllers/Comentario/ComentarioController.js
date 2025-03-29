@@ -1,5 +1,5 @@
-const Comentario = require('../models/Comentario');
-const Asset = require('../models/Asset');
+const Comentario = require('../../models/Comentario');
+const Asset = require('../../models/Asset');
 
 // Crear un nuevo comentario sobre un asset
 exports.crearComentario = async (req, res) => {
