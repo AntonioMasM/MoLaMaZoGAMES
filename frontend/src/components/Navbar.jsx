@@ -30,77 +30,85 @@ const Navbar = () => {
 
   return (
     <header className="navbar">
-      {/* Logo */}
-      <Link to="/" className="navbar-logo">MoLaMaZoGAMES</Link>
-
-      {/* Búsqueda */}
-      <div className="navbar-search">
-        <input type="text" placeholder="Buscar assets, categorías..." />
-        <FaSearch className="navbar-search-icon" />
+      {/* Sección izquierda: Logo */}
+      <div className="navbar-left">
+        <Link to="/" className="navbar-logo">
+          <span className="logo-text">MoLaMaZoGAMES</span>
+          <img src="/assets/logo.png" alt="Logo MoLaMaZoGAMES" className="logo-image" />
+        </Link>
       </div>
 
-      {/* Botones */}
-      <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
-        {navItems.map(({ label, icon, to }) => (
-          <Link key={label} to={to} className="navbar-button" title={label}>
-            {isSmallScreen ? icon : label}
-          </Link>
-        ))}
+      {/* Sección centro: Búsqueda */}
+      <div className="navbar-center">
+        <div className="navbar-search">
+          <input type="text" placeholder="Buscar assets, categorías..." />
+          <FaSearch className="navbar-search-icon" />
+        </div>
+      </div>
 
-        {/* Usuario */}
-        {user ? (
-          <Link to="/profile" className="navbar-button user-dropdown" title="Perfil">
-            <img
-              src={user.fotoPerfil}
-              alt="Foto de perfil"
-              className="user-profile-pic"
-            />
-          </Link>
-        ) : (
-          <Link to="/login" className="navbar-button" title="Inicio de sesión">
-            {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
-          </Link>
-        )}
+      {/* Sección derecha: Botones y menú */}
+      <div className="navbar-right">
+        <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
+          {navItems.map(({ label, icon, to }) => (
+            <Link key={label} to={to} className="navbar-button" title={label}>
+              {isSmallScreen ? icon : label}
+            </Link>
+          ))}
 
-        {/* Configuración */}
-        <button
-          className="navbar-icon settings-icon"
-          onClick={() => setShowSettings(!showSettings)}
-          title="Configuración"
-        >
-          <FaCog />
-        </button>
+          {user ? (
+            <Link to="/profile" className="navbar-button user-dropdown" title="Perfil">
+              <img
+                src={user.fotoPerfil}
+                alt="Foto de perfil"
+                className="user-profile-pic"
+              />
+            </Link>
+          ) : (
+            <Link to="/login" className="navbar-button" title="Inicio de sesión">
+              {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
+            </Link>
+          )}
 
-        {/* Menú de configuración */}
-        {showSettings && (
-          <div className="settings-dropdown">
-            {user && (
-              <button className="dropdown-item" onClick={handleLogout}>
-                <FaSignOutAlt style={{ marginRight: 8 }} /> Cerrar Sesión
+          <button
+            className="navbar-icon settings-icon"
+            onClick={() => setShowSettings(!showSettings)}
+            title="Configuración"
+          >
+            <FaCog />
+          </button>
+
+          {/* Menú de configuración */}
+          {showSettings && (
+            <div className="settings-dropdown">
+              {user && (
+                <button className="dropdown-item" onClick={handleLogout}>
+                  <FaSignOutAlt style={{ marginRight: 8 }} /> Cerrar Sesión
+                </button>
+              )}
+              <button className="dropdown-item" onClick={() => alert("Próximamente: cambiar tema")}>
+                <FaPalette style={{ marginRight: 8 }} /> Cambiar Tema
               </button>
-            )}
-            <button className="dropdown-item" onClick={() => alert("Próximamente: cambiar tema")}>
-              <FaPalette style={{ marginRight: 8 }} /> Cambiar Tema
-            </button>
-            <button className="dropdown-item" onClick={() => alert("Opciones de accesibilidad próximamente")}>
-              <FaUniversalAccess style={{ marginRight: 8 }} /> Accesibilidad
-            </button>
-            <button className="dropdown-item" onClick={() => navigate("/ayuda")}>
-              <FaQuestionCircle style={{ marginRight: 8 }} /> Ayuda / Soporte
-            </button>
-          </div>
-        )}
+              <button className="dropdown-item" onClick={() => alert("Opciones de accesibilidad próximamente")}>
+                <FaUniversalAccess style={{ marginRight: 8 }} /> Accesibilidad
+              </button>
+              <button className="dropdown-item" onClick={() => navigate("/ayuda")}>
+                <FaQuestionCircle style={{ marginRight: 8 }} /> Ayuda / Soporte
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Menú hamburguesa */}
+        <button
+          className="menu-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+          title="Abrir menú"
+        >
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
       </div>
 
-      {/* Menú móvil */}
-      <button
-        className="menu-toggle"
-        onClick={() => setMenuOpen(!menuOpen)}
-        title="Abrir menú"
-      >
-        {menuOpen ? <FaTimes /> : <FaBars />}
-      </button>
-
+      {/* Menú desplegable móvil */}
       {menuOpen && (
         <nav className="dropdown-menu">
           {navItems.map(({ label, to }) => (
