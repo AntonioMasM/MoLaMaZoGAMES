@@ -71,7 +71,7 @@
     - 🔴 Notificación por Like en Comentario (Notificar al autor del comentario)
     - 🔴 Notificación por Respuesta a un Comentario (Notificar al autor de un comentario cuando le respondan)
 - 🔴 **Like de Comentario**: Pendiente  
-- 🔴 **Categoría de Asset**: Pendiente  
+- 🟢 **Categoría de Asset**: HECHO  
 - 🔴 **Favorito**: Pendiente (dentro del modelo de usuario)  
 - 🔴 **Notificación**: Pendiente  
 
@@ -82,11 +82,16 @@
 - 🟡 **NavBar**:
     - 🟢Elementos colocados correctamente
     - 🟢CSS Implementado Correctamente
-    - 🟡Falta añadir Media Queries / CSS para el Menú Hamburguesa
-- 🟡 **Footer**: Implementar media queries  
-- 🟡 **Hero Section**: Mejorar media queries y cambiar imágenes a formato WebP  
+    - 🟢Falta añadir Media Queries / CSS para el Menú Hamburguesa
+    - 🟡 Corregir botón de configuración
+- 🟢 **Footer**: Mejorar chorradas 
+- 🟢 **Hero Section**: Acabado a falta de Enlaces a Categorías
 - 🟢 **Registro**: Validación de campos implementada con mensajes de error  
 - 🟢 **Inicio de Sesión**: Validación de campos implementada con mensajes de error  
+- 🟢 **Contacto**: Hecho
+- 🟢 **Privacidad**: Hecho
+- 🟢 **Términos y Condiciones**: Hecho
+- 🟢 **Accesibilidad**: Hecho
 - 🟡 **Perfil de Usuario**: Inicio y galería en progreso, falta conexión con la BD  
 - 🟡 **Info de Usuario**: Corregir estilos CSS  
 - 🟡 **Asset Section**: Mejorar media queries, implementar carrusel de assets y corregir título  

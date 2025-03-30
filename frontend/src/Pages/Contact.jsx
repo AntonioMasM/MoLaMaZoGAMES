@@ -1,61 +1,81 @@
 import React from "react";
 import "../styles/Contact.css";
-import { FaFacebook, FaTwitter, FaInstagram, FaEnvelope } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaEnvelope
+} from "react-icons/fa";
 
-const Contact = ({ onClose }) => {
-  // URLs predefinidas de las redes sociales de MoLaMaZoGAMES
-  const companySocials = {
-    facebook: "https://www.facebook.com/molamazogames", // Facebook de la empresa
-    twitter: "https://twitter.com/molamazogames",     // Twitter de la empresa
-    instagram: "https://www.instagram.com/molamazogames", // Instagram de la empresa
-    email: "contact@mola.com" // Correo de la empresa
-  };
+// Datos por defecto
+const defaultSocials = {
+  facebook: "https://www.facebook.com/molamazogames",
+  twitter: "https://twitter.com/molamazogames",
+  instagram: "https://www.instagram.com/molamazogames",
+  email: "contact@mola.com"
+};
 
+const Contact = ({ socials = defaultSocials }) => {
   return (
-    <div className="contenedor-principal">
-      <div className="contact-container">
-        {/* Sección de imagen / promo */}
-        <div className="contact-image">
-          <h1 className="contact-title">MoLaMaZoGAMES</h1>
-          <p className="contact-subtitle">¡CONTACTA CON NOSOTROS!</p>
-          <p className="contact-description">
-            Si tienes alguna duda o sugerencia, no dudes en ponerte en contacto con nosotros a través de nuestras redes sociales o enviándonos un email.
-          </p>
-        </div>
+    <section className="contact-page">
+      {/* Encabezado */}
+      <div className="contact-header">
+        <h1 className="contact-title">Contacto</h1>
+        <p className="contact-subtitle">
+          ¿Dudas, propuestas o sugerencias? ¡Estamos aquí para ayudarte! Conecta con MoLaMaZoGAMES a través de nuestras redes o por email.
+        </p>
+      </div>
 
-        {/* Sección de contacto */}
-        <div className="contact-form">
-          <h2 className="form-title">Ponte en contacto con <span className="bold">MoLaMaZoGAMES</span></h2>
+      {/* Contenido principal */}
+      <div className="contact-content">
 
-          {/* Redes sociales de la empresa */}
-          <div className="social-media">
-            {companySocials.facebook && (
-              <a href={companySocials.facebook} target="_blank" rel="noopener noreferrer">
-                <FaFacebook />
+        {/* Columna izquierda: redes sociales y correo */}
+        <div className="contact-info">
+          <h2>Redes Sociales</h2>
+          <div className="contact-bar"></div>
+          <p>Puedes seguirnos en nuestras plataformas oficiales:</p>
+
+          <div className="social-list">
+            {socials.facebook && (
+              <a href={socials.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <FaFacebook /> Facebook
               </a>
             )}
-            {companySocials.twitter && (
-              <a href={companySocials.twitter} target="_blank" rel="noopener noreferrer">
-                <FaTwitter />
+            {socials.twitter && (
+              <a href={socials.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <FaTwitter /> Twitter
               </a>
             )}
-            {companySocials.instagram && (
-              <a href={companySocials.instagram} target="_blank" rel="noopener noreferrer">
-                <FaInstagram />
+            {socials.instagram && (
+              <a href={socials.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <FaInstagram /> Instagram
               </a>
             )}
           </div>
 
-          {/* Correo electrónico de la empresa */}
-          {companySocials.email && (
-            <p className="email">
-              <FaEnvelope /> Correo: <a href={`mailto:${companySocials.email}`}>{companySocials.email}</a>
-            </p>
+          {socials.email && (
+            <div className="email-section">
+              <p>
+                <FaEnvelope /> Correo:{" "}
+                <a href={`mailto:${socials.email}`}>{socials.email}</a>
+              </p>
+            </div>
           )}
+        </div>
 
+        {/* Columna derecha: contenido adicional */}
+        <div className="contact-extra">
+          <h2>¿En qué te podemos ayudar?</h2>
+          <p>
+            Si necesitas asistencia personalizada o quieres colaborar con nosotros,
+            no dudes en enviarnos un mensaje. También puedes revisar nuestras preguntas frecuentes en la sección de ayuda.
+          </p>
+          <p>
+            Nuestro equipo está disponible de lunes a viernes, de 9:00 a 18:00 (GMT+1).
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

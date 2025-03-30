@@ -2,25 +2,26 @@
 
 /* --- ESTRUCTURA GENERAL --- */
 
-.contact-page {
+.privacy-page {
   width: 100%;
   padding: 60px 30px;
   background: linear-gradient(120deg, #1c1c1c, #2e2e2e);
   color: var(--text-color);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow-x: hidden;
+  animation: fadeInUp 0.6s ease;
 }
 
 /* --- CABECERA --- */
 
-.contact-header {
+.privacy-header {
   text-align: center;
   margin-bottom: 60px;
   max-width: 900px;
   margin-inline: auto;
 }
 
-.contact-title {
+.privacy-title {
   font-size: 42px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -29,7 +30,12 @@
   display: inline-block;
 }
 
-.contact-title::after {
+.privacy-title svg {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.privacy-title::after {
   content: "";
   display: block;
   height: 4px;
@@ -39,7 +45,7 @@
   border-radius: 2px;
 }
 
-.contact-subtitle {
+.privacy-subtitle {
   font-size: 18px;
   color: #ccc;
   max-width: 720px;
@@ -49,9 +55,9 @@
 
 /* --- CONTENIDO --- */
 
-.contact-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.privacy-content {
+  display: flex;
+  flex-direction: column;
   gap: 50px;
   max-width: 1000px;
   margin: 0 auto;
@@ -62,22 +68,20 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* --- SECCIÓN IZQUIERDA --- */
-
-.contact-info h2 {
+.privacy-section h2 {
   font-size: 22px;
   color: var(--hover-color);
   margin-bottom: 16px;
 }
 
-.contact-info p {
+.privacy-section p {
   font-size: 16px;
   line-height: 1.6;
   opacity: 0.85;
   margin-bottom: 16px;
 }
 
-.contact-bar {
+.privacy-bar {
   height: 3px;
   width: 50px;
   background-color: var(--hover-color);
@@ -85,75 +89,53 @@
   border-radius: 4px;
 }
 
-/* --- REDES SOCIALES --- */
-
-.social-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 20px;
+.privacy-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
 }
 
-.social-list a {
+.privacy-list li {
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.privacy-list li::before {
+  content: "\2022";
+  position: absolute;
+  left: 0;
+  color: var(--hover-color);
+}
+
+.privacy-contact {
+  font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 17px;
-  color: var(--text-color);
-  text-decoration: none;
-  transition: all 0.25s ease;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.social-list a:hover {
-  color: var(--hover-color);
-  transform: translateX(4px);
-}
-
-.social-list svg {
-  font-size: 24px;
-}
-
-/* --- EMAIL --- */
-
-.email-section {
-  margin-top: 25px;
-  font-size: 16px;
-}
-
-.email-section a {
+.privacy-contact a {
   color: var(--hover-color);
   font-weight: 600;
   text-decoration: none;
 }
 
-.email-section a:hover {
+.privacy-contact a:hover {
   text-decoration: underline;
 }
 
-/* --- SECCIÓN DERECHA EXTRA --- */
-
-.contact-extra {
-  padding-left: 20px;
-  border-left: 2px solid rgba(255, 255, 255, 0.1);
+.privacy-updated {
+  text-align: center;
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 40px;
+  font-style: italic;
 }
 
-.contact-extra h2 {
-  font-size: 20px;
-  color: var(--hover-color);
-  margin-bottom: 15px;
-}
-
-.contact-extra p {
-  font-size: 15px;
-  color: #ccc;
-  line-height: 1.5;
-}
-
-/* --- ANIMACIÓN SUAVE --- */
-
-.contact-page {
-  animation: fadeInUp 0.6s ease;
-}
+/* --- ANIMACIONES --- */
 
 @keyframes fadeInUp {
   from {
@@ -169,28 +151,21 @@
 /* --- RESPONSIVE --- */
 
 @media (max-width: 900px) {
-  .contact-content {
-    grid-template-columns: 1fr;
+  .privacy-content {
     padding: 30px;
-  }
-
-  .contact-extra {
-    border-left: none;
-    border-top: 2px solid rgba(255, 255, 255, 0.1);
-    padding-top: 30px;
   }
 }
 
 @media (max-width: 500px) {
-  .contact-title {
+  .privacy-title {
     font-size: 30px;
   }
 
-  .contact-subtitle {
+  .privacy-subtitle {
     font-size: 15px;
   }
 
-  .contact-content {
+  .privacy-content {
     padding: 20px;
   }
 }

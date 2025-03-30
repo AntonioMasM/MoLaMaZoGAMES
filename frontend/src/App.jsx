@@ -9,6 +9,9 @@ import Register from "./Pages/Register";
 import UserProfile from "./Pages/UserProfile";
 import Gallery from "./Pages/Gallery";
 import Contact from "./Pages/Contact";
+import Accesibility from "./Pages/Accesibility";
+import Privacy from "./Pages/Privacy";
+import Terms from "./Pages/Terms";
 
 import "./styles/global.css";
 
@@ -25,6 +28,9 @@ function App() {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/accesibility" element={<Accesibility />} />
+            <Route path="/privacy-policy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
           </Routes>
           <Footer />
         </div>
