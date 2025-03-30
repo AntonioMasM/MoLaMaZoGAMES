@@ -1224,40 +1224,134 @@ paths:
           description: Grupo o asset no encontrado
         500:
           description: Error en el servidor
+  /api/categorias:
+    get:
+      summary: Obtener todas las categorías
+      tags:
+        - Categorías
+      responses:
+        '200':
+          description: Lista de categorías obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+
+    post:
+      summary: Crear una nueva categoría
+      tags:
+        - Categorías
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoriaInput'
+      responses:
+        '201':
+          description: Categoría creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+
+  /api/categorias/{id}:
+    get:
+      summary: Obtener una categoría por ID
+      tags:
+        - Categorías
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Categoría obtenida correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+        '404':
+          description: Categoría no encontrada
+
+    put:
+      summary: Actualizar una categoría por ID
+      tags:
+        - Categorías
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoriaInput'
+      responses:
+        '200':
+          description: Categoría actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+
+    delete:
+      summary: Eliminar una categoría por ID
+      tags:
+        - Categorías
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Categoría eliminada correctamente
+        '404':
+          description: Categoría no encontrada
+
 components:
   schemas:
-    Grupo:
+    Categoria:
       type: object
       properties:
-        titulo:
+        _id:
           type: string
-          example: "Grupo de Desarrollo"
+          example: "660e5a2dbe5e0e81c73ddc22"
+        nombre:
+          type: string
+          example: "Personajes"
         descripcion:
           type: string
-          example: "Este grupo es para el desarrollo de nuevas funcionalidades."
-        usuarios:
-          type: array
-          items:
-            type: string
-          example: ["60d9e6b5c13a2e001f02b3d1"]
-        assets:
-          type: array
-          items:
-            type: string
-          example: ["60d9e6b5c13a2e001f02b3d4"]
-        creador:
+          example: "Categoría de personajes para videojuegos"
+        imagen:
           type: string
-          example: "60d9e6b5c13a2e001f02b3d1"
+          example: "https://www.dropbox.com/s/xyz/personajes.webp?raw=1"
         fechaCreacion:
           type: string
           format: date-time
-          example: "2025-03-26T10:00:00Z"
-        fechaActualizacion:
+          example: "2024-04-01T10:00:00Z"
+
+    CategoriaInput:
+      type: object
+      required:
+        - nombre
+        - imagen
+      properties:
+        nombre:
           type: string
-          format: date-time
-          example: "2025-03-26T10:30:00Z"
-        invitacionesPendientes:
-          type: array
-          items:
-            type: string
-          example: ["60d9e6b5c13a2e001f02b3d3"]
+          example: "Entornos"
+        descripcion:
+          type: string
+          example: "Elementos visuales de escenarios y mapas"
+        imagen:
+          type: string
+          example: "https://www.dropbox.com/s/abc/entornos.webp?raw=1"
