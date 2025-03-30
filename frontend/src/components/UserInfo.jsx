@@ -1,108 +1,137 @@
 import React, { useState, useEffect } from "react";
-import "../styles/UserInfo.css"; // Asegúrate de tener el CSS correspondiente
+import axios from "axios";
+import AssetCard from "./AssetCard";
+import UserCard from "./UserCard";
+import "../styles/UserInfo.css";
 
 const UserInfo = () => {
   const [user, setUser] = useState(null);
+  const [userAssets, setUserAssets] = useState([]);
+  const [siguiendoUsuarios, setSiguiendoUsuarios] = useState([]);
 
-  // Verificar si el token está presente en localStorage
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Guardamos la información del usuario logueado
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedEmail = storedUser?.email;
+
+    if (storedEmail) {
+      axios.get(`http://localhost:5000/api/usuarios/${storedEmail}`).then((res) => {
+        setUser(res.data);
+
+        axios.get("http://localhost:5000/api/assets/").then((assetRes) => {
+          const filteredAssets = assetRes.data.filter(
+            (asset) => asset.usuarioCreador === res.data._id
+          );
+          setUserAssets(filteredAssets);
+        });
+
+        axios
+          .get(`http://localhost:5000/api/usuarios/${storedEmail}/siguiendo`)
+          .then(async (siguiendoRes) => {
+            const ids = siguiendoRes.data.siguiendo || [];
+            const promesas = ids.map((id) =>
+              axios.get(`http://localhost:5000/api/usuarios/id/${id}`)
+            );
+            const resultados = await Promise.all(promesas);
+            const usuarios = resultados.map((r) => r.data);
+            setSiguiendoUsuarios(usuarios);
+          });
+      }).catch((err) => console.error("Error al obtener usuario:", err));
     }
   }, []);
 
-  if (!user) {
-    return null; // No se muestra nada si el usuario no está logueado
-  }
+  if (!user) return null;
+
+  const gruposTrabajo = [
+    "Grupo E1 - Entorno del Mapa",
+    "Grupo F3 - Ciudad 3",
+    "Grupo E5 - Personajes",
+  ];
+
+  const categoriasFavoritas = [
+    "Ciencia Ficción",
+    "Animales",
+    "Pixel Art",
+    "Concept Art",
+    "Vehículos",
+    "Audios",
+    "Entorno",
+    "Mobiliario",
+  ];
 
   return (
-    <section className="logged-in-hero">
-      <div className="logged-in-hero-content">
-        {/* Información de bienvenida */}
-        <div className="logged-in-welcome">
-          <h1>Bienvenido de nuevo, {user.nickname}</h1>
-          <p>Última vez conectado: Martes, 20:48</p>
-          <p>No has recibido nuevos mensajes</p>
-        </div>
-
-        {/* Grupos de trabajo */}
-        <div className="logged-in-work-groups">
-          <h3>Grupos de Trabajo</h3>
-          <ul>
-            <li>Grupo E1 - Entorno del Mapa</li>
-            <li>Grupo F3 - Ciudad 3</li>
-            <li>Grupo E5 - Personajes</li>
-          </ul>
-        </div>
-
-        {/* Últimos assets */}
-        <div className="logged-in-assets">
-          <h3>Tus últimos Assets:</h3>
-          <div className="assets-list">
-            <div className="asset-item">
-              <img src="/assets/categories/2d.webp" alt="Cabaña 3D" />
-              <p>Cabaña 3D</p>
-              <button>Editar</button>
-            </div>
-            <div className="asset-item">
-              <img src="/assets/categories/2d.webp" alt="Cabaña 3D" />
-              <p>Cabaña 3D</p>
-              <button>Editar</button>
-            </div>
-            <div className="asset-item">
-              <img src="/assets/categories/2d.webp" alt="Cabaña 3D" />
-              <p>Cabaña 3D</p>
-              <button>Editar</button>
-            </div>
+    <section className="user-info">
+      <div className="user-columns">
+        {/* Columna izquierda */}
+        <div className="user-column left">
+          <div className="user-welcome box">
+            <h2>Bienvenido de nuevo, {user.nickname}</h2>
+            <p>
+              <em>Última vez conectado:</em>{" "}
+              {user.ultimoInicioSesion
+                ? new Date(user.ultimoInicioSesion).toLocaleString("es-ES")
+                : "Nunca"}
+            </p>
+            <p><em>No has recibido nuevos mensajes</em></p>
           </div>
-          <button className="view-all-assets">Ver Todos mis Assets</button>
-        </div>
 
-        {/* Siguiendo */}
-        <div className="logged-in-following">
-          <h3>Siguiendo</h3>
-          <div className="following-list">
-            <div className="following-item">
-              <img src="/assets/categories/2d.webp" alt="Alex Martins" />
-              <p>Alex Martins</p>
-            </div>
-            <div className="following-item">
-              <img src="/assets/categories/2d.webp" alt="Diane Smith" />
-              <p>Diane Smith</p>
-            </div>
-            <div className="following-item">
-              <img src="/assets/categories/2d.webp" alt="Emma Stone" />
-              <p>Emma Stone</p>
-            </div>
+          <div className="user-groups box">
+            <h3 className="section-title">Grupos de Trabajo</h3>
+            <ul className="group-list">
+              {gruposTrabajo.map((grupo, idx) => (
+                <li key={idx} className="group-item">
+                  <span className="group-icon">👥</span> {grupo}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Categorías Favoritas */}
-        <div className="logged-in-categories">
-          <h3>Categorías Favoritas</h3>
-          <div className="categories-list">
-            <div className="category-item">
-              <img src="/assets/categories/2d.webp" alt="Ciencia Ficción" />
-              <p>Ciencia Ficción</p>
+        {/* Columna derecha */}
+        <div className="user-column right">
+          <div className="user-assets box">
+            <div className="user-assets-header">
+              <h3 className="section-title">Tus últimos Assets:</h3>
+              <button className="view-all">Ver Todos mis Assets</button>
             </div>
-            <div className="category-item">
-              <img src="/assets/categories/2d.webp" alt="Animales" />
-              <p>Animales</p>
-            </div>
-            <div className="category-item">
-              <img src="/assets/categories/2d.webp" alt="Pixel Art" />
-              <p>Pixel Art</p>
-            </div>
-            <div className="category-item">
-              <img src="/assets/categories/2d.webp" alt="Concept Art" />
-              <p>Concept Art</p>
-            </div>
-            <div className="category-item">
-              <img src="/assets/categories/2d.webp" alt="Vehículos" />
-              <p>Vehículos</p>
+            <div className="assets-list">
+              {userAssets.slice(0, 3).map((asset) => (
+                <AssetCard
+                  key={asset._id}
+                  image={asset.imagenPrincipal}
+                  title={asset.titulo}
+                  author={asset.autor}
+                  formats={asset.formatos.map((f) => f.tipo)}
+                  category={asset.categorias[0] || "General"}
+                />
+              ))}
             </div>
           </div>
+
+          <div className="user-following box">
+            <h3 className="section-title">Siguiendo</h3>
+            <div className="following-list">
+              {siguiendoUsuarios.map((usuario) => (
+                <UserCard
+                  key={usuario._id}
+                  nickname={usuario.nickname}
+                  fotoPerfil={usuario.fotoPerfil}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Categorías favoritas debajo de las dos columnas */}
+      <div className="user-categories box">
+        <h3 className="section-title">Categorías Favoritas</h3>
+        <div className="categories-list">
+          {categoriasFavoritas.map((cat, idx) => (
+            <div className="category-item" key={idx}>
+              <img src={`/assets/categories/2d.webp`} alt={cat} />
+              <p>{cat}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
