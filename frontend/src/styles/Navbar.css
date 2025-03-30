@@ -21,6 +21,16 @@
 
 }
 
+.navbar-center {
+  flex: 1 1 auto !important;          /* Permite que crezca ocupando el espacio disponible */
+  display: flex !important;           /* Asegura el layout en línea */
+  justify-content: center !important;/* Centra horizontalmente */
+  min-width: 200px !important;        /* No se colapsa demasiado en pantallas pequeñas */
+  max-width: 40% !important;        /* Máximo para que no se vea exagerado */
+  margin: 0 auto !important;          /* Auto-centrado si hay espacio */
+  margin-left: 2% !important;
+}
+
 /*---------------------- LOGO --------------------------*/
 
 .navbar-logo {
@@ -54,7 +64,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  width: 40%;
+  width: 40% !important;
   min-width: 240px;
   border-radius: var(--border-radius);
   flex: 1 1 auto !important;
@@ -208,10 +218,7 @@
     font-size: 16px;
   }
 
-  .navbar-search {
-    width: 100%;
-    max-width: 320px;
-  }
+
 }
 
 
@@ -265,7 +272,10 @@
 
   .navbar-search {
     order: 3;
-    width: 100%;
+
     margin-top: 10px;
   }
+
+
 }
+
