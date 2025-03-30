@@ -3,19 +3,18 @@
 
 /*---------------------- NAVBAR --------------------------*/
 
+
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky !important;           /* 🔥 Hace que se quede "pegado" arriba */
+  top: 0;                     /* 🔝 Pegado al borde superior */
+  width: 100%;                /* ⬅️ Asegura ancho completo */
   height: var(--navbar-height);
   background-color: var(--primary-color);
-  padding: 0 32px;
-  position: relative;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   gap: 20px;
-  flex-wrap: wrap;
 }
+
 
 /*---------------------- LOGO --------------------------*/
 
@@ -25,6 +24,7 @@
   color: var(--text-color);
   text-decoration: none;
   transition: transform 0.2s ease, color 0.2s ease;
+  margin-left: 2%;
 }
 
 .navbar-logo:hover {
