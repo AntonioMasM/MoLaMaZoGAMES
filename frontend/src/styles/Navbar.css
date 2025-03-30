@@ -4,17 +4,21 @@
 /*---------------------- NAVBAR --------------------------*/
 
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: sticky !important;   
+  top: 0;                   
+  width: 100%; 
   height: var(--navbar-height);
   background-color: var(--primary-color);
   padding: 0 32px;
   position: relative;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap !important;
+  overflow-x: hidden;
+  gap: clamp(4px, 1vw, 12px);
+  transition: gap 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
 }
 
 /*---------------------- LOGO --------------------------*/
@@ -25,11 +29,23 @@
   color: var(--text-color);
   text-decoration: none;
   transition: transform 0.2s ease, color 0.2s ease;
+  margin-left: 10%;
 }
 
 .navbar-logo:hover {
   transform: scale(1.1);
   color: var(--hover-color);
+}
+
+
+/* Mostrar el texto por defecto, ocultar la imagen */
+.logo-text {
+  display: inline-block;
+}
+
+.logo-image {
+  display: none;
+  height: 64px; /* o el tamaño que quieras */
 }
 
 /*---------------------- SEARCH --------------------------*/
@@ -41,6 +57,8 @@
   width: 40%;
   min-width: 240px;
   border-radius: var(--border-radius);
+  flex: 1 1 auto !important;
+  margin: 0 auto;
 }
 
 .navbar-search input {
@@ -54,6 +72,7 @@
   outline: none;
   transition: border 0.3s ease;
   box-shadow: none;
+  margin-left: auto; 
 }
 
 .navbar-search input::placeholder {
@@ -194,6 +213,18 @@
     max-width: 320px;
   }
 }
+
+
+@media (max-width: 800px) {
+  .logo-text {
+    display: none;
+  }
+
+  .logo-image {
+    display: inline-block;
+  }
+}
+
 
 @media (max-width: 768px) {
   .navbar {
