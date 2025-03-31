@@ -3,12 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 import {
   FaSearch, FaCog, FaBars, FaTimes, FaSignOutAlt,
-  FaLayerGroup, FaCompass, FaEnvelope, FaUser,
+  FaCompass, FaEnvelope, FaUser,
   FaPalette, FaUniversalAccess, FaQuestionCircle
 } from "react-icons/fa";
 
 import { useUser } from "../context/UserContext";
 import useIsSmallScreen from "../hooks/useIsSmallScreen";
+import CategoryDropdown from "./CategoryDropdown"; // Asegúrate de que este componente existe
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,14 +24,12 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { label: "Categorías", icon: <FaLayerGroup />, to: "/" },
     { label: "Explorar", icon: <FaCompass />, to: "/" },
     { label: "Contacto", icon: <FaEnvelope />, to: "/contact" },
   ];
 
   return (
     <header className="navbar">
-      {/* Sección izquierda: Logo */}
       <div className="navbar-left">
         <Link to="/" className="navbar-logo">
           <span className="logo-text">MoLaMaZoGAMES</span>
@@ -38,7 +37,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Sección centro: Búsqueda */}
       <div className="navbar-center">
         <div className="navbar-search">
           <input type="text" placeholder="Buscar assets, categorías..." />
@@ -46,9 +44,12 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Sección derecha: Botones y menú */}
       <div className="navbar-right">
         <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
+          {/* ✅ Botón de Categorías con dropdown */}
+          <CategoryDropdown />
+
+          {/* Otros ítems de navegación */}
           {navItems.map(({ label, icon, to }) => (
             <Link key={label} to={to} className="navbar-button" title={label}>
               {isSmallScreen ? icon : label}
@@ -57,11 +58,7 @@ const Navbar = () => {
 
           {user ? (
             <Link to="/profile" className="navbar-button user-dropdown" title="Perfil">
-              <img
-                src={user.fotoPerfil}
-                alt="Foto de perfil"
-                className="user-profile-pic"
-              />
+              <img src={user.fotoPerfil} alt="Foto de perfil" className="user-profile-pic" />
             </Link>
           ) : (
             <Link to="/login" className="navbar-button" title="Inicio de sesión">
@@ -77,7 +74,6 @@ const Navbar = () => {
             <FaCog />
           </button>
 
-          {/* Menú de configuración */}
           {showSettings && (
             <div className="settings-dropdown">
               {user && (
@@ -98,17 +94,11 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Menú hamburguesa */}
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          title="Abrir menú"
-        >
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} title="Abrir menú">
           {menuOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
 
-      {/* Menú desplegable móvil */}
       {menuOpen && (
         <nav className="dropdown-menu">
           {navItems.map(({ label, to }) => (

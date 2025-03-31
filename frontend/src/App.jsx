@@ -12,6 +12,8 @@ import Contact from "./Pages/Contact";
 import Accesibility from "./Pages/Accesibility";
 import Privacy from "./Pages/Privacy";
 import Terms from "./Pages/Terms";
+//import Category from "./Pages/Category";
+
 
 import "./styles/global.css";
 
@@ -31,6 +33,8 @@ function App() {
             <Route path="/accesibility" element={<Accesibility />} />
             <Route path="/privacy-policy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            
+            
           </Routes>
           <Footer />
         </div>
