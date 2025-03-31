@@ -4,7 +4,6 @@ import "../styles/CategoryDropdown.css";
 
 const CategoryDropdown = () => {
   const [categories, setCategories] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -20,22 +19,13 @@ const CategoryDropdown = () => {
   }, []);
 
   return (
-    <div
-      className="category-dropdown"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
-      <button className="dropdown-button">Categorías</button>
-      {isOpen && (
-        <div className="dropdown-panel">
-          <span className="dropdown-title">Seleccionar categoría:</span>
-          <ul>
-            {categories.map((cat) => (
-              <li key={cat._id}>{cat.nombre}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="dropdown-panel">
+      <span className="dropdown-title">Seleccionar categoría:</span>
+      <ul>
+        {categories.map((cat) => (
+          <li key={cat._id}>{cat.nombre}</li>
+        ))}
+      </ul>
     </div>
   );
 };

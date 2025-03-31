@@ -9,11 +9,12 @@ import {
 
 import { useUser } from "../context/UserContext";
 import useIsSmallScreen from "../hooks/useIsSmallScreen";
-import CategoryDropdown from "./CategoryDropdown"; // Asegúrate de que este componente existe
+import CategoryDropdown from "./CategoryDropdown"; // Asegúrate de que este componente exista
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false); // Controlar el estado del dropdown
   const isSmallScreen = useIsSmallScreen();
   const { user, logout } = useUser();
   const navigate = useNavigate();
@@ -27,6 +28,10 @@ const Navbar = () => {
     { label: "Explorar", icon: <FaCompass />, to: "/" },
     { label: "Contacto", icon: <FaEnvelope />, to: "/contact" },
   ];
+
+  const handleCategoryClick = () => {
+    navigate("/categorias");
+  };
 
   return (
     <header className="navbar">
@@ -45,9 +50,22 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-right">
-        <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
-          {/* ✅ Botón de Categorías con dropdown */}
-          <CategoryDropdown />
+        <div
+          className={`navbar-buttons ${menuOpen ? "open" : ""}`}
+          onMouseEnter={() => setCategoryDropdownOpen(true)} // Abre el dropdown al pasar el ratón
+          onMouseLeave={() => setCategoryDropdownOpen(false)} // Cierra el dropdown al salir el ratón
+        >
+          {/* Botón de Categorías con dropdown */}
+          <div
+            className="navbar-button"
+            onClick={handleCategoryClick} // Redirige al hacer clic en el botón
+            title="Categorías"
+          >
+            {!isSmallScreen && "Categorías"}
+          </div>
+
+          {/* Dropdown de Categorías */}
+          {isCategoryDropdownOpen && <CategoryDropdown />}
 
           {/* Otros ítems de navegación */}
           {navItems.map(({ label, icon, to }) => (
