@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 import {
@@ -33,6 +33,21 @@ const Navbar = () => {
     navigate("/categorias");
   };
 
+  // Manejo del foco para el menú
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setShowSettings(false);
+      setMenuOpen(false); // Cierra el menú hamburguesa al presionar "Escape"
+    }
+  };
+
+  useEffect(() => {
+    if (showSettings || menuOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showSettings, menuOpen]);
+
   return (
     <header className="navbar">
       <div className="navbar-left">
@@ -50,16 +65,17 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-right">
-        <div
-          className={`navbar-buttons ${menuOpen ? "open" : ""}`}
-          onMouseEnter={() => setCategoryDropdownOpen(true)} // Abre el dropdown al pasar el ratón
-          onMouseLeave={() => setCategoryDropdownOpen(false)} // Cierra el dropdown al salir el ratón
-        >
+        <div className={`navbar-buttons ${menuOpen ? "open" : ""}`}>
           {/* Botón de Categorías con dropdown */}
           <div
             className="navbar-button"
-            onClick={handleCategoryClick} // Redirige al hacer clic en el botón
+            onClick={handleCategoryClick}
+            onMouseEnter={() => setCategoryDropdownOpen(true)} // Abre el dropdown al pasar el ratón
+            onMouseLeave={() => setCategoryDropdownOpen(false)} // Cierra el dropdown al salir el ratón
+            onFocus={() => setCategoryDropdownOpen(true)} // Abre al hacer foco
+            onBlur={() => setCategoryDropdownOpen(false)} // Cierra al perder el foco
             title="Categorías"
+            aria-label="Categorías"
           >
             {!isSmallScreen && "Categorías"}
           </div>
@@ -69,17 +85,17 @@ const Navbar = () => {
 
           {/* Otros ítems de navegación */}
           {navItems.map(({ label, icon, to }) => (
-            <Link key={label} to={to} className="navbar-button" title={label}>
+            <Link key={label} to={to} className="navbar-button" title={label} aria-label={label}>
               {isSmallScreen ? icon : label}
             </Link>
           ))}
 
           {user ? (
-            <Link to="/profile" className="navbar-button user-dropdown" title="Perfil">
+            <Link to="/profile" className="navbar-button user-dropdown" title="Perfil" aria-label="Ver perfil">
               <img src={user.fotoPerfil} alt="Foto de perfil" className="user-profile-pic" />
             </Link>
           ) : (
-            <Link to="/login" className="navbar-button" title="Inicio de sesión">
+            <Link to="/login" className="navbar-button" title="Inicio de sesión" aria-label="Ir a inicio de sesión">
               {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
             </Link>
           )}
@@ -88,6 +104,7 @@ const Navbar = () => {
             className="navbar-icon settings-icon"
             onClick={() => setShowSettings(!showSettings)}
             title="Configuración"
+            aria-label="Abrir configuración"
           >
             <FaCog />
           </button>
@@ -112,7 +129,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} title="Abrir menú">
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} title="Abrir menú" aria-label="Abrir menú">
           {menuOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
@@ -120,14 +137,16 @@ const Navbar = () => {
       {menuOpen && (
         <nav className="dropdown-menu">
           {navItems.map(({ label, to }) => (
-            <Link key={label} to={to} className="dropdown-item">{label}</Link>
+            <Link key={label} to={to} className="dropdown-item" aria-label={label}>
+              {label}
+            </Link>
           ))}
           {user ? (
-            <button className="dropdown-item" onClick={handleLogout}>
+            <button className="dropdown-item" onClick={handleLogout} aria-label="Cerrar sesión">
               <FaSignOutAlt /> Cerrar Sesión
             </button>
           ) : (
-            <Link to="/login" className="dropdown-item">
+            <Link to="/login" className="dropdown-item" aria-label="Ir a inicio de sesión">
               <FaUser /> Inicio Sesión / Registro
             </Link>
           )}

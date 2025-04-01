@@ -27,6 +27,7 @@
   border-radius: 15px;
   border: 1px solid var(--text-color);
   transition: opacity 0.5s ease-in-out;
+  max-width: 100%;  /* Evitar que la imagen se desborde en pantallas pequeñas */
 }
 
 /* Contenido */
@@ -50,8 +51,11 @@
   color: var(--hover-color);
   text-decoration: none;
 }
-.hero-link:hover {
+
+.hero-link:hover,
+.hero-link:focus {
   text-decoration: underline;
+  outline: 3px solid var(--primary-color);  /* Asegura que los enlaces sean fácilmente reconocibles cuando estén enfocados */
 }
 
 .hero-divider {
@@ -94,11 +98,14 @@
   object-fit: cover;
   border-radius: 12px;
   border: 1px solid var(--text-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  filter: grayscale(100%);  /* Blanco y negro por defecto */
 }
+
 .category:hover .category-image {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);  /* Sombra más suave */
+  filter: grayscale(0%);  /* Colores al hacer hover */
 }
 
 .category-name {
@@ -110,7 +117,6 @@
 /*----------------------------------*/
 /* 1. Blanco y negro en categorías */
 /*----------------------------------*/
-
 .category-image {
   filter: grayscale(100%);
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
@@ -118,15 +124,13 @@
 
 .category:hover .category-image {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   filter: grayscale(0%);
 }
-
 
 /*----------------------------------*/
 /* 2. Transición suave del carrusel */
 /*----------------------------------*/
-
 .hero-carousel-image {
   opacity: 0;
   position: absolute;
@@ -169,7 +173,6 @@
 }
 
 /* Indicadores de progreso */
-
 .carousel-indicators {
   position: absolute !important;
   bottom: 12px !important;
@@ -178,20 +181,19 @@
   display: flex !important;
   gap: 8px !important;
   z-index: 2 !important;
+  aria-live: polite;  /* Agregar para accesibilidad */
 }
 
-
 .indicator-dot {
-
   border-radius: 100% !important;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   border: none;
   transition: background-color 0.3s ease;
   cursor: pointer;
 }
 
 .indicator-dot.active {
-  background-color: var(--hover-color);
+  background-color: var(--primary-color);
 }
 
 /* Responsive */
@@ -206,13 +208,27 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
 @media (max-width: 670px) {
   .hero-categories {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @media (max-width: 450px) {
   .hero-categories {
     grid-template-columns: 1fr;
   }
 }
+
+/* Carga diferida de imágenes */
+.category-image {
+  loading: lazy;  /* Cargar imágenes de forma diferida */
+}
+
+/* Focus visible */
+.hero-link:focus,
+.indicator-dot:focus {
+  outline: 3px solid var(--primary-color);  /* Asegura que los elementos sean fácilmente reconocibles cuando estén enfocados */
+}
+

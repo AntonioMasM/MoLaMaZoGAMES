@@ -211,6 +211,14 @@
   cursor: pointer;
 }
 
+.navbar-button:focus,
+.navbar-icon:focus,
+.menu-toggle:focus {
+  outline: 2px solid var(--hover-color); /* Un enfoque más visible */
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+
 /*---------------------- RESPONSIVE --------------------------*/
 
 @media (max-width: 1270px) {
@@ -251,7 +259,7 @@
     opacity: 0;
     pointer-events: none;
     transform: translateY(-20px);
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     z-index: 999;
   }
 
