@@ -3,13 +3,11 @@ import '../styles/Category.css';
 import CategorySection from '../components/CategorySection';
 import HeroCategorySection from '../components/HeroCategorySection';
 
-
 const Category = () => {
   const [categories, setCategories] = useState([]);
 
   // Función para obtener las categorías desde la API
   useEffect(() => {
-    // Llamada a la API para obtener todas las categorías
     fetch('/api/categorias')
       .then(response => response.json())
       .then(data => setCategories(data))
@@ -20,16 +18,25 @@ const Category = () => {
     <div className="categoria-container">
       <div className="header">
         <h1>Categorías</h1>
-        <HeroCategorySection />
-        <div className="filter">
-          <button>Filtrar Por</button>
-          <button>Más Vista</button>
-          <button>Más Descargada</button>
-          <button>Más Reciente</button>
-        </div>
       </div>
-      
+
+      {/* HeroCategorySection debajo del título */}
+      <HeroCategorySection />
+
+      {/* Barra horizontal */}
+      <hr />
+
+      {/* Botones de filtro debajo de la barra horizontal */}
+      <div className="filter">
+        <h4>Filtrar Por:</h4>
+        <button>Más Vista</button>
+        <button>Más Descargada</button>
+        <button>Más Reciente</button>
+      </div>
+
+      {/* Muestra la lista de categorías */}
       <CategorySection />
+
       {categories.map(category => (
         <div className="category-section" key={category._id}>
           <div className="category-header">

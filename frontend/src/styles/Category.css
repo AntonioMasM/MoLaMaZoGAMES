@@ -6,14 +6,38 @@
   }
   
   .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    
     margin-bottom: 20px;
   }
   
   .header h1 {
     font-size: 2rem;
+    margin-bottom:40px;
+  }
+
+  .hero-category-section {
+    margin-bottom: 40px; /* Añadir espacio entre HeroCategorySection y los filtros */
+  }
+
+  hr {
+    border: 0;
+    border-top: 5px solid #d3d3d3 !important;
+    width: 80%;
+    margin: 20px auto !important; 
+  }
+
+
+  h4{
+    margin-top: 10px !important;
+  }
+  
+  
+  
+  .filter {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 40px;  /* Añadir espacio por encima de los botones de filtro */
+    margin-bottom: 40px;
   }
   
   .filter button {
@@ -23,10 +47,15 @@
     padding: 10px;
     border: none;
     cursor: pointer;
+    margin-left: 20px;
+    border-radius: 5px;
+    transition: transform 0.2s ease, color 0.2s ease;
   }
   
   .filter button:hover {
     background-color: #444;
+    transform: scale(1.1);
+    color: var(--hover-color);
   }
   
   .category-section {
