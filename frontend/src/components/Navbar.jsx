@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { label: "Explorar", icon: <FaCompass />, to: "/" },
+    { label: "Explorar", icon: <FaCompass />, to: "/categorias" },
     { label: "Contacto", icon: <FaEnvelope />, to: "/contact" },
   ];
 

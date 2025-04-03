@@ -1,13 +1,14 @@
 @import "./Variables.css"; /* Importamos las variables */
 
 .asset-card {
-    color: var(--text-color);
+  color: var(--text-color);
   background-color: var(--primary-color);
   border-radius: 5px;
   overflow: hidden;
-  width: 250px;
+  width: 255px !important;
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
+  padding: 0 !important;
 }
 
 .asset-card:hover {
@@ -22,6 +23,19 @@
 
 .asset-info {
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-title-author {
+  display: flex;
+  justify-content: space-between; /* Título a la izquierda y autor a la derecha */
+}
+
+.asset-formats-category {
+  display: flex;
+  justify-content: space-between; /* Formatos a la izquierda y categoría a la derecha */
+  margin-top: 5px;
 }
 
 .asset-title {

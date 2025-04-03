@@ -11,19 +11,21 @@ const AssetCard = ({ image, title, author, formats, category }) => {
 
       {/* Información del asset */}
       <div className="asset-info">
-        <h3 className="asset-title">{title}</h3>
-        <p className="asset-author">@{author}</p>
-
-        {/* Formatos del asset */}
-        <div className="asset-formats">
-          {formats.map((format, index) => (
-            <span key={index} className="format-badge">{format}</span>
-          ))}
+        <div className="asset-title-author">
+          <h3 className="asset-title">{title}</h3>
+          <p className="asset-author">@{author}</p>
         </div>
 
-        {/* Categoría del asset */}
-        <span className="asset-category">{category}</span>
+        <div className="asset-formats-category">
+          <div className="asset-formats">
+            {formats.map((format, index) => (
+              <span key={index} className="format-badge">{format}</span>
+            ))}
+          </div>
+          <span className="asset-category">{category}</span>
+        </div>
       </div>
+
     </div>
   );
 };

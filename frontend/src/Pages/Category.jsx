@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Category.css';
+import CategorySection from '../components/CategorySection';
+import HeroCategorySection from '../components/HeroCategorySection';
+
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
@@ -17,6 +20,7 @@ const Category = () => {
     <div className="categoria-container">
       <div className="header">
         <h1>Categorías</h1>
+        <HeroCategorySection />
         <div className="filter">
           <button>Filtrar Por</button>
           <button>Más Vista</button>
@@ -24,6 +28,8 @@ const Category = () => {
           <button>Más Reciente</button>
         </div>
       </div>
+      
+      <CategorySection />
       {categories.map(category => (
         <div className="category-section" key={category._id}>
           <div className="category-header">
