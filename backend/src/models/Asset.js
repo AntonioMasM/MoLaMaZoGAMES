@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Definir el esquema de Asset
 const assetSchema = new mongoose.Schema({
     // Título del asset
     titulo: {
@@ -31,7 +32,7 @@ const assetSchema = new mongoose.Schema({
     // Galería multimedia que puede contener fotos y vídeos del asset
     galeriaMultimedia: [{
         tipo: { type: String, enum: ['foto', 'video'], required: true },
-        url: { type: String, required: true }
+        url: { type: String, required: true }  // La URL de la imagen o video
     }],
 
     // Formatos de descarga disponibles para el asset

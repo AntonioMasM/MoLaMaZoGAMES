@@ -13,6 +13,7 @@ import Accesibility from "./Pages/Accesibility";
 import Privacy from "./Pages/Privacy";
 import Terms from "./Pages/Terms";
 import Category from "./Pages/Category";
+import NewAsset from "./Pages/NewAsset";
 
 
 import "./styles/global.css";
@@ -34,7 +35,7 @@ function App() {
             <Route path="/privacy-policy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/categorias" element={<Category />} />
-
+            <Route path="/upload-asset" element={<NewAsset />} />
             
             
           </Routes>

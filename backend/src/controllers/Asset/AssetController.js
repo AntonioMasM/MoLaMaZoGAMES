@@ -4,12 +4,44 @@ const Usuario = require('../../models/Usuario');  // Para verificar que el usuar
 // Crear un nuevo asset
 const crearAsset = async (req, res) => {
     try {
-        const { titulo, descripcion, autor, imagenPrincipal, galeriaMultimedia, formatos, categorias, usuarioCreador } = req.body;
+        console.log("Request body:", req.body);  // Imprimir el cuerpo de la solicitud
 
-        // Verificar que el usuario creador existe
-        const usuario = await Usuario.findById(usuarioCreador);
-        if (!usuario) {
-            return res.status(400).json({ mensaje: "El usuario creador no existe" });
+        const { 
+            titulo, 
+            descripcion, 
+            autor, 
+            imagenPrincipal, 
+            galeriaMultimedia, 
+            formatos, 
+            categorias, 
+            usuarioCreador 
+        } = req.body;
+
+        // Verificar si los campos obligatorios están presentes
+        if (!titulo || !descripcion || !autor || !imagenPrincipal || !usuarioCreador) {
+            return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
+        }
+
+        // Validar que galeriaMultimedia sea un array de objetos con las propiedades tipo y url
+        if (galeriaMultimedia && !Array.isArray(galeriaMultimedia)) {
+            return res.status(400).json({ mensaje: "galeriaMultimedia debe ser un array" });
+        }
+
+        for (let item of galeriaMultimedia) {
+            if (typeof item !== 'object' || !item.tipo || !item.url) {
+                return res.status(400).json({ mensaje: "Cada item en galeriaMultimedia debe ser un objeto con propiedades tipo y url" });
+            }
+        }
+
+        // Validar que formatos sea un array de objetos con tipo, tamaño y url
+        if (formatos && !Array.isArray(formatos)) {
+            return res.status(400).json({ mensaje: "formatos debe ser un array" });
+        }
+
+        for (let item of formatos) {
+            if (typeof item !== 'object' || !item.tipo || !item.tamaño || !item.url) {
+                return res.status(400).json({ mensaje: "Cada item en formatos debe ser un objeto con propiedades tipo, tamaño y url" });
+            }
         }
 
         // Crear el nuevo asset
@@ -24,13 +56,18 @@ const crearAsset = async (req, res) => {
             usuarioCreador
         });
 
-        // Guardar el nuevo asset en la base de datos
+        // Guardar el asset en la base de datos
         await nuevoAsset.save();
-        res.status(201).json({ mensaje: "Asset creado con éxito", asset: nuevoAsset });
+
+        return res.status(201).json({ mensaje: "Asset creado con éxito", asset: nuevoAsset });
+
     } catch (error) {
-        res.status(500).json({ mensaje: "Error al crear asset", error: error.message });
+        console.error("Error al crear el asset:", error);  // Imprimir error para depurar
+        return res.status(500).json({ mensaje: "Error al crear asset", error: error.message });
     }
 };
+
+
 
 // Obtener todos los assets
 const obtenerAssets = async (req, res) => {
