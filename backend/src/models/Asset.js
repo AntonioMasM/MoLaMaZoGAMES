@@ -31,7 +31,7 @@ const assetSchema = new mongoose.Schema({
 
     // Galería multimedia que puede contener fotos y vídeos del asset
     galeriaMultimedia: [{
-        tipo: { type: String, enum: ['foto', 'video'], required: true },
+        tipo: { type: String, enum: ['image', 'video', 'audio'], required: true },
         url: { type: String, required: true }  // La URL de la imagen o video
     }],
 

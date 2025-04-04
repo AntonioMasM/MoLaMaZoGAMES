@@ -5,14 +5,14 @@ const DROPBOX_ACCESS_TOKEN = "sl.u.AFp1AIDGsr5jK9IFHF-I6fFiVhGTBtqNwftvEv7sijSB4
 
 const NewAsset = () => {
     const [formData, setFormData] = useState({
-      titulo: "",
-      descripcion: "",
-      autor: "",
-      imagenPrincipal: null,
-      galeriaMultimedia: [],
-      formatos: [],
-      categorias: "",
-      usuarioCreador: "",
+        titulo: "",
+        descripcion: "",
+        autor: "",
+        imagenPrincipal: null,
+        galeriaMultimedia: [],
+        formatos: [], // 🔴 Ahora es un array de objetos
+        categorias: "",
+        usuarioCreador: "",
     });
   
     const [mensaje, setMensaje] = useState(null);
@@ -27,20 +27,19 @@ const NewAsset = () => {
     };
   
     const handleGalleryChange = (e) => {
-      const files = Array.from(e.target.files);
-      const galleryItems = files.map((file) => {
-        const fileType = file.type.startsWith("image") ? "image" : file.type.startsWith("video") ? "video" : "unknown";
-        return {
-          tipo: fileType,
-          url: null, // Esto se actualizará después de cargar el archivo a Dropbox
-        };
-      });
-      setFormData({ ...formData, galeriaMultimedia: galleryItems });
+        const files = Array.from(e.target.files);
+        const galleryItems = files.map((file) => ({
+            file, // Guardamos el archivo real aquí
+            tipo: file.type.startsWith("image") ? "image" : file.type.startsWith("video") ? "video" : "unknown",
+            url: null, // Esto se actualizará después de subir el archivo
+        }));
+        setFormData({ ...formData, galeriaMultimedia: galleryItems });
     };
 
-    const handleFormatosChange = (e) => {
-      const newFormats = e.target.value.split(",").map(format => format.trim());
-      setFormData({ ...formData, formatos: newFormats });
+    const handleFormatosChange = (e, index, field) => {
+        const updatedFormatos = [...formData.formatos];
+        updatedFormatos[index][field] = e.target.value;
+        setFormData({ ...formData, formatos: updatedFormatos });
     };
   
     // Función para subir un archivo a Dropbox
@@ -80,53 +79,72 @@ const NewAsset = () => {
         });
     };
   
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      try {
-        const basePath = `/uploads/assets/${formData.usuarioCreador}/`;
-  
-        // Subir imagen principal
-        const mainImagePath = `${basePath}main_${Date.now()}.${formData.imagenPrincipal.name.split('.').pop()}`;
-        const mainImageUrl = await uploadToDropbox(formData.imagenPrincipal, mainImagePath);
-  
-        // Subir imágenes de la galería
-        const updatedGalleryItems = await Promise.all(
-          formData.galeriaMultimedia.map(async (item, index) => {
-            const galleryFile = formData.galeriaMultimedia[index];
-            const galleryPath = `${basePath}gallery_${index + 1}_${Date.now()}.${galleryFile.tipo}`;
-            const url = await uploadToDropbox(galleryFile, galleryPath);
-            return { ...item, url };  // Aquí asignamos la URL después de subir el archivo
-          })
-        );
-  
-        // Actualizar las URLs de la galería en el formulario
-        const assetData = {
-          ...formData,
-          imagenPrincipal: mainImageUrl,
-          galeriaMultimedia: updatedGalleryItems,
-        };
-  
-        const response = await fetch("http://localhost:5000/api/assets", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(assetData),
+    const addFormato = () => {
+        setFormData({
+            ...formData,
+            formatos: [...formData.formatos, { tipo: "", tamaño: "", url: "" }],
         });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          setMensaje("Asset creado con éxito.");
-          setError(null);
-        } else {
-          setError(data.mensaje);
-        }
-      } catch (err) {
-        setError("Error al subir las imágenes a Dropbox.");
-      }
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const basePath = `/uploads/assets/${formData.usuarioCreador}/`;
+    
+            // 🟢 Subir imagen principal
+            const mainImagePath = `${basePath}main_${Date.now()}.${formData.imagenPrincipal.name.split('.').pop()}`;
+            const mainImageUrl = await uploadToDropbox(formData.imagenPrincipal, mainImagePath);
+    
+            // 🟢 Subir imágenes de la galería
+            const updatedGalleryItems = await Promise.all(
+                formData.galeriaMultimedia.map(async (item, index) => {
+                    const galleryFile = item.file;
+                    const extension = galleryFile.name.split('.').pop();
+                    const galleryPath = `${basePath}gallery_${index + 1}_${Date.now()}.${extension}`;
+                    const url = await uploadToDropbox(galleryFile, galleryPath);
+                    return { tipo: item.tipo, url };
+                })
+            );
+    
+            // 🟢 Subir archivos de formatos y generar URLs
+            const updatedFormatos = await Promise.all(
+                formData.formatos.map(async (formato) => {
+                    const formatoFile = formato.file;
+                    if (!formatoFile) return formato; // Si no hay archivo, mantener los valores actuales
+    
+                    const extension = formatoFile.name.split('.').pop();
+                    const formatoPath = `${basePath}format_${Date.now()}.${extension}`;
+                    const url = await uploadToDropbox(formatoFile, formatoPath);
+                    return { ...formato, url };
+                })
+            );
+    
+            // 🟢 Enviar datos al backend
+            const assetData = {
+                ...formData,
+                imagenPrincipal: mainImageUrl,
+                galeriaMultimedia: updatedGalleryItems,
+                formatos: updatedFormatos, // ✅ Ahora formatos tiene objetos correctos
+            };
+    
+            const response = await fetch("http://localhost:5000/api/assets", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(assetData),
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                setMensaje("Asset creado con éxito.");
+                setError(null);
+            } else {
+                setError(data.mensaje);
+            }
+        } catch (err) {
+            setError("Error al subir los archivos.");
+        }
+    };
+    
   
     return (
       <div>
@@ -138,14 +156,27 @@ const NewAsset = () => {
           <textarea name="descripcion" placeholder="Descripción" onChange={handleChange} required />
           <input type="text" name="autor" placeholder="Autor" onChange={handleChange} required />
           
-          <input
+<h3>Formatos</h3>
+{formData.formatos.map((formato, index) => (
+    <div key={index}>
+        <input
             type="text"
-            name="formatos"
-            placeholder="Formatos (ej: PNG, JPG, MP4)"
-            onChange={handleFormatosChange}
-            value={formData.formatos.join(", ")} // Mostrar formatos como texto
+            placeholder="Tipo (ej: PNG, JPG, MP4)"
+            value={formato.tipo}
+            onChange={(e) => handleFormatosChange(e, index, "tipo")}
             required
-          />
+        />
+        <input
+            type="text"
+            placeholder="Tamaño (ej: 2MB, 1080p)"
+            value={formato.tamaño}
+            onChange={(e) => handleFormatosChange(e, index, "tamaño")}
+            required
+        />
+        <button type="button" onClick={addFormato}>Agregar Formato</button>
+    </div>
+))}
+
           
           <input type="text" name="categorias" placeholder="Categorías" onChange={handleChange} required />
           <input type="text" name="usuarioCreador" placeholder="ID del usuario" onChange={handleChange} value={formData.usuarioCreador} required />
