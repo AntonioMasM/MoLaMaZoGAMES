@@ -91,14 +91,20 @@ const Navbar = () => {
           ))}
 
           {user ? (
-            <Link to="/profile" className="navbar-button user-dropdown" title="Perfil" aria-label="Ver perfil">
-              <img src={user.fotoPerfil} alt="Foto de perfil" className="user-profile-pic" />
-            </Link>
+            <>
+              <Link to="/upload-asset" className="navbar-button" title="Subir Asset" aria-label="Subir un nuevo asset">
+                Subir Asset
+              </Link>
+              <Link to="/profile" className="navbar-button user-dropdown" title="Perfil" aria-label="Ver perfil">
+                <img src={user.fotoPerfil} alt="Foto de perfil" className="user-profile-pic" />
+              </Link>
+            </>
           ) : (
             <Link to="/login" className="navbar-button" title="Inicio de sesión" aria-label="Ir a inicio de sesión">
               {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
             </Link>
           )}
+
 
           <button
             className="navbar-icon settings-icon"
