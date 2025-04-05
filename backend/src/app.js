@@ -25,6 +25,7 @@ app.use('/api/grupos', require('./routes/GrupoRoutes'));
 app.use('/api/usuarios', require('./routes/UsuarioRoutes'));
 app.use('/api/comentarios', require('./routes/ComentarioRoutes'));
 app.use('/api/categorias', require('./routes/CategoriaRoutes'));
+app.use('/api/dropbox', require('./routes/DropboxRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
