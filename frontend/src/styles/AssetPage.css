@@ -1,0 +1,163 @@
+@import "./Variables.css";
+
+/* --- ESTRUCTURA GENERAL --- */
+.asset-page-container {
+  display: grid;
+  /* Columna izquierda más estrecha, fija a 350px, derecha ocupa el resto */
+  grid-template-columns: 800px 1fr;
+  gap: 30px;
+  padding: 20px;
+}
+
+/* --- COLUMNA IZQUIERDA: DETALLES --- */
+.asset-details {
+  background: #1e1e1e;
+  padding: 20px;
+  border: 1px solid #ffffff;     /* Borde blanco */
+  border-radius: 8px;            /* Esquinas redondeadas */
+  color: #fff;
+  font-family: sans-serif;
+}
+
+/* Separación y línea divisoria entre secciones */
+.asset-details section {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+}
+
+/* Eliminar la línea y el margen en la última sección */
+.asset-details section:last-of-type {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.author-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.asset-title {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+.asset-description {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Estilo unificado para todos los botones en la columna de detalles */
+.asset-details button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-right: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;                             /* Texto blanco */
+  background: linear-gradient(to bottom, #5fdc77 0%, #089d4b 100%); /* De verde claro a oscuro */
+  font-weight: 500;
+  transition: filter 0.2s;
+}
+
+.asset-details button:hover {
+  filter: brightness(0.9);
+}
+
+.asset-meta h3,
+.asset-comments h3,
+.asset-info-detailed h3 {
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+}
+
+.meta-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.meta-item {
+  background: #333;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.asset-info-detailed ul {
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.asset-info-detailed li {
+  margin-bottom: 6px;
+}
+
+/* --- COLUMNA DERECHA: IMÁGENES --- */
+.asset-images img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.author-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.author-name {
+  margin: 0;
+  font-size: 1.4rem;
+}
+.comments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.comment-item {
+  background: #2a2a2a;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.add-comment {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #1e1e1e;
+  color: #fff;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+.add-comment .btn-follow {
+  align-self: flex-end;
+}

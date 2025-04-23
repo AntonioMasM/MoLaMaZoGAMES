@@ -1,6 +1,7 @@
 import React from "react";
 import { FaStar, FaRegClock } from "react-icons/fa";
 import Carousel from "./Carousel";
+import { Link } from "react-router-dom"
 import AssetCard from "./AssetCard";
 import "../styles/AssetSection.css";
 
@@ -99,7 +100,11 @@ const AssetSection = () => {
         title="Lo Más Popular"
         icon={<FaStar />}
         items={assets}
-        renderItem={(asset, index) => <AssetCard key={index} {...asset} />}
+        renderItem={(asset, index) => (
+          <Link to={`/asset/${asset.id}`} key={index}> {/* Envolvemos cada AssetCard con un Link */}
+            <AssetCard {...asset} />
+          </Link>
+        )}
         gridClassName="asset-grid"
       />
 
@@ -107,7 +112,11 @@ const AssetSection = () => {
         title="Lo Más Reciente"
         icon={<FaRegClock />}
         items={assets}
-        renderItem={(asset, index) => <AssetCard key={index} {...asset} />}
+        renderItem={(asset, index) => (
+          <Link to={`/asset/${asset.id}`} key={index}> {/* Envolvemos cada AssetCard con un Link */}
+            <AssetCard {...asset} />
+          </Link>
+        )}
         gridClassName="asset-grid"
         className="recent-carousel"
       />

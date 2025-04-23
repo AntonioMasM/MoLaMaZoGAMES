@@ -14,7 +14,7 @@ import Privacy from "./Pages/Privacy";
 import Terms from "./Pages/Terms";
 import Category from "./Pages/Category";
 import NewAsset from "./Pages/NewAsset";
-
+import AssetPage from "./Pages/AssetPage"; // Importa la nueva página de detalles del asset
 
 import "./styles/global.css";
 
@@ -37,6 +37,8 @@ function App() {
             <Route path="/categorias" element={<Category />} />
             <Route path="/upload-asset" element={<NewAsset />} />
             
+            {/* Ruta para los detalles del asset */}
+            <Route path="/asset/:id" element={<AssetPage />} /> {/* Página de detalles del asset */}
             
           </Routes>
           <Footer />

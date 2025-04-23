@@ -12,6 +12,7 @@ const CategoryDropdown = () => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/categorias");
+        //console.log("Respuesta de la API:", res); // Verifica qué datos estás recibiendo
         setCategories(res.data);
       } catch (err) {
         setError("Error al obtener categorías");
@@ -20,6 +21,7 @@ const CategoryDropdown = () => {
         setLoading(false);
       }
     };
+    
 
     fetchCategories();
   }, []);
