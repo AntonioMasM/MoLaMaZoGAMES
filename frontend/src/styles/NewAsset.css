@@ -1,3 +1,221 @@
-.container{
-    color: var(--text-color);
+@import "./Variables.css";
+
+/* --- ESTRUCTURA GENERAL --- */
+.new-asset-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  padding: 30px;
+  background-color: #1e1e1e;
+  color: #fff;
+  min-height: calc(100vh - 80px);
+}
+
+/* Mensajes de éxito / error */
+.msg.success {
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+.msg.error {
+  color: #f44336;
+  margin-bottom: 10px;
+}
+
+/* --- SECCIÓN FORMULARIO --- */
+.new-asset-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.new-asset-form label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.new-asset-form input[type="text"],
+.new-asset-form textarea,
+.new-asset-form select {
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.new-asset-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.new-asset-form h3 {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+}
+
+/* Tags input para Otras Categorías */
+.tags-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 6px;
+}
+.tags-input .tag {
+  background: #333;
+  color: #fff;
+  border-radius: 2px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+.tags-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 4px;
+}
+.tags-input input:focus {
+  outline: none;
+}
+
+/* Opciones toggles */
+.options-list {
+  display: flex;
+  gap: 10px;
+}
+.options-list .opt {
+  background: #333;
+  color: #ccc;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.options-list .opt.active {
+  background: #5fdc77;
+  color: #fff;
+}
+
+/* Vista previa */
+.preview-box {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.preview-box img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* --- SECCIÓN CENTRAL: DROPZONE --- */
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #2a2a2a;
+  border: 2px dashed #555;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #ccc;
+  height: 100%;
+}
+.upload-dropzone:hover {
+  border-color: #888;
+}
+.upload-dropzone input[type="file"] {
+  display: none;
+}
+.upload-dropzone .drop-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #777;
+  cursor: pointer;
+}
+.upload-dropzone .drop-icon.small {
+  font-size: 1.8rem;
+  margin-top: 15px;
+}
+/* Lista de formatos válidos */
+.valid-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  font-size: 0.85rem;
+  color: #aaa;
+  text-align: left;
+}
+.valid-list li {
+  margin-bottom: 4px;
+}
+
+/* --- SECCIÓN DERECHA: ARCHIVOS SUBIDOS Y GRUPO --- */
+.uploaded-files {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* todos los elementos hijos irán a la derecha */
+  gap: 10px;
+}
+
+.uploaded-files .file-item {
+  background: #2a2a2a;
+  padding: 8px 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+.uploaded-files label {
+  margin-top: 20px;
+  font-size: 1rem;
+}
+.uploaded-files select {
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px;
+  color: #fff;
+}
+
+/* --- BOTÓN PUBLICAR --- */
+.publish-button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: #28a745;        /* Verde */
+  color: #fff;                /* Texto blanco */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 12px 20px;
+  max-width: 300px;
+  width: 100%;
+  transition: filter 0.2s;
+  margin-right: 190px;
+  height: 60px;
+  margin-bottom: 60px;
+}
+.publish-button:hover {
+  filter: brightness(0.9);
 }
