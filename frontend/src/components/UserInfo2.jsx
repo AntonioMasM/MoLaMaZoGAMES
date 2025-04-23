@@ -1,34 +1,125 @@
+// UserInfo2.jsx
 import React from "react";
-import { FaEdit, FaCalendarAlt, FaMapMarkerAlt, FaUniversity } from "react-icons/fa";
-import "../styles/UserInfo2.css"; // Asegúrate de tener el CSS correspondiente
+import {
+  FaBookmark,
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaInstagram,
+  FaTwitter,
+  FaLinkedin,
+  FaUsers
+} from "react-icons/fa";
+import "../styles/UserInfo2.css";
 
 const UserInfo = ({ user }) => {
   if (!user) {
-    return <div>No se han encontrado datos del usuario.</div>; // Muestra un mensaje si `user` es undefined
+    return <div>No se han encontrado datos del usuario.</div>;
   }
-  else console.log(user);
+  
+  const {
+    nombre,
+    nickname,
+    fotoPerfil,
+    seguidores = [],
+    siguiendo = [],
+    assetsPublicados = 0,
+    tituloProfesional = "",
+    pais = "",
+    email = "",
+    instagram,
+    twitter,
+    linkedin,
+    grupos = [],
+    software = [],
+    skills = [],
+    intereses = []
+  } = user;
 
   return (
-    <div className="user-info">
-      <div className="user-header">
-        <div className="user-avatar">
+    <div className="user-info2">
+      {/* CABECERA */}
+      <div className="user-header-top">
+        <div className="avatar-container">
           <img
-            src={user.fotoPerfil || "/path/to/default-avatar.png"} // Si no hay foto de perfil, se muestra una por defecto
-            alt="Foto de perfil"
-            className="avatar-img"
+            src={fotoPerfil || "/assets/users/default-avatar.png"}
+            alt={nombre}
+            className="avatar-img-large"
           />
-          <FaEdit className="edit-icon" />
         </div>
-        <h1>{user.nickname}</h1>
-        <p>{user.vistas} vistas | {user.compartidos} compartidos | {user.pageViews} páginas vistas</p>
+        <div className="user-header-details">
+          <div className="name-follow">
+            <h1 className="user-fullname">{nombre || nickname}</h1>
+            <button className="btn-follow">Seguir</button>
+          </div>
+          <div className="user-metrics">
+            <div><strong>{seguidores.length}</strong> Seguidores</div>
+            <div><strong>{siguiendo.length}</strong> Seguidos</div>
+            <div><strong>{assetsPublicados}</strong> Publicados</div>
+          </div>
+          <p className="user-bio">{tituloProfesional}</p>
+        </div>
       </div>
 
-      <div className="user-details">
-        <h3>Sobre {user.nickname}</h3>
-        <div className="user-detail-card">
-          <p><FaCalendarAlt /> Registrado el {new Date(user.fechaRegistro).toLocaleDateString()}</p>
-          <p><FaMapMarkerAlt /> {user.pais || "No especificado"}</p>
-          <p><FaUniversity /> {user.universidad || "No especificado"}</p>
+      {/* CONTENIDO DETALLADO */}
+      <div className="user-info-content">
+        {/* Columna Izquierda */}
+        <div className="user-info-left">
+          <section>
+            <h3>Info del Usuario</h3>
+            <ul className="info-list">
+              <li><FaBookmark className="icon" /> {tituloProfesional}</li>
+              <li><FaMapMarkerAlt className="icon" /> {pais}</li>
+              <li><FaEnvelope className="icon" /> {email}</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Redes Sociales</h3>
+            <div className="social-list">
+              {instagram && <a href={instagram}><FaInstagram /></a>}
+              {twitter   && <a href={twitter}><FaTwitter   /></a>}
+              {linkedin  && <a href={linkedin}><FaLinkedin  /></a>}
+            </div>
+          </section>
+
+          <button className="btn-message">Enviar Mensaje</button>
+        </div>
+
+        <div className="user-info-divider" />
+
+        {/* Columna Derecha */}
+        <div className="user-info-right">
+          <section>
+            <h3>Grupos de Trabajo</h3>
+            <ul className="group-list">
+              {grupos.map(g => (
+                <li key={g._id} className="group-item">
+                  <FaUsers className="icon" /> {g.nombre}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section>
+            <h3>Software</h3>
+            <div className="tag-list">
+              {software.map(s => <span key={s} className="tag">{s}</span>)}
+            </div>
+          </section>
+
+          <section>
+            <h3>Skills</h3>
+            <div className="tag-list">
+              {skills.map(s => <span key={s} className="tag">{s}</span>)}
+            </div>
+          </section>
+
+          <section>
+            <h3>Intereses</h3>
+            <div className="tag-list">
+              {intereses.map(i => <span key={i} className="tag">{i}</span>)}
+            </div>
+          </section>
         </div>
       </div>
     </div>

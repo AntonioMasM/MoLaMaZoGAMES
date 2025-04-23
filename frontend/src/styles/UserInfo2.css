@@ -1,108 +1,183 @@
-@import "./Variables.css"; /* Importamos las variables */
+/* UserInfo2.css */
+@import "./Variables.css";
 
-/* Contenedor principal */
-.user-info {
-  background-color: var(--secondary-color);
-  padding: 20px;
-  border-radius: 10px;
-  width: 100%;
+/* Contenedor general */
+.user-info2 {
   display: flex;
   flex-direction: column;
+  gap: 30px;
+}
+
+/* --- Cabecera superior --- */
+.user-header-top {
+  display: flex;
   align-items: center;
+  gap: 20px;
+}
+
+/* Avatar */
+.avatar-container {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+.avatar-img-large {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #444;
+}
+
+/* Nombre + Seguir */
+.name-follow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.user-fullname {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #fff;
+}
+.btn-follow {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn-follow:hover {
+  filter: brightness(0.9);
+}
+.user-header-details { display: flex; flex-direction: column; gap: 8px; }
+/* Métricas */
+.user-metrics {
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+.user-metrics div {
   text-align: center;
 }
 
-/* Sección de la cabecera del usuario */
-.user-header {
-  position: relative;
+/* Línea separadora bajo métricas */
+.user-bio {
+  margin: 0 0 0 120px;
+  padding-top: 8px;
+  border-top: 1px solid #444;
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+/* --- Contenido detallado --- */
+.user-info-content {
+  display: flex;
+  gap: 30px;
+}
+
+/* Columnas izquierda/derecha */
+.user-info-left,
+.user-info-right {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 20px;
 }
 
-/* Avatar del usuario */
-.user-avatar {
-  width: 100px;
-  height: 100px;
-  background-color: var(--primary-color);
-  border-radius: 50%;
+/* Divisor vertical */
+.user-info-divider {
+  width: 1px;
+  background: #444;
+}
+
+/* Sección títulos */
+.user-info2 h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  color: #fff;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+}
+
+/* Listas básicas */
+.info-list,
+.group-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.info-list li,
+.group-list li {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  color: var(--text-color);
-  position: relative;
-}
-
-/* Estilo de la imagen dentro del avatar */
-.avatar-img {
-  width: 100%; /* La imagen ocupará el 100% del contenedor */
-  height: 100%; /* La imagen ocupará el 100% del contenedor */
-  object-fit: cover; /* Asegura que la imagen cubra completamente el contenedor */
-  border-radius: 50%; /* Asegura que la imagen tenga bordes redondeados */
-}
-/* Icono de edición sobre el avatar */
-.edit-icon {
-  position: absolute;
-  top: 70px;
-  right: -5px;
-  background-color: var(--hover-color);
-  padding: 5px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 14px;
-  color: white;
-}
-
-/* Nombre del usuario */
-.user-header h1 {
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--text-color);
-}
-
-/* Estadísticas del usuario */
-.user-header p {
-  font-size: 14px;
-  color: gray;
-}
-
-/* Información adicional del usuario */
-.user-details {
-  width: 100%;
-  background-color: var(--primary-color);
-  padding: 15px;
-  border-radius: 5px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Títulos de secciones */
-.user-details h3 {
-  font-size: 18px;
-  color: var(--text-color);
-  margin-bottom: 10px;
-}
-
-/* Tarjeta de detalles */
-.user-detail-card {
-  background-color: var(--secondary-color);
-  padding: 15px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-/* Elementos dentro de la tarjeta de detalles */
-.user-detail-card p {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: gray;
   gap: 8px;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+/* Iconos verdes */
+.icon {
+  color: #28a745;
+  min-width: 18px;
+}
+
+/* Redes sociales */
+.social-list a {
+  color: #ccc;
+  font-size: 1.4rem;
+  margin-right: 12px;
+}
+.social-list a:hover {
+  color: var(--btn-gradient-light-dark);
+}
+
+/* Botón mensaje */
+.btn-message {
+  background: var(--btn-gradient-light-dark);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Tags y grupos */
+.tag-list,
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag,
+.group-item {
+  background: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .user-info-content {
+    flex-direction: column;
+  }
+  .user-info-divider {
+    display: none;
+  }
+  .user-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .user-bio {
+    margin-left: 0;
+  }
 }

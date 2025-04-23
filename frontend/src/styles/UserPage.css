@@ -1,0 +1,273 @@
+@import "./Variables.css";
+
+/* ================================================
+   LAYOUT GENERAL: contenedor principal de usuario
+   ================================================ */
+.user-page {
+  display: flex;
+  background-color: #1e1e1e;
+  color: #fff;
+  min-height: calc(100vh - 80px); /* altura restante tras header/footer */
+}
+
+/* ================================================
+   SIDEBAR IZQUIERDA: perfil del usuario
+   ================================================ */
+/* Aumenta el ancho al 35% o usa píxeles según prefieras */
+.user-page-sidebar {
+  width: 40%;
+  min-width: 380px;
+  max-width: 470px;
+  background-color: #2a2a2a;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* ================================================
+   COMPONENTE UserInfo2: dentro de la sidebar
+   ================================================ */
+.user-info2 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- Cabecera: avatar + nombre + seguir + métricas + bio --- */
+.user-header-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-container {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.avatar-img-large {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #444;
+}
+
+.user-header-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.name-follow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-fullname {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.btn-follow {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: filter 0.2s;
+}
+.btn-follow:hover {
+  filter: brightness(0.9);
+}
+
+.user-metrics {
+  display: flex;
+  gap: 30px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+.user-metrics div {
+  text-align: center;
+}
+
+.user-bio {
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid #444;
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+/* --- Contenido detallado: dos columnas separadas --- */
+.user-info-content {
+  display: flex;
+  gap: 30px;
+}
+
+.user-info-left,
+.user-info-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-info-divider {
+  width: 1px;
+  background-color: #444;
+}
+
+/* Títulos de sección dentro de UserInfo2 */
+.user-info2 h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  color: #fff;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+}
+
+/* Listas de información */
+.info-list,
+.group-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.info-list li,
+.group-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+/* Iconos verdes */
+.icon {
+  color: #28a745;
+  font-size: 1rem;
+  min-width: 18px;
+}
+
+/* Redes sociales */
+.social-list a {
+  color: #ccc;
+  font-size: 1.4rem;
+  margin-right: 12px;
+  transition: color 0.2s;
+}
+.social-list a:hover {
+  color: var(--btn-gradient-light-dark);
+}
+
+/* Botón enviar mensaje */
+.btn-message {
+  background-color: var(--btn-gradient-light-dark);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  align-self: flex-start;
+}
+
+/* Tags y grupos */
+.tag-list,
+.group-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag,
+.group-item {
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ================================================
+   CONTENIDO PRINCIPAL DERECHA: portfolio de assets
+   ================================================ */
+.user-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+}
+
+.portfolio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.portfolio-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.btn-sort {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: filter 0.2s;
+}
+.btn-sort:hover {
+  filter: brightness(0.9);
+}
+
+/* Grid de assets con mayor separación */
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 38px;
+  margin-top: 20px;
+}
+
+/* Estados de carga / error */
+.user-page-loading,
+.user-page-error {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #888;
+  font-size: 1.2rem;
+  margin: 40px 0;
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 900px) {
+  .user-page {
+    flex-direction: column;
+  }
+  .user-page-sidebar {
+    width: 100%;
+    padding: 20px;
+  }
+  .user-page-content {
+    padding: 20px;
+  }
+  .asset-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+  }
+}
