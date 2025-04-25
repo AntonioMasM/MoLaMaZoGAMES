@@ -1,20 +1,63 @@
 :root {
-    /* Colores */
-    --primary-color: #333333;
-    --secondary-color: #222222;
-    --text-color: white;
-    --background-color: #222222;
-    --hover-color: #338bff; /* Color que tomará el título y los botones al hacer hover */
+  /* 🎨 PALETA DE COLORES - Modo Oscuro */
+  --color-bg: #1e1e1e;
+  --color-bg-secondary: #2a2a2a;
+  --color-text: #f0f0f0;
+  --color-text-secondary: #c0c0c0;
+  --color-accent: #338bff;
+  --color-hover: #4ca4ff;
+  --color-border: #444;
+  --color-error: #ef4444;
 
-    --bs-link-color-rgb: #338bff;
-    /* Tipografía */
-    --font-primary: Arial, sans-serif;
-    --font-logo: 'Jersey 10', sans-serif;
-  
-    /* Espaciado y tamaños */
-    --navbar-height: 80px;
-    --button-font-size: 16px;
-    --icon-size: 20px;
-    --border-radius: 5px;
-  }
-  
+  /* 🧱 ESTRUCTURA Y ESPACIADO */
+  --navbar-height: 80px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* 🔤 TIPOGRAFÍA */
+  --font-primary: "Segoe UI", Arial, sans-serif;
+  --font-logo: 'Jersey 10', sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 28px;
+  --font-size-xxl: 36px;
+
+  /* 🧩 ICONOS Y SOMBRAS */
+  --icon-size: 20px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ☀️ Modo Claro */
+:root.light {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f4f4f4;
+  --color-text: #111;
+  --color-text-secondary: #444;
+  --color-accent: #338bff;
+  --color-hover: #1d6cff;
+  --color-border: #ddd;
+}
+
+/* ⚫ Alto Contraste */
+:root.high-contrast {
+  --color-bg: #000000;
+  --color-bg-secondary: #000000;
+  --color-text: #ffffff;
+  --color-text-secondary: #ffffff;
+  --color-accent: #00ffff;
+  --color-hover: #00ffcc;
+  --color-border: #ffffff;
+}

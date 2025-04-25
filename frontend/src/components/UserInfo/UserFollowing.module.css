@@ -1,0 +1,33 @@
+@import "../../styles/variables.css";
+
+.followingBox {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.3s ease;
+}
+
+.followingBox:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-md);
+}
+
+.followingList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.emptyText {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  margin-top: var(--spacing-md);
+}

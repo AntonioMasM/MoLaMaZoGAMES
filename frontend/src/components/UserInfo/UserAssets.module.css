@@ -1,0 +1,56 @@
+@import "../../styles/variables.css";
+
+.assetsBox {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.3s ease;
+}
+
+.assetsBox:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.assetsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-accent);
+}
+
+.viewAll {
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+  border: none;
+  padding: 8px 14px;
+  border-radius: var(--border-radius-md);
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.viewAll:hover {
+  background-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+.assetsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.emptyText {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-md);
+  text-align: center;
+}

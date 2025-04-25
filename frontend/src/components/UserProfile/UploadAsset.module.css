@@ -1,0 +1,85 @@
+@import "../../styles/variables.css";
+
+.uploadAsset {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Caja de subida */
+.uploadBox {
+  width: 100%;
+  max-width: 320px;
+  height: 160px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.uploadBox:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-hover);
+}
+
+.uploadBox:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Icono */
+.icon {
+  font-size: 36px;
+  color: var(--color-hover);
+}
+
+/* Texto */
+.text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Instrucciones */
+.instructions {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 90%;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .uploadBox {
+    max-width: 100%;
+    height: 140px;
+  }
+
+  .icon {
+    font-size: 28px;
+  }
+
+  .text {
+    font-size: var(--font-size-xs);
+  }
+}

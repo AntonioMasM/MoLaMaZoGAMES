@@ -1,0 +1,34 @@
+@import "../../styles/variables.css";
+
+.welcomeBox {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.welcomeBox:hover {
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.01);
+}
+
+.welcomeTitle {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-accent);
+}
+
+.welcomeText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.welcomeNote {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}

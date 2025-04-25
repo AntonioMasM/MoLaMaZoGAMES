@@ -1,0 +1,68 @@
+@import "../../styles/variables.css";
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-right: 1px solid var(--color-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--navbar-height, 80px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.navItem {
+  border-radius: var(--border-radius-md);
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.navItem:hover {
+  background-color: var(--color-hover);
+}
+
+.active {
+  background-color: var(--color-hover);
+  font-weight: bold;
+}
+
+.active .navLink {
+  color: white;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 60px;
+    padding: var(--spacing-md);
+  }
+
+  .navLink {
+    justify-content: center;
+  }
+
+  .label {
+    display: none;
+  }
+}

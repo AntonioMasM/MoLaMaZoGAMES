@@ -1,0 +1,65 @@
+@import "../../styles/variables.css";
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.4s ease;
+  margin: var(--spacing-md) 0;
+}
+
+/* Tipos de alerta */
+.info {
+  background-color: var(--color-hover);
+  color: #ffffff;
+}
+
+.success {
+  background-color: #22c55e; /* verde éxito */
+  color: #ffffff;
+}
+
+.warning {
+  background-color: #facc15; /* amarillo advertencia */
+  color: #000000;
+}
+
+.error {
+  background-color: var(--color-error);
+  color: #ffffff;
+}
+
+/* Icono */
+.icon {
+  font-size: var(--font-size-lg);
+}
+
+/* Mensaje */
+.message {
+  flex: 1;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

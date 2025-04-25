@@ -1,52 +1,86 @@
+// 📦 Librerías principales
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { UserProvider } from "./context/UserContext";
+import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute"; // ✅ Importamos la ruta privada
 
+// 🔐 Autenticación
+import { AuthProvider } from "./features/auth/AuthProvider";
+import { UserProvider, useUser } from "./context/UserContext";
+
+// 🔔 Alerta global
+import { AlertProvider } from "./context/AlertContext";
+
+// 🧩 Componentes comunes
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import UserProfile from "./Pages/UserProfile";
-import Gallery from "./Pages/Gallery";
-import Contact from "./Pages/Contact";
-import Accesibility from "./Pages/Accesibility";
-import Privacy from "./Pages/Privacy";
-import Terms from "./Pages/Terms";
-import Category from "./Pages/Category";
-import NewAsset from "./Pages/NewAsset";
-import AssetPage from "./Pages/AssetPage";
-import UserPage from "./Pages/UserPage";
+import Footer from "./components/Footer/Footer";
 
+// 🖥️ Páginas públicas
+import Home from "./pages_temp/Home";
+import Login from "./pages_temp/Login";
+import Register from "./pages_temp/Register";
+import Accesibility from "./pages_temp/Accesibility";
+import Contact from "./pages_temp/Contact";
+import Privacy from "./pages_temp/Privacy";
+import Terms from "./pages_temp/Terms";
+import Help from "./pages_temp/Help";
+
+// 🔒 Página privada
+import UserProfile from "./pages_temp/UserProfile";
+
+// 🎨 Estilos globales
 import "./styles/global.css";
+
+// ✅ Subcomponente para gestionar el renderizado condicionado a loading
+function AppRoutes() {
+  const { loading } = useUser();
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <p style={{ fontSize: "1.2rem", color: "#888" }}>Cargando sesión...</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {/* 🌐 Navegación principal */}
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+        <Route path="/accesibility" element={<Accesibility />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/help" element={<Help />} />
+
+        {/* 🔐 Ruta privada: Perfil de usuario */}
+        <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
 
 function App() {
   return (
     <UserProvider>
-      <Router>
-        <div className="c">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/accesibility" element={<Accesibility />} />
-            <Route path="/privacy-policy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/categorias" element={<Category />} />
-            <Route path="/upload-asset" element={<NewAsset />} />
-
-            {/* Página de detalles del asset */}
-            <Route path="/asset/:id" element={<AssetPage />} />
-
-            {/* Página de perfil público de usuario */}
-            + <Route path="/usuario/:nickname" element={<UserPage />} />
-          </Routes>
-          <Footer />
-        </div>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <AlertProvider>
+            <AppRoutes />
+          </AlertProvider>
+        </Router>
+      </AuthProvider>
     </UserProvider>
   );
 }

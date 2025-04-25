@@ -1,0 +1,120 @@
+@import '../../styles/variables.css';
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.carouselSection {
+  margin: 40px 0;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* ===== TÍTULO DE SECCIÓN ===== */
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.sectionIcon {
+  font-size: 1.2em;
+  color: var(--color-accent);
+}
+
+/* ===== GRID DE ITEMS ===== */
+.carouselGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  justify-content: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* ===== TRANSICIONES Y ANIMACIONES ===== */
+.fadeOut {
+  opacity: 0;
+}
+
+.fadeLeft,
+.fadeRight {
+  animation: fadeMove 0.3s ease-in-out;
+}
+
+@keyframes fadeMove {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== CONTROLES DEL CARRUSEL ===== */
+.carouselControls {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .carouselButton {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.6); /* fondo semitransparente */
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px); /* efecto moderno */
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s;
+  }
+  
+
+  .carouselButton:hover:enabled {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .carouselButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  .carouselButton:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .carouselGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .carouselGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .carouselGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .carouselButton {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+}

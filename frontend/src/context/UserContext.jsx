@@ -1,17 +1,18 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
-// Crear el contexto
-const UserContext = createContext();
+export const UserContext = createContext();
 
-// Hook personalizado para consumir el contexto fácilmente
-export const useUser = () => useContext(UserContext);
+// ✅ HOOK EXPORTADO DIRECTAMENTE
+export function useUser() {
+  return useContext(UserContext);
+}
 
-// Componente proveedor del contexto
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Estado del usuario
-  const [token, setToken] = useState(null); // Token de autenticación
+// ✅ COMPONENTE EXPORTADO DIRECTAMENTE
+export function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Cargar datos del usuario desde localStorage al montar
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
@@ -20,9 +21,10 @@ export const UserProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
       setToken(storedToken);
     }
+
+    setLoading(false);
   }, []);
 
-  // Función para iniciar sesión
   const login = ({ userData, token }) => {
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
@@ -30,7 +32,6 @@ export const UserProvider = ({ children }) => {
     setToken(token);
   };
 
-  // Función para cerrar sesión
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -39,8 +40,23 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, token, login, logout }}>
-      {children}
+    <UserContext.Provider value={{ user, token, login, logout, loading }}>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            fontSize: "1.5rem",
+            color: "#888",
+          }}
+        >
+          Cargando sesión...
+        </div>
+      ) : (
+        children
+      )}
     </UserContext.Provider>
   );
-};
+}

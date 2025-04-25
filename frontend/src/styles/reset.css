@@ -1,0 +1,77 @@
+@import "./variables.css";
+
+/* Reset general */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+html, body {
+  font-family: var(--font-primary);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+html.theme-transition, body.theme-transition {
+    opacity: 0.8;
+  }
+  
+a {
+  font-weight: 500;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-hover);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: 1em;
+  border-radius: var(--border-radius-md);
+  border: none;
+}
+
+button {
+  padding: 0.6em 1.2em;
+  background-color: #1a1a1a;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+button:focus {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 2px;
+}
+
+.theme-transition {
+    opacity: 0.85;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease;
+  }
+  
+  

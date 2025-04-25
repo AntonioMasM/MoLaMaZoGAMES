@@ -1,0 +1,10 @@
+@import "../../styles/variables.css";
+
+.userSection {
+  margin: 0;
+  padding: var(--spacing-lg) var(--spacing-md);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}

@@ -1,0 +1,123 @@
+@import "../../styles/variables.css";
+
+.profileComments {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Área de texto */
+.textarea {
+  width: 100%;
+  height: 80px;
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  resize: none;
+  font-family: var(--font-primary);
+}
+
+.instructions {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+/* Lista de comentarios */
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Comentario individual */
+.comment {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.comment:hover {
+  background-color: var(--color-hover);
+  color: white;
+}
+
+.commentText {
+  font-size: var(--font-size-sm);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xs);
+  align-items: center;
+  color: var(--color-text-secondary);
+}
+
+.metaText {
+  overflow-wrap: break-word;
+}
+
+/* Botón de Like */
+.likeBtn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.likeBtn:hover {
+  color: var(--color-hover);
+}
+
+/* Accesibilidad */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .textarea {
+    font-size: var(--font-size-xs);
+  }
+
+  .title {
+    font-size: var(--font-size-md);
+  }
+
+  .meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+}

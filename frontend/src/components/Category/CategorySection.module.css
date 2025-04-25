@@ -1,0 +1,29 @@
+@import "../../styles/variables.css";
+
+.categorySection {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxl);
+}
+
+.categoryBlock {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.categoryBlock:hover {
+  transform: scale(1.01);
+  box-shadow: var(--shadow-lg);
+}
+
+.loading {
+  text-align: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-lg);
+}

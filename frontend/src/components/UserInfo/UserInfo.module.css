@@ -1,0 +1,81 @@
+@import "../../styles/variables.css";
+
+/* Contenedor principal de toda la sección */
+.userInfo {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* Estructura de columnas */
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xl);
+}
+
+/* Columna izquierda y derecha */
+.leftColumn,
+.rightColumn {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* Cada caja independiente */
+.box {
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.box:hover {
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.01);
+}
+
+/* Títulos de sección */
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+}
+
+/* Ajustes específicos para listas */
+.groupList,
+.followingList,
+.categoriesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+/* Ajustes de iconos */
+.groupItem,
+.categoryItem,
+.followingItem {
+  background-color: var(--color-bg);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.groupItem:hover,
+.categoryItem:hover,
+.followingItem:hover {
+  background-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+}
