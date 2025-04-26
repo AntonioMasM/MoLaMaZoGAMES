@@ -18,13 +18,13 @@ const usuarioSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
-        lowercase: true, // Aseguramos que el email esté en minúsculas
-        match: [/.+@.+\..+/, 'Por favor ingresa un correo electrónico válido'] // Validación del correo
+        lowercase: true,
+        match: [/.+@.+\..+/, 'Por favor ingresa un correo electrónico válido']
     },
     password: {
         type: String,
         required: true,
-        minlength: [6, 'La contraseña debe tener al menos 6 caracteres'] // Validación de longitud mínima
+        minlength: [6, 'La contraseña debe tener al menos 6 caracteres']
     },
     fechaRegistro: {
         type: Date,
@@ -44,8 +44,8 @@ const usuarioSchema = new mongoose.Schema({
         trim: true
     },
     fotoPerfil: {
-        type: String, // URL de la imagen
-        default: "assets/default-user.webp" // Se puede dejar vacío hasta que el usuario suba una imagen
+        type: String,
+        default: "assets/default-user.webp"
     },
     bio: {
         type: String,
@@ -66,17 +66,30 @@ const usuarioSchema = new mongoose.Schema({
     },
     ultimoInicioSesion: {
         type: Date,
-        default: null // Se actualizará cada vez que inicie sesión
+        default: null
     },
-    seguidores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }], // Lista de referencias a usuarios seguidos
-    siguiendo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }], // Lista de referencias a usuarios seguidores
+    seguidores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }],
+    siguiendo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }],
+
+    /* 🔥 Campos nuevos */
+    software: {
+        type: [String],
+        default: []
+    },
+    skills: {
+        type: [String],
+        default: []
+    },
+    intereses: {
+        type: [String],
+        default: []
+    }
 });
 
 // Método para comparar contraseñas durante el inicio de sesión
 usuarioSchema.methods.comparePassword = async function(candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password); // Comparar la contraseña proporcionada con la almacenada
+    return bcrypt.compare(candidatePassword, this.password);
 };
-
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 module.exports = Usuario;

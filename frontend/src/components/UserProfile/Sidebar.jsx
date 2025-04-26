@@ -12,7 +12,7 @@ const Sidebar = () => {
     { to: "/profile", icon: <FaHome />, label: "Inicio" },
     { to: "/gallery", icon: <FaImages />, label: "Galería" },
     { to: "/favoritos", icon: <FaHeart />, label: "Favoritos" },
-    { to: "/configuracion", icon: <FaCog />, label: "Configuración" },
+    { to: "/settings", icon: <FaCog />, label: "Configuración" },
     { to: "/siguiendo", icon: <FaUserFriends />, label: "Siguiendo" },
     { to: "/mensajes", icon: <FaEnvelope />, label: "Mensajes" }
   ];

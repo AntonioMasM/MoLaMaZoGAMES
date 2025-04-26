@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import { useAuth } from "../../features/auth/useAuth"; // ✅ Importamos también Auth
 import { loginUsuario } from "../../services/auth";
+import { useAlertQueue } from "../../context/AlertQueueContext";
+
 import FormInput from "../ui/FormInput";
 import styles from "../../styles/Login.module.css";
 
 const LoginForm = () => {
-  const { login } = useUser();
+  const { login: userLogin } = useUser();     // ✅ Renombramos login de UserContext
+  const { login: authLogin } = useAuth();     // ✅ Usamos login de AuthContext
+  const { showAlert } = useAlertQueue();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -38,8 +43,14 @@ const LoginForm = () => {
 
     try {
       const data = await loginUsuario(email, password);
-      const { token, nickname, fotoPerfil } = data;
-      login({ userData: { email, nickname, fotoPerfil }, token });
+      const { token, nickname, fotoPerfil, id } = data;
+    
+      userLogin({ userData: { _id: id, email, nickname, fotoPerfil }, token });
+      authLogin(token);
+    
+      // ✅ Mostrar alerta de bienvenida
+      showAlert(`¡Bienvenido, ${nickname}! 👋🏻`, "success");
+    
       navigate("/");
     } catch (err) {
       const msg = err.response?.data?.mensaje?.toLowerCase().trim() || "Error al iniciar sesión.";

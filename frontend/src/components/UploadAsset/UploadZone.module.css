@@ -1,0 +1,160 @@
+@import "../../styles/variables.css";
+
+/* 🎯 Contenedor principal */
+.uploadSection {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex: 1;
+  text-align: center;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 🧲 Efecto al hacer drag */
+.dragActive {
+  border: 2px dashed var(--color-accent);
+  background-color: var(--color-bg-hover);
+}
+
+/* 🚨 Borde en caso de error */
+.errorBorder {
+  border: 2px dashed var(--color-error);
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+/* 📥 Zona de arrastre y click */
+.dropArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--color-border);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--color-bg);
+}
+
+.dropArea:hover,
+.dropArea:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background-color: var(--color-bg-hover);
+  outline: none;
+}
+
+/* 🖼️ Icono por defecto */
+.icon {
+  font-size: 3rem;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 🖼️ Icono cuando hay archivo subido */
+.iconUploaded {
+  font-size: 3rem;
+  color: var(--color-success, #4caf50);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 📋 Información de archivo subido */
+.fileInfo {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+  font-weight: 500;
+}
+
+/* 📄 Formatos aceptados */
+.formatList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-xs);
+  width: 100%;
+  max-width: 400px;
+  margin-top: var(--spacing-sm);
+}
+
+.formatList li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* 🚨 Mensaje de error */
+.errorMessage {
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-sm);
+  font-weight: 600;
+}
+
+/* 🖼️ Vista previa */
+.previewBox {
+  margin-top: var(--spacing-md);
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewImage,
+.previewMedia {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.previewImage:hover,
+.previewMedia:hover {
+  transform: scale(1.02);
+}
+
+/* 📄 Preview archivo genérico */
+.previewFile {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .dropArea {
+    padding: var(--spacing-lg);
+  }
+
+  .icon,
+  .iconUploaded {
+    font-size: 2.5rem;
+  }
+
+  .formatList {
+    grid-template-columns: 1fr;
+  }
+}

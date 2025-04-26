@@ -1,0 +1,81 @@
+@import "../../styles/variables.css";
+
+/* 🎯 Contenedor de selección de grupo */
+.groupSelector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  animation: fadeInUp 0.4s ease;
+}
+
+/* 🏷️ Label */
+.groupSelector label {
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* ⬇️ Selector */
+.groupSelector select {
+  width: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* 🎯 Focus visible */
+.groupSelector select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 194, 158, 0.3);
+}
+
+/* 🎯 Select cuando está deshabilitado */
+.groupSelector select:disabled {
+  background-color: var(--color-border);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 🚨 Estilos de error */
+.groupSelector select[aria-invalid="true"] {
+  border-color: var(--color-error);
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+/* 🔴 Mensaje de error */
+.errorMessage {
+  color: var(--color-error);
+  font-size: var(--font-size-xxs);
+  margin-top: var(--spacing-xs);
+  font-weight: 600;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .groupSelector {
+    padding: var(--spacing-md);
+  }
+}
+
+/* ✨ Animación */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

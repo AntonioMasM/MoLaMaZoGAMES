@@ -17,11 +17,13 @@ const icons = {
 const Alert = ({ type = "info", message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose?.(); // Llama a la función si existe
-    }, 3000);
+      onClose?.();
+    }, 4000); // ⏳ Subimos a 4s para que dé tiempo de leerse
 
-    return () => clearTimeout(timer); // Limpieza
+    return () => clearTimeout(timer);
   }, [onClose]);
+
+  if (!message) return null; // 🛡️ Protección extra
 
   return (
     <div className={`${styles.alert} ${styles[type]}`} role="alert" tabIndex="0">

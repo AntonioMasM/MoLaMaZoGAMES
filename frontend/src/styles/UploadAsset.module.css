@@ -1,0 +1,122 @@
+@import "./variables.css";
+
+/* 🎯 Contenedor principal */
+.assetUploader {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  background-color: var(--color-bg);
+  width: 100%;
+  flex-grow: 1;
+}
+
+/* 📝 Columna izquierda */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* 📦 Columna derecha */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* ✅ Publish Wrapper */
+.publishWrapper {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+  animation: fadeIn 0.5s ease;
+}
+
+/* 🔵 Botón Publicar */
+.publishButton {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-hover));
+  color: #fff;
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  align-self: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
+}
+
+.publishButton:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.publishButton:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.publishButton:disabled {
+  background: var(--color-border);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* 📢 Mensajes de estado */
+.message {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--color-success, #4caf50);
+  border: 1px solid var(--color-success, #4caf50);
+}
+
+.error {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--color-error, #f44336);
+  border: 1px solid var(--color-error, #f44336);
+}
+
+/* ✨ Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 1024px) {
+  .assetUploader {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-lg);
+  }
+
+  .publishWrapper {
+    grid-column: span 1;
+    margin-top: var(--spacing-lg);
+  }
+}

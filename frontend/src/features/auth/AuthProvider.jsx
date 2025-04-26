@@ -1,42 +1,35 @@
-import { createContext, useReducer, useEffect } from "react";
-import { authReducer } from "./authReducer";
-import { LOGIN, LOGOUT, RESTORE } from "./types";
-
-const initialState = {
-  isAuthenticated: false,
-  user: null,
-};
-
-export const AuthContext = createContext();
+// src/features/auth/AuthProvider.jsx
+import { useState, useEffect } from "react";
+import { AuthContext } from "./AuthContext"; // ✅ Importas el contexto
 
 export const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser) {
-      dispatch({ type: RESTORE, payload: savedUser });
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
     }
+    setLoading(false);
   }, []);
+  
 
-  const login = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    dispatch({ type: LOGIN, payload: userData });
+  const login = (token) => {
+    localStorage.setItem("token", token);
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
-    dispatch({ type: LOGOUT });
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        ...state,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

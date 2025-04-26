@@ -38,19 +38,13 @@ const assetSchema = new mongoose.Schema({
     // Formatos de descarga disponibles para el asset
     formatos: [{
         tipo: {
-            type: String,
-            enum: ['pdf', 'zip', 'mp4', 'jpg', 'png', 'other'], // Puedes agregar más formatos según necesites
-            required: true
+          type: String,
+          required: true
         },
-        tamaño: {  // Tamaño del archivo en MB o KB
-            type: Number,
-            required: true
-        },
-        url: {  // URL de descarga del formato
-            type: String,
-            required: true
-        }
-    }],
+        tamaño: { type: Number, required: true },
+        url: { type: String, required: true }
+      }],
+      
 
     // Etiquetas o categorías del asset
     categorias: [{

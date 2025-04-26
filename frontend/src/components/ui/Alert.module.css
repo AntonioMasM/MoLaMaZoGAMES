@@ -8,7 +8,7 @@
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
   box-shadow: var(--shadow-md);
-  animation: fadeIn 0.4s ease;
+  animation: fadeIn 0.4s ease, fadeOut 0.4s ease 3.6s forwards;
   margin: var(--spacing-md) 0;
 }
 
@@ -43,7 +43,9 @@
   flex: 1;
 }
 
-/* Animación */
+
+
+/* Animaciones */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -52,6 +54,17 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
   }
 }
 

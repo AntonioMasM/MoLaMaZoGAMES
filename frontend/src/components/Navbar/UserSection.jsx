@@ -1,11 +1,24 @@
-import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useUser } from "../../context/UserContext";
+import { useAuth } from "../../features/auth/useAuth";
+import { useAlertQueue } from "../../context/AlertQueueContext";
 import styles from "./Navbar.module.css";
 
-const UserSection = ({ isSmallScreen, onLogout }) => {
-  const { user } = useUser();
+const UserSection = ({ isSmallScreen }) => {
+  const { user, logout: userLogout } = useUser();
+  const { logout: authLogout } = useAuth();
+  const { showAlert } = useAlertQueue();
+  const navigate = useNavigate();
+
   const isAuthenticated = !!user;
+
+  const handleLogout = () => {
+    userLogout();  // ✅ Borrar user + token
+    authLogout();  // ✅ Borrar isAuthenticated
+    showAlert("Sesión cerrada correctamente 👋🏻", "info"); // ✅ Mensaje de salida
+    navigate("/"); // ✅ Volver a Home o Login
+  };
 
   if (isAuthenticated) {
     return (
@@ -17,6 +30,7 @@ const UserSection = ({ isSmallScreen, onLogout }) => {
         >
           Subir Asset
         </Link>
+
         <Link
           to="/profile"
           className={styles.navButton}
@@ -28,6 +42,15 @@ const UserSection = ({ isSmallScreen, onLogout }) => {
             className={styles.profilePic}
           />
         </Link>
+
+        <button
+          onClick={handleLogout}
+          className={styles.navButton}
+          aria-label="Cerrar sesión"
+          style={{ background: "transparent", border: "none", cursor: "pointer" }}
+        >
+          <FaSignOutAlt /> {isSmallScreen ? null : "Cerrar Sesión"}
+        </button>
       </>
     );
   }
@@ -37,7 +60,6 @@ const UserSection = ({ isSmallScreen, onLogout }) => {
       to="/login"
       className={styles.navButton}
       aria-label="Ir a inicio de sesión"
-      onClick={onLogout}
     >
       {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
     </Link>

@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 // Crear un usuario
 const crearUsuario = async (req, res) => {
     try {
-        const { nombreCompleto, nickname, email, password, ubicacion, formacion, cargo, fotoPerfil, bio, redesSociales, modo } = req.body;
+        const { nombreCompleto, nickname, email, password, ubicacion, formacion, cargo, fotoPerfil, bio, redesSociales, modo, software, skills, intereses } = req.body;
 
         // Verificar si el usuario ya existe
         const usuarioExistente = await Usuario.findOne({ email });
@@ -32,7 +32,11 @@ const crearUsuario = async (req, res) => {
                 linkedin: "", artstation: "", twitter: "", instagram: ""
             },
             modo: modo || "oscuro",
-            ultimoInicioSesion: null
+            ultimoInicioSesion: null,
+            software: software || [],
+            skills: skills || [],
+            intereses: intereses || [],
+            
         });
 
         // Cifrar la contraseña
@@ -82,7 +86,7 @@ const obtenerUsuarioPorEmail = async (req, res) => {
 const actualizarUsuario = async (req, res) => {
     try {
         const { email } = req.params;
-        const { nombreCompleto, nickname, password, ubicacion, formacion, cargo, fotoPerfil, bio, redesSociales, modo } = req.body;
+        const { nombreCompleto, nickname, password, ubicacion, formacion, cargo, fotoPerfil, bio, redesSociales, modo, software, skills, intereses } = req.body;
 
         const usuario = await Usuario.findOne({ email });
         if (!usuario) {
@@ -113,7 +117,10 @@ const actualizarUsuario = async (req, res) => {
         usuario.bio = bio || usuario.bio;
         usuario.redesSociales = redesSociales || usuario.redesSociales;
         usuario.modo = modo || usuario.modo;
-
+        usuario.software = software || usuario.software;
+        usuario.skills = skills || usuario.skills;
+        usuario.intereses = intereses || usuario.intereses;
+        
         await usuario.save();
         res.status(200).json({ mensaje: "Usuario actualizado con éxito", usuario });
     } catch (error) {

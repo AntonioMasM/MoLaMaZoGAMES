@@ -1,6 +1,7 @@
+// src/features/auth/useAuth.js
 import { useContext } from "react";
-import { AuthContext } from "./AuthProvider";
+import { AuthContext } from "./AuthContext"; // ✅ actualizar la ruta
 
-export const useAuth = () => {
+export function useAuth() {
   return useContext(AuthContext);
-};
+}

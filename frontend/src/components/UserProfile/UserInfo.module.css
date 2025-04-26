@@ -1,5 +1,6 @@
 @import "../../styles/variables.css";
 
+/* 🧩 Contenedor principal */
 .userInfo {
   background-color: var(--color-bg-secondary);
   padding: var(--spacing-xl);
@@ -9,6 +10,7 @@
   animation: fadeInUp 0.4s ease;
 }
 
+/* 🎯 Cabecera */
 .header {
   display: flex;
   align-items: flex-start;
@@ -61,7 +63,7 @@
   margin-top: var(--spacing-xs);
 }
 
-/* Contenido dividido en dos columnas */
+/* 🧱 Contenido dividido en dos columnas */
 .content {
   display: flex;
   flex-wrap: wrap;
@@ -74,7 +76,7 @@
   min-width: 280px;
 }
 
-/* Información de usuario */
+/* 📄 Información básica y listas */
 .infoList {
   list-style: none;
   padding-left: 0;
@@ -86,9 +88,10 @@
   align-items: center;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
 }
 
-/* Redes sociales */
+/* 🌐 Redes sociales */
 .socialList {
   display: flex;
   gap: var(--spacing-sm);
@@ -97,7 +100,9 @@
 }
 
 .socialList a {
+  position: relative;
   color: var(--color-text);
+  font-size: 1.6rem;
   transition: color 0.3s ease;
 }
 
@@ -105,61 +110,167 @@
   color: var(--color-accent);
 }
 
-/* Línea divisoria */
+.socialList a:hover::after,
+.socialList a:hover::before {
+  opacity: 1;
+}
+/* Tooltip personalizado */
+.socialList a::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 130%; /* más separado para que entre la flecha */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  padding: 4px 8px;
+  font-size: var(--font-size-xs);
+  border-radius: var(--border-radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-shadow: var(--shadow-md);
+  z-index: 20;
+}
+
+/* 🔽 Flecha del tooltip */
+.socialList a::before {
+  content: "";
+  position: absolute;
+  bottom: 120%; /* justo bajo el tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--color-bg-secondary) transparent transparent transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+}
+
+/* ✨ Animación de "pulse" para los iconos de redes */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Aplicar animación al hover */
+.socialList a:hover {
+  animation: pulse 0.4s ease;
+}
+
+
+/* 🧱 Línea divisoria */
 .divider {
   width: 2px;
   background-color: var(--color-border);
 }
 
-/* Etiquetas (tags) */
-.tagList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-md);
-}
-
-.tag {
-  background-color: var(--color-border);
+/* 🛠️ Iconos individuales de software */
+.softwareIcon {
+  font-size: 1.2rem;
   color: var(--color-text);
-  padding: 4px 10px;
-  border-radius: var(--border-radius-sm);
-  font-size: var(--font-size-xs);
 }
 
-/* Errores */
+/* ⚠️ Errores */
 .error {
   padding: var(--spacing-md);
   text-align: center;
   color: var(--color-error);
 }
 
+/* 🖋️ Subtítulos de las secciones */
 .subTitle {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: var(--font-size-md);
-    margin-bottom: var(--spacing-xs);
-    color: var(--color-accent);
-  }
-  
-  .iconHeader {
-    font-size: var(--icon-size);
-    color: var(--color-accent);
-  }
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-accent);
+}
 
-  .tag {
-    background-color: var(--color-border);
-    color: var(--color-text);
-    padding: 4px 10px;
-    border-radius: var(--border-radius-sm);
-    font-size: var(--font-size-xs);
-    display: flex;
-    align-items: center;
-    gap: 6px; /* para separar icono y texto */
-  }
-  
-/* Animación */
+.iconHeader {
+  font-size: var(--icon-size);
+  color: var(--color-accent);
+}
+
+/* 🧩 NUEVO: Grid de badges (Software, Skills, Intereses) */
+.badgeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.badgeItem {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  padding: 8px 12px;
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+  border: 1px solid var(--color-border);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.badgeItem:hover {
+  background-color: var(--color-hover);
+  transform: translateY(-2px);
+}
+
+.badgeIcon {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+/* 🎨 Mejora visual de iconos de redes sociales */
+.socialList {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.socialList a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.25rem;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.socialList a:hover {
+  background-color: var(--color-accent);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.socialList a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+
+/* ✨ Animación */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -171,7 +282,7 @@
   }
 }
 
-/* Responsive */
+/* 📱 Responsive */
 @media (max-width: 768px) {
   .content {
     flex-direction: column;

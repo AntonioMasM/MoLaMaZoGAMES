@@ -1,6 +1,27 @@
 import AssetCard from "../Asset/AssetCard";
 import styles from "./UserAssets.module.css";
 
+// 🎯 Función para decidir qué imagen mostrar
+const getValidImage = (asset) => {
+  // Extensiones de imagen válidas
+  const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
+
+  if (!asset || !asset.imagenPrincipal) return null;
+
+  const extension = asset.imagenPrincipal.split(".").pop().toLowerCase();
+
+  if (formatosImagen.includes(extension)) {
+    return asset.imagenPrincipal; // ✅ Imagen principal válida
+  }
+
+  // Si no es una imagen, buscar en galería
+  const primeraImagenGaleria = asset.galeriaMultimedia?.find(
+    (item) => item.tipo === "image"
+  );
+
+  return primeraImagenGaleria ? primeraImagenGaleria.url : null; // Puede ser null
+};
+
 const UserAssets = ({ assets = [] }) => (
   <section className={styles.assetsBox} aria-labelledby="titulo-assets">
     <header className={styles.assetsHeader}>
@@ -20,7 +41,7 @@ const UserAssets = ({ assets = [] }) => (
         {assets.slice(0, 3).map((asset) => (
           <AssetCard
             key={asset._id}
-            image={asset.imagenPrincipal}
+            image={getValidImage(asset)} // 🔥 Usamos la función inteligente
             title={asset.titulo}
             author={asset.autor}
             formats={asset.formatos.map((f) => f.tipo)}

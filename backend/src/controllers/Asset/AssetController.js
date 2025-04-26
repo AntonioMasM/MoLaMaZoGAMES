@@ -1,72 +1,88 @@
 const Asset = require('../../models/Asset');
 const Usuario = require('../../models/Usuario');  // Para verificar que el usuario que sube un asset existe
+const mongoose = require('mongoose');
 
 // Crear un nuevo asset
 const crearAsset = async (req, res) => {
     try {
-        console.log("Request body:", req.body);  // Imprimir el cuerpo de la solicitud
-
-        const { 
-            titulo, 
-            descripcion, 
-            autor, 
-            imagenPrincipal, 
-            galeriaMultimedia, 
-            formatos, 
-            categorias, 
-            usuarioCreador 
-        } = req.body;
-
-        // Verificar si los campos obligatorios están presentes
-        if (!titulo || !descripcion || !autor || !imagenPrincipal || !usuarioCreador) {
-            return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
-        }
-
-        // Validar que galeriaMultimedia sea un array de objetos con las propiedades tipo y url
-        if (galeriaMultimedia && !Array.isArray(galeriaMultimedia)) {
-            return res.status(400).json({ mensaje: "galeriaMultimedia debe ser un array" });
-        }
-
+      console.log("Request body:", req.body);
+  
+      const { 
+        titulo, 
+        descripcion, 
+        autor, 
+        imagenPrincipal, 
+        galeriaMultimedia, 
+        formatos, 
+        categorias, 
+        usuarioCreador 
+      } = req.body;
+  
+      // Validar campos obligatorios
+      if (!titulo || !descripcion || !autor || !imagenPrincipal || !usuarioCreador) {
+        return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
+      }
+  
+      // Validar ObjectId de usuarioCreador
+      if (!mongoose.Types.ObjectId.isValid(usuarioCreador)) {
+        return res.status(400).json({ mensaje: "ID de usuarioCreador inválido" });
+      }
+  
+      // Validar galeriaMultimedia
+      if (galeriaMultimedia && !Array.isArray(galeriaMultimedia)) {
+        return res.status(400).json({ mensaje: "galeriaMultimedia debe ser un array" });
+      }
+      if (Array.isArray(galeriaMultimedia)) {
         for (let item of galeriaMultimedia) {
-            if (typeof item !== 'object' || !item.tipo || !item.url) {
-                return res.status(400).json({ mensaje: "Cada item en galeriaMultimedia debe ser un objeto con propiedades tipo y url" });
-            }
+          if (typeof item !== 'object' || !item.tipo || !item.url) {
+            return res.status(400).json({ mensaje: "Cada item en galeriaMultimedia debe tener tipo y url" });
+          }
         }
-
-        // Validar que formatos sea un array de objetos con tipo, tamaño y url
-        if (formatos && !Array.isArray(formatos)) {
-            return res.status(400).json({ mensaje: "formatos debe ser un array" });
-        }
-
+      }
+  
+      // Validar formatos
+      if (formatos && !Array.isArray(formatos)) {
+        return res.status(400).json({ mensaje: "formatos debe ser un array" });
+      }
+      if (Array.isArray(formatos)) {
         for (let item of formatos) {
-            if (typeof item !== 'object' || !item.tipo || !item.tamaño || !item.url) {
-                return res.status(400).json({ mensaje: "Cada item en formatos debe ser un objeto con propiedades tipo, tamaño y url" });
-            }
+          if (typeof item !== 'object' || !item.tipo || !item.tamaño || !item.url) {
+            return res.status(400).json({ mensaje: "Cada item en formatos debe tener tipo, tamaño y url" });
+          }
         }
-
-        // Crear el nuevo asset
-        const nuevoAsset = new Asset({
-            titulo,
-            descripcion,
-            autor,
-            imagenPrincipal,
-            galeriaMultimedia,
-            formatos,
-            categorias,
-            usuarioCreador
-        });
-
-        // Guardar el asset en la base de datos
-        await nuevoAsset.save();
-
-        return res.status(201).json({ mensaje: "Asset creado con éxito", asset: nuevoAsset });
-
+      }
+  
+      // Validar categorias
+      if (categorias && !Array.isArray(categorias)) {
+        return res.status(400).json({ mensaje: "categorias debe ser un array" });
+      }
+  
+      // Crear el nuevo Asset
+      const nuevoAsset = new Asset({
+        titulo,
+        descripcion,
+        autor,
+        imagenPrincipal,
+        galeriaMultimedia,
+        formatos,
+        categorias,
+        usuarioCreador
+      });
+  
+      // Guardar en base de datos
+      await nuevoAsset.save();
+  
+      return res.status(201).json({ mensaje: "Asset creado con éxito", asset: nuevoAsset });
+  
     } catch (error) {
-        console.error("Error al crear el asset:", error);  // Imprimir error para depurar
-        return res.status(500).json({ mensaje: "Error al crear asset", error: error.message });
+      console.error("Error al crear el asset:", error);
+      return res.status(500).json({ mensaje: "Error al crear asset", error: error.message });
     }
-};
-
+  };
+  
+  module.exports = {
+    crearAsset,
+  };
 
 
 // Obtener todos los assets
