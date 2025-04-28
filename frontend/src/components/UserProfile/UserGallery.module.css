@@ -1,0 +1,185 @@
+@import "../../styles/variables.css";
+
+/* 🎯 Contenedor principal de la galería */
+.galleryContainer {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  box-sizing: border-box;
+}
+
+/* 🔍 Controles de búsqueda, filtro y orden */
+.galleryControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  justify-content: center;
+  align-items: center;
+}
+
+/* Input de búsqueda */
+.searchInput {
+  width: 100%;
+  max-width: 300px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 5px var(--color-accent);
+}
+
+/* Selectores (categoría, orden) */
+.selectControl {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.selectControl:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+/* 🖼️ Grid de assets */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+/* Cada asset + acciones rápidas */
+.assetWrapper {
+    position: relative; /* Ya lo tienes, perfecto */
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--color-bg);
+    transition: transform 0.3s;
+  }
+
+.assetWrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 🎯 Botones de acción sobre el asset */
+.assetActions {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 2; /* ⭐ Añade esto */
+  }
+
+  .assetWrapper > img,
+  .assetWrapper > *:not(.assetActions) {
+    z-index: 1;
+  }
+  
+.assetWrapper:hover .assetActions {
+  opacity: 1;
+}
+
+/* Cada botón individual */
+.actionButton {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-xs);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s;
+}
+
+.actionButton:hover {
+  background-color: var(--color-hover);
+  color: #fff;
+}
+
+/* 🕑 Estado de carga y estado vacío */
+.loading,
+.emptyText {
+  text-align: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xl);
+}
+
+/* 📄 Paginación */
+.pagination {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.paginationButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-md);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.paginationButton:hover {
+  background-color: var(--color-hover);
+  color: #fff;
+}
+
+.paginationButton:disabled {
+  background-color: var(--color-border);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+.paginationInfo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+/* 🧩 Responsive para móvil */
+@media screen and (max-width: 768px) {
+  .galleryContainer {
+    padding: var(--spacing-md);
+  }
+
+  .galleryControls {
+    flex-direction: column;
+  }
+
+  .searchInput,
+  .selectControl {
+    width: 100%;
+    max-width: none;
+  }
+}

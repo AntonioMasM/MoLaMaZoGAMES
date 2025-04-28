@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getCategorias } from "@/services/categorias";
 import styles from "./AssetForm.module.css";
 
-const CATEGORIAS_PRINCIPALES = ["2D", "3D", "Animaciones", "UI/UX", "Texturas"];
 const LICENCIAS = ["CC0", "CC BY", "CC BY-SA", "Propietaria"];
 const OPCIONES = [
   { key: "Mature", label: "Mature" },
@@ -26,37 +26,47 @@ const AssetForm = ({
   } = formData;
 
   const [descripcionLength, setDescripcionLength] = useState(descripcion.length || 0);
+  const [categoriasDB, setCategoriasDB] = useState([]);
+  const [loadingCategorias, setLoadingCategorias] = useState(true);
+  const [errorCategorias, setErrorCategorias] = useState("");
 
-  const handleAddTag = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const value = e.target.value.trim();
-      if (value && !otrasCategorias.includes(value)) {
-        onChange({
-          target: {
-            name: "otrasCategorias",
-            value: [...otrasCategorias, value],
-          },
-        });
-        e.target.value = "";
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const data = await getCategorias();
+        setCategoriasDB(data);
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+        setErrorCategorias("No se pudieron cargar las categorías.");
+      } finally {
+        setLoadingCategorias(false);
       }
-    }
-  };
+    };
 
-  const handleRemoveTag = (tag) => {
-    const updated = otrasCategorias.filter((t) => t !== tag);
-    onChange({
-      target: {
-        name: "otrasCategorias",
-        value: updated,
-      },
-    });
-  };
+    fetchCategorias();
+  }, []);
 
   const handleDescripcionChange = (e) => {
     const { value } = e.target;
     setDescripcionLength(value.length);
     onChange(e);
+  };
+
+  const handleToggleOtraCategoria = (categoriaNombre) => {
+    let updatedCategorias;
+
+    if (otrasCategorias.includes(categoriaNombre)) {
+      updatedCategorias = otrasCategorias.filter((cat) => cat !== categoriaNombre);
+    } else {
+      updatedCategorias = [...otrasCategorias, categoriaNombre];
+    }
+
+    onChange({
+      target: {
+        name: "otrasCategorias",
+        value: updatedCategorias,
+      },
+    });
   };
 
   return (
@@ -109,23 +119,29 @@ const AssetForm = ({
       <div className={styles.row}>
         <label htmlFor="categoriaPrincipal">
           Categoría Principal*
-          <select
-            id="categoriaPrincipal"
-            name="categoriaPrincipal"
-            value={categoriaPrincipal}
-            onChange={onChange}
-            required
-            ref={refs.categoriaRef}
-            aria-invalid={errors.categoriaPrincipal ? "true" : "false"}
-            aria-describedby={errors.categoriaPrincipal ? "error-categoriaPrincipal" : undefined}
-          >
-            <option value="">Elige categoría</option>
-            {CATEGORIAS_PRINCIPALES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          {loadingCategorias ? (
+            <p>Cargando categorías...</p>
+          ) : errorCategorias ? (
+            <p className={styles.errorMsg}>{errorCategorias}</p>
+          ) : (
+            <select
+              id="categoriaPrincipal"
+              name="categoriaPrincipal"
+              value={categoriaPrincipal}
+              onChange={onChange}
+              required
+              ref={refs.categoriaRef}
+              aria-invalid={errors.categoriaPrincipal ? "true" : "false"}
+              aria-describedby={errors.categoriaPrincipal ? "error-categoriaPrincipal" : undefined}
+            >
+              <option value="">Elige categoría</option>
+              {categoriasDB.map((cat) => (
+                <option key={cat._id} value={cat.nombre}>
+                  {cat.nombre}
+                </option>
+              ))}
+            </select>
+          )}
           {errors.categoriaPrincipal && <p id="error-categoriaPrincipal" className={styles.errorMsg}>{errors.categoriaPrincipal}</p>}
         </label>
 
@@ -152,29 +168,30 @@ const AssetForm = ({
         </label>
       </div>
 
-      {/* Otras Categorías como Tags */}
+      {/* Otras Categorías desde BD */}
       <div className={styles.inputGroup}>
-        <label htmlFor="otrasCategorias">Otras Categorías</label>
-        <div className={styles.tagsContainer}>
-          {otrasCategorias.map((tag, idx) => (
-            <span key={idx} className={styles.tag}>
-              {tag}
+        <span>Otras Categorías</span>
+        {loadingCategorias ? (
+          <p>Cargando categorías...</p>
+        ) : errorCategorias ? (
+          <p className={styles.errorMsg}>{errorCategorias}</p>
+        ) : (
+          <div className={styles.tagsContainer}>
+            {categoriasDB.map((cat) => (
               <button
                 type="button"
-                aria-label={`Eliminar categoría ${tag}`}
-                onClick={() => handleRemoveTag(tag)}
+                key={cat._id}
+                className={`${styles.categoryTag} ${
+                  otrasCategorias.includes(cat.nombre) ? styles.selectedTag : ""
+                }`}
+                onClick={() => handleToggleOtraCategoria(cat.nombre)}
+                aria-pressed={otrasCategorias.includes(cat.nombre)}
               >
-                ✖
+                {cat.nombre}
               </button>
-            </span>
-          ))}
-          <input
-            type="text"
-            id="otrasCategorias"
-            placeholder="Añade y pulsa Enter"
-            onKeyDown={handleAddTag}
-          />
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Opciones */}

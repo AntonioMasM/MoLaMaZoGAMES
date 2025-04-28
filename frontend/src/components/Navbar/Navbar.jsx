@@ -15,6 +15,8 @@ import { useUser } from "../../context/UserContext";
 import CategoryDropdown from "./CategoryDropdown";
 import UserSection from "./UserSection";
 import SettingsDropdown from "./SettingsDropdown";
+import NotificationBell from "./NotificationBell";
+import SearchDropdown from "./SearchDropdown"; // 🔥 Nuevo import
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,12 +41,15 @@ const Navbar = () => {
       setShowSettings(false);
       setMenuOpen(false);
       setCategoryDropdownOpen(false);
+      setQuery(""); // 🔥 Cierra también búsqueda si pulsa Escape
     }
   };
 
   const handleSearch = () => {
-    if (query.trim()) {
-      navigate(`/buscar?q=${query}`);
+    const trimmed = query.trim();
+    if (trimmed) {
+      const encoded = encodeURIComponent(trimmed);
+      navigate(`/search?q=${encoded}`);
       setMenuOpen(false);
       setQuery("");
     }
@@ -71,7 +76,7 @@ const Navbar = () => {
         </Link>
 
         {windowWidth > 400 && (
-          <div className={styles.search}>
+          <div className={styles.search} style={{ position: "relative" }}>
             <input
               type="text"
               placeholder="Buscar assets, categorías..."
@@ -80,6 +85,8 @@ const Navbar = () => {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
             <FaSearch className={styles.searchIcon} onClick={handleSearch} />
+            {query && <SearchDropdown query={query} onClose={() => setQuery("")} />}
+            {/* 🔥 Integrado aquí */}
           </div>
         )}
       </div>
@@ -101,7 +108,7 @@ const Navbar = () => {
 
           {/* Búsqueda en móvil */}
           {windowWidth <= 400 && (
-            <div className={styles.dropdownSearch}>
+            <div className={styles.dropdownSearch} style={{ position: "relative" }}>
               <input
                 type="text"
                 placeholder="Buscar..."
@@ -111,6 +118,8 @@ const Navbar = () => {
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
               <FaSearch className={styles.dropdownSearchIcon} onClick={handleSearch} />
+              {query && <SearchDropdown query={query} onClose={() => setQuery("")} />}
+              {/* 🔥 También en versión móvil */}
             </div>
           )}
 
@@ -151,7 +160,10 @@ const Navbar = () => {
 
           {/* Usuario autenticado */}
           {isAuthenticated && (
-            <UserSection isSmallScreen={isSmallScreen} onLogout={() => setShowSettings(false)} />
+            <>
+              <UserSection isSmallScreen={isSmallScreen} onLogout={() => setShowSettings(false)} />
+              <NotificationBell />
+            </>
           )}
 
           {/* Configuración */}

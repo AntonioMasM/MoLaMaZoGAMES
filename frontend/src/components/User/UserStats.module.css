@@ -1,0 +1,152 @@
+@import "../../styles/variables.css";
+
+/* 🧩 Sección de estadísticas principal */
+.statsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  animation: fadeInZoom 0.5s ease-out both;
+}
+
+/* 📊 Grid de estadísticas */
+.statGrid {
+  display: flex;
+  justify-content: space-around;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.statItem:hover {
+  transform: scale(1.05);
+}
+
+.statNumber {
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+  color: var(--color-accent);
+  transition: color 0.3s ease;
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  transition: color 0.3s ease;
+}
+
+/* 📚 Cajas de información extra */
+.infoBox {
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.infoBox:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* 📖 Título de sección */
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+/* 📋 Lista de info (formación) */
+.infoList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  color: var(--color-text-secondary);
+}
+
+.infoList li {
+  font-size: var(--font-size-sm);
+}
+
+/* 🏷️ Etiquetas (software, skills, intereses) */
+.tagGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.tagItem {
+  background-color: var(--color-hover);
+  color: #fff;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.tagItem:hover {
+  background-color: var(--color-accent);
+  transform: scale(1.05);
+}
+
+.tagItem:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .statGrid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .statsSection {
+    padding: var(--spacing-md);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-md);
+  }
+
+  .statNumber {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ✨ Animación de entrada */
+@keyframes fadeInZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 🔄 Skeleton */
+.skeleton {
+  width: 100%;
+  text-align: center;
+  padding: var(--spacing-lg);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  animation: fadeInZoom 0.5s ease-out both;
+}

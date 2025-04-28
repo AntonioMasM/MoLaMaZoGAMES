@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useUploadAsset } from "../hooks/useUploadAsset";
+import { getGruposPorUsuario } from "../services/grupoService"; // 👈 importar
+import { useUser } from "../context/UserContext"; // 👈 importar
+
 import AssetForm from "../components/UploadAsset/AssetForm";
 import UploadZone from "../components/UploadAsset/UploadZone";
 import GalleryUploader from "../components/UploadAsset/GalleryUploader";
@@ -22,13 +25,31 @@ const UploadAsset = () => {
     handleFileDrop,
     handleGalleryChange,
     handleGroupChange,
-    handleSubmitAsset, // 🎯 Nuevo
+    handleSubmitAsset,
   } = useUploadAsset();
+
+  const { user: sessionUser } = useUser(); // 👈 coger el usuario logueado
+  const [userGroups, setUserGroups] = useState([]); // 👈 nuevo estado
+
+  useEffect(() => {
+    const fetchGrupos = async () => {
+      try {
+        if (!sessionUser?._id) return;
+
+        const grupos = await getGruposPorUsuario(sessionUser._id);
+        setUserGroups(grupos);
+      } catch (error) {
+        console.error("Error al cargar grupos del usuario:", error);
+      }
+    };
+
+    fetchGrupos();
+  }, [sessionUser?._id]);
 
   return (
     <form
       className={styles.assetUploader}
-      onSubmit={handleSubmitAsset} // 🎯 Cambio aquí
+      onSubmit={handleSubmitAsset}
       role="form"
       aria-label="Formulario de subida de asset"
       noValidate
@@ -66,7 +87,7 @@ const UploadAsset = () => {
         />
 
         <GroupSelector
-          grupos={[]} // ⚡ (todavía pendiente conectar grupos reales)
+          grupos={userGroups} // 👈 ahora sí pasamos grupos REALES
           selectedGroup={formData.grupo}
           onChange={handleGroupChange}
         />

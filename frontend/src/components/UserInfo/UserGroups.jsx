@@ -1,3 +1,5 @@
+// src/components/UserInfo/UserGroups.jsx
+import { Link } from "react-router-dom"; // 🚀 Necesario para los enlaces
 import styles from "./UserGroups.module.css";
 import { FaUsers } from "react-icons/fa";
 
@@ -9,9 +11,11 @@ const UserGroups = ({ grupos = [] }) => (
 
     {grupos.length > 0 ? (
       <ul className={styles.groupList}>
-        {grupos.map((grupo, idx) => (
-          <li key={idx} className={styles.groupItem}>
-            <span className={styles.groupIcon}>👥</span> {grupo}
+        {grupos.map((grupo) => (
+          <li key={grupo._id} className={styles.groupItem}>
+            <Link to={`/groups/${grupo._id}`} className={styles.groupLink}>
+              <span className={styles.groupIcon}>👥</span> {grupo.titulo}
+            </Link>
           </li>
         ))}
       </ul>

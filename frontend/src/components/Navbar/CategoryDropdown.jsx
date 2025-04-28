@@ -26,7 +26,7 @@ const CategoryDropdown = () => {
   }, []);
 
   const handleCategoryClick = (cat) => {
-    navigate(`/categorias/${cat._id}`);
+    navigate(`/categories/${encodeURIComponent(cat.nombre)}`);
   };
 
   return (

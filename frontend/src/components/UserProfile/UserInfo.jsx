@@ -63,7 +63,7 @@ const UserInfo = ({ user }) => {
       <header className={styles.header}>
         <div className={styles.avatarContainer}>
           <img
-            src={fotoPerfil || "/assets/users/default-avatar.png"}
+            src={fotoPerfil.secure_url || "/assets/users/default-avatar.png"}
             alt={`Foto de perfil de ${nombreCompleto || nickname}`}
             className={styles.avatar}
           />

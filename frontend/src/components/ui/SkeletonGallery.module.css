@@ -1,0 +1,45 @@
+@import "../../styles/variables.css";
+
+.skeletonGallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+  padding: 0 var(--spacing-md);
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-card-background, #fff);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  animation: pulse 1.5s infinite;
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 180px;
+  background-color: var(--color-skeleton, #e2e8f0);
+}
+
+.skeletonTitle {
+  height: 20px;
+  margin: var(--spacing-sm);
+  background-color: var(--color-skeleton, #e2e8f0);
+  border-radius: var(--border-radius-sm);
+}
+
+/* Efecto de pulsación */
+@keyframes pulse {
+  0% {
+    background-color: #e2e8f0;
+  }
+  50% {
+    background-color: #f1f5f9;
+  }
+  100% {
+    background-color: #e2e8f0;
+  }
+}

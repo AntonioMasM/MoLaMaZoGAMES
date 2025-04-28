@@ -1,0 +1,41 @@
+@import "@/styles/variables.css";
+
+/* ❤️ Botón base de Favorito */
+.favoritoButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  transition: color 0.3s ease, transform 0.2s ease;
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+}
+
+/* ❤️ Cuando está en favoritos */
+.favoritoButton.activo {
+  color: red;
+}
+
+/* 🎯 Hover animado */
+.favoritoButton:hover {
+  color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+/* 🚫 Disabled */
+.favoritoButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.headerTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+  }
+  
+  /* Ya tienes .header y .title definidas */
+  

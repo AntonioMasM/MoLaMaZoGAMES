@@ -2,80 +2,71 @@ const mongoose = require('mongoose');
 
 // Definir el esquema de Asset
 const assetSchema = new mongoose.Schema({
-    // Título del asset
-    titulo: {
-        type: String,
-        required: true,
-        trim: true
-    },
+  titulo: {
+    type: String,
+    required: true,
+    trim: true
+  },
 
-    // Descripción del asset
-    descripcion: {
-        type: String,
-        required: true,
-        maxlength: 500,  // Puedes ajustar el límite según lo necesites
-    },
+  descripcion: {
+    type: String,
+    required: true,
+    maxlength: 500,
+    trim: true
+  },
 
-    // El autor o creador del asset
-    autor: {
-        type: String,
-        required: true,
-        trim: true
-    },
+  autor: {
+    type: String,
+    required: true,
+    trim: true
+  },
 
-    // Imagen principal del asset (URL o referencia a archivo almacenado)
-    imagenPrincipal: {
-        type: String, // Aquí puedes almacenar la URL o referencia a la imagen
-        required: true
-    },
+  // Imagen principal (Cloudinary)
+  imagenPrincipal: {
+    url: { type: String, required: true },       // secure_url de Cloudinary
+    public_id: { type: String, required: true },  // ID para borrar en Cloudinary
+  },
 
-    // Galería multimedia que puede contener fotos y vídeos del asset
-    galeriaMultimedia: [{
-        tipo: { type: String, enum: ['image', 'video', 'audio'], required: true },
-        url: { type: String, required: true }  // La URL de la imagen o video
-    }],
+  // Galería multimedia (Cloudinary)
+  galeriaMultimedia: [{
+    tipo: { type: String, enum: ['image', 'video', 'audio'], required: true },
+    url: { type: String, required: true },        // secure_url
+    public_id: { type: String, required: true },  // public_id
+  }],
 
-    // Formatos de descarga disponibles para el asset
-    formatos: [{
-        tipo: {
-          type: String,
-          required: true
-        },
-        tamaño: { type: Number, required: true },
-        url: { type: String, required: true }
-      }],
-      
+  // Formatos descargables (Cloudinary)
+  formatos: [{
+    tipo: { type: String, required: true },       // Por ejemplo: 'OBJ', 'FBX', 'ZIP'
+    tamaño: { type: Number, required: true },     // Tamaño en bytes
+    url: { type: String, required: true },         // secure_url
+    public_id: { type: String, required: true },   // public_id
+  }],
 
-    // Etiquetas o categorías del asset
-    categorias: [{
-        type: String,
-        trim: true
-    }],
+  categorias: [{
+    type: String,
+    trim: true
+  }],
 
-    // Fecha de creación del asset
-    fechaCreacion: {
-        type: Date,
-        default: Date.now
-    },
+  fechaCreacion: {
+    type: Date,
+    default: Date.now
+  },
 
-    // Indicador de si el asset está disponible para descarga
-    disponible: {
-        type: Boolean,
-        default: true
-    },
+  disponible: {
+    type: Boolean,
+    default: true
+  },
 
-    // Vistas o popularidad del asset
-    vistas: {
-        type: Number,
-        default: 0
-    },
+  vistas: {
+    type: Number,
+    default: 0
+  },
 
-    // Usuario que subió el asset
-    usuarioCreador: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario', // Relacionado con el modelo de usuario
-        required: true
-    }
+  usuarioCreador: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Usuario',
+    required: true
+  }
 });
 
 // Crear el modelo de Asset

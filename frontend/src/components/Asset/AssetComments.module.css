@@ -1,0 +1,223 @@
+@import "@/styles/variables.css"; /* Variables globales */
+
+/* 🎯 Contenedor principal de comentarios */
+.commentsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* 🏷️ Título de sección */
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 📝 Formulario de comentario */
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* 🖋️ Área de texto */
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-md);
+  font-family: var(--font-primary);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.3s ease;
+}
+
+/* ✨ Vibración ligera (cuando envías un comentario) */
+.vibrate {
+  animation: vibrate 0.3s linear;
+}
+
+@keyframes vibrate {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+/* 🛎️ Botón de envío */
+.submitButton {
+  align-self: flex-start;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-accent);
+  color: #fff;
+  font-weight: bold;
+  font-size: var(--font-size-md);
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Botón desactivado */
+.submitButton:disabled {
+  background-color: var(--color-border);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--color-hover);
+}
+
+/* 📜 Lista de comentarios */
+.commentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* 📄 Cada comentario */
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 📸 Avatar de usuario */
+.commentAvatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 📚 Contenido del comentario */
+.commentContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* 🧑 Nombre del autor */
+.commentAuthor {
+  font-weight: bold;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+/* 📝 Texto del comentario */
+.commentText {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* 📅 Pie del comentario: fecha + likes */
+.commentFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-xs);
+}
+
+/* 🕒 Fecha */
+.commentDate {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ❤️ Botón de like */
+.likeButton {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xxs);
+    transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+  }
+  
+  /* 🖱️ Hover sobre botón de like */
+  .likeButton:hover {
+    transform: scale(1.15);
+    color: var(--color-accent);
+    opacity: 0.85;
+  }
+  
+  /* ❤️ Estado "liked" */
+  .liked {
+    color: var(--color-accent);
+    animation: pop 0.25s ease;
+  }
+
+/* ✨ Animación pequeña al hacer like */
+@keyframes pop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* 🔄 Cuando está loading, opcionalmente podrías añadir un efecto */
+  .likeButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none; /* No permitir escala */
+  }
+/* ✨ Animación de entrada de comentario */
+.fadeInComment {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🚫 Mensaje de "no hay comentarios" */
+.noComments {
+  text-align: center;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .commentsSection {
+    padding: var(--spacing-md);
+  }
+}

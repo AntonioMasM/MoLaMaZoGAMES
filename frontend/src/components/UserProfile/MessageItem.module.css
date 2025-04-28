@@ -1,0 +1,127 @@
+@import "../../styles/variables.css";
+
+/* 🧩 Contenedor principal de cada mensaje */
+.messageItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.25s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Hover y focus */
+.messageItem:hover {
+  background-color: var(--color-hover);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: var(--shadow-md);
+}
+
+.messageItem:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Avatar del remitente */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--color-border);
+}
+
+/* Contenedor de la información del mensaje */
+.messageInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Fila superior (nickname + fecha) */
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Nickname del remitente */
+.nickname {
+  font-weight: bold;
+  font-size: var(--font-size-md);
+  color: var(--color-accent);
+}
+
+/* Fecha de envío */
+.date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Vista previa del contenido */
+.preview {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Estado: No leído */
+.unread {
+  background-color: var(--color-bg);
+}
+
+/* Estado: Leído */
+.read {
+  background-color: var(--color-bg-secondary);
+}
+
+/* Badge \"Nuevo\" para mensajes no leídos */
+.unreadBadge {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  margin-left: auto;
+  align-self: flex-start;
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .messageItem {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nickname {
+    font-size: var(--font-size-sm);
+  }
+
+  .date {
+    font-size: var(--font-size-xxs);
+  }
+
+  .preview {
+    font-size: var(--font-size-xs);
+  }
+
+  .unreadBadge {
+    padding: 2px 6px;
+    font-size: var(--font-size-xxs);
+  }
+}

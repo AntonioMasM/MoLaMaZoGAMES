@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser, loginUsuario } from "../../services/auth";
 import { useUser } from "../../context/UserContext";
+import { useUser as useUserService } from "../../hooks/useUser"; // Hook para registro
+import { useAuth } from "../../hooks/useAuth"; // Hook para login tras registro
 import FormInput from "../ui/FormInput";
 import ErrorMessage from "../ui/ErrorMessage";
 import styles from "../../styles/Register.module.css";
 
 const RegisterForm = () => {
-  const { login } = useUser();
+  const { login } = useUser(); // Context global de usuario
+  const { registrarUsuario, loading: loadingRegister, error: errorRegister } = useUserService();
+  const { iniciarSesion, loading: loadingLogin, error: errorLogin } = useAuth();
   const navigate = useNavigate();
 
   // Campos del formulario
@@ -17,17 +20,14 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [cargo, setCargo] = useState("");
 
-  // Estado de errores
+  // Estado de errores de validación
   const [errors, setErrors] = useState({});
-  const [serverError, setServerError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   // Validaciones
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
   const cargoRegex = /^[a-zA-ZÁÉÍÓÚÜÑáéíóúüñ\s]+$/;
 
-  // Validación en tiempo real
   useEffect(() => {
     setErrors((prev) => ({
       ...prev,
@@ -43,9 +43,8 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setServerError("");
-    setLoading(true);
 
+    // Validaciones manuales
     const newErrors = {
       nombreCompleto: !nombreCompleto.trim() ? "El nombre completo es obligatorio" : "",
       nickname: !nickname.trim() ? "El nickname es obligatorio" : "",
@@ -59,22 +58,27 @@ const RegisterForm = () => {
     setErrors(newErrors);
 
     if (Object.values(newErrors).some(Boolean)) {
-      setLoading(false);
       return;
     }
 
     try {
-      await registerUser({ nombreCompleto, nickname, email, password, cargo });
+      // 1. Crear el usuario
+      await registrarUsuario({ nombreCompleto, nickname, email, password, cargo });
 
-      const { token, nickname: nick, fotoPerfil } = await loginUsuario(email, password);
-      login({ userData: { email, nickname: nick, fotoPerfil }, token });
+      // 2. Loguear automáticamente tras el registro
+      const data = await iniciarSesion(email, password);
+      const { token, nickname: nick, fotoPerfil, id, ultimoInicioSesion } = data;
+
+      login({ userData: { _id: id, email, nickname: nick, fotoPerfil, ultimoInicioSesion }, token });
+
       navigate("/");
     } catch (err) {
-      setServerError(err.response?.data?.mensaje || "Error al crear usuario");
-    } finally {
-      setLoading(false);
+      console.error("Error en registro o login:", err);
     }
   };
+
+  const globalLoading = loadingRegister || loadingLogin;
+  const globalError = errorRegister || errorLogin;
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -127,10 +131,10 @@ const RegisterForm = () => {
         error={errors.cargo}
       />
 
-      {serverError && <ErrorMessage>{serverError}</ErrorMessage>}
+      {globalError && <ErrorMessage>{globalError}</ErrorMessage>}
 
-      <button className={styles.button} type="submit" disabled={loading}>
-        {loading ? "Registrando..." : "Registrarse"}
+      <button className={styles.button} type="submit" disabled={globalLoading}>
+        {globalLoading ? "Registrando..." : "Registrarse"}
       </button>
 
       <p className={styles.registerText}>

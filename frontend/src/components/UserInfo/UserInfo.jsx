@@ -1,3 +1,5 @@
+// src/components/UserInfo/UserInfo.jsx
+
 import { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import {
@@ -7,11 +9,14 @@ import {
 } from "../../services/usuarios";
 import { getAllAssets } from "../../services/assets";
 
+import { useGrupos } from "../../hooks/useGrupos";
+
 import UserWelcome from "./UserWelcome";
 import UserGroups from "./UserGroups";
 import UserAssets from "./UserAssets";
 import UserFollowing from "./UserFollowing";
 import UserFavorites from "./UserFavorites";
+import { getGruposPorUsuario } from "../../services/grupoService";
 
 import styles from "./UserInfo.module.css";
 
@@ -20,12 +25,7 @@ const UserInfo = () => {
   const [userData, setUserData] = useState(null);
   const [userAssets, setUserAssets] = useState([]);
   const [siguiendoUsuarios, setSiguiendoUsuarios] = useState([]);
-
-  const gruposTrabajo = [
-    "Grupo E1 - Entorno del Mapa",
-    "Grupo F3 - Ciudad 3",
-    "Grupo E5 - Personajes",
-  ];
+  const [gruposTrabajo, setGruposTrabajo] = useState([]);
 
   const categoriasFavoritas = [
     "Ciencia Ficción",
@@ -38,30 +38,38 @@ const UserInfo = () => {
     "Mobiliario",
   ];
 
+  const { obtenerGrupo } = useGrupos();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (!sessionUser?.email) return;
-
+  
         const usuario = await getUsuarioPorEmail(sessionUser.email);
         setUserData(usuario);
-
+  
         const allAssets = await getAllAssets();
         const filteredAssets = allAssets.filter(
           (asset) => asset.usuarioCreador === usuario._id
         );
         setUserAssets(filteredAssets);
-
+  
         const siguiendoIds = await getUsuariosSeguidos(sessionUser.email);
-        const usuarios = siguiendoIds.length > 0
-          ? await getUsuariosPorIds(siguiendoIds)
+        const ids = siguiendoIds.map(usuario => usuario._id || usuario);
+        const usuarios = ids.length > 0
+          ? await getUsuariosPorIds(ids)
           : [];
         setSiguiendoUsuarios(usuarios);
+  
+        // 🔥 Nueva forma: cargar grupos reales donde esté el usuario
+        const grupos = await getGruposPorUsuario(usuario._id);
+        setGruposTrabajo(grupos);
+  
       } catch (err) {
         console.error("Error cargando datos del usuario:", err);
       }
     };
-
+  
     fetchData();
   }, [sessionUser?.email]);
 
@@ -76,6 +84,7 @@ const UserInfo = () => {
             <UserWelcome
               nickname={userData.nickname}
               ultimoInicioSesion={userData.ultimoInicioSesion}
+              userId={userData._id}
             />
           </div>
 

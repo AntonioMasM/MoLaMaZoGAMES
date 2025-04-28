@@ -3,23 +3,22 @@ import styles from "./UserAssets.module.css";
 
 // 🎯 Función para decidir qué imagen mostrar
 const getValidImage = (asset) => {
-  // Extensiones de imagen válidas
+  if (!asset || !asset.imagenPrincipal || !asset.imagenPrincipal.url) return null;
+
   const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
+  const urlPrincipal = asset.imagenPrincipal.url;
 
-  if (!asset || !asset.imagenPrincipal) return null;
-
-  const extension = asset.imagenPrincipal.split(".").pop().toLowerCase();
+  const extension = urlPrincipal.split(".").pop().toLowerCase();
 
   if (formatosImagen.includes(extension)) {
-    return asset.imagenPrincipal; // ✅ Imagen principal válida
+    return urlPrincipal; // ✅ Imagen principal válida
   }
 
-  // Si no es una imagen, buscar en galería
   const primeraImagenGaleria = asset.galeriaMultimedia?.find(
     (item) => item.tipo === "image"
   );
 
-  return primeraImagenGaleria ? primeraImagenGaleria.url : null; // Puede ser null
+  return primeraImagenGaleria ? primeraImagenGaleria.url : null;
 };
 
 const UserAssets = ({ assets = [] }) => (
@@ -41,8 +40,9 @@ const UserAssets = ({ assets = [] }) => (
         {assets.slice(0, 3).map((asset) => (
           <AssetCard
             key={asset._id}
-            image={getValidImage(asset)} // 🔥 Usamos la función inteligente
+            image={getValidImage(asset)}
             title={asset.titulo}
+            id={asset._id}
             author={asset.autor}
             formats={asset.formatos.map((f) => f.tipo)}
             category={asset.categorias[0] || "General"}

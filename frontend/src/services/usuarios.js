@@ -26,3 +26,19 @@ export const getUsuariosPorIds = async (ids) => {
   const responses = await Promise.all(requests);
   return responses.map((res) => res.data);
 };
+
+// Seguir usuario
+export const followUser = async (currentUserId, targetUserId) => {
+  await axios.post(`${API_URL}/${currentUserId}/seguir/${targetUserId}`);
+};
+
+// Dejar de seguir usuario
+export const unfollowUser = async (currentUserId, targetUserId) => {
+  await axios.post(`${API_URL}/${currentUserId}/dejar-seguir/${targetUserId}`);
+};
+
+// Comprobar si sigue
+export const checkIfFollowing = async (currentUserId, targetUserId) => {
+  const response = await axios.get(`${API_URL}/${currentUserId}/sigue/${targetUserId}`);
+  return response.data.isFollowing; // ✅ Asumimos que tu backend responde { isFollowing: true/false }
+};

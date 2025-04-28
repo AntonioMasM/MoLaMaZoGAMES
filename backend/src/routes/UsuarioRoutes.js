@@ -3,37 +3,62 @@ const router = express.Router();
 const UsuarioController = require('../controllers/Usuario/UsuarioController');
 const SocialController = require('../controllers/Usuario/SocialController');
 const AuthController = require('../controllers/Usuario/AuthController');
+const { proteger } = require('../middlewares/authMiddleware'); // Middleware de autenticación
 
-// Rutas de usuarios
-router.post('/', UsuarioController.crearUsuario); // Crear un nuevo usuario
-router.get('/', UsuarioController.obtenerUsuarios); // Obtener todos los usuarios
-router.get('/:email', UsuarioController.obtenerUsuarioPorEmail); // Obtener un usuario por email
-router.put('/:email', UsuarioController.actualizarUsuario); // Actualizar información de un usuario
-router.delete('/:email', UsuarioController.eliminarUsuario); // Eliminar un usuario
 
-// Rutas de redes sociales y foto de perfil
-router.put('/:email/foto', SocialController.actualizarFotoPerfil); // Actualizar foto de perfil
-router.put('/:email/redes', SocialController.actualizarRedesSociales); // Actualizar redes sociales
+// ---------------------------
+// 🔥 Rutas de Favoritos
+// ---------------------------
+router.post('/favoritos', proteger, SocialController.agregarFavorito);        // Añadir asset a favoritos
+router.delete('/favoritos/:id', proteger, SocialController.eliminarFavorito);  // Eliminar favorito
+router.get('/favoritos', proteger, SocialController.obtenerFavoritos);         // Obtener favoritos del usuario
 
-// Rutas de autenticación
-router.post('/login', AuthController.iniciarSesion); // Iniciar sesión de usuario
-router.post('/logout', AuthController.cerrarSesion); // Cerrar sesión
-router.post('/recuperar', AuthController.solicitarRecuperacion); // Solicitar recuperación de contraseña
-router.put('/restablecer', AuthController.restablecerContrasena); // Restablecer contraseña con un token de recuperación
-router.put('/cambiar-clave/:email', AuthController.cambiarContrasena); // Cambiar contraseña desde la cuenta
-
-// Rutas de seguimiento de usuarios
-router.post('/:email/seguir', UsuarioController.seguirUsuario); // Seguir a un usuario
-router.delete('/:email/dejar-seguir', UsuarioController.dejarDeSeguirUsuario); // Dejar de seguir a un usuario
-
-// Rutas para obtener seguidores y seguidos
-router.get('/:email/seguidores', UsuarioController.obtenerSeguidores); // Obtener lista de seguidores
-router.get('/:email/siguiendo', UsuarioController.obtenerSiguiendo); // Obtener lista de usuarios seguidos
-
+// ---------------------------
 // Ruta de búsqueda de usuarios
-router.get('/buscar', UsuarioController.buscarUsuarios); // Buscar usuarios por nombre, nickname o email
+// ---------------------------
+router.get('/buscar', UsuarioController.buscarUsuarios);
 
-// Ruta para obtener usuario por su nickname
-router.get('/perfil/:nickname', UsuarioController.obtenerUsuarioPorNickname); // Obtener usuario por su nickname
+// ---------------------------
+// Rutas de usuarios
+// ---------------------------
+router.post('/', UsuarioController.crearUsuario);
+router.get('/', UsuarioController.obtenerUsuarios);
+router.get('/:email', UsuarioController.obtenerUsuarioPorEmail);
+router.put('/:email', UsuarioController.actualizarUsuario);
+router.delete('/:email', UsuarioController.eliminarUsuario);
+
+// ---------------------------
+// Rutas de redes sociales y foto de perfil
+// ---------------------------
+router.put('/:email/foto', SocialController.actualizarFotoPerfil);
+router.put('/:email/redes', SocialController.actualizarRedesSociales);
+
+// ---------------------------
+// Rutas de autenticación
+// ---------------------------
+router.post('/login', AuthController.iniciarSesion);
+router.post('/logout', AuthController.cerrarSesion);
+router.post('/recuperar', AuthController.solicitarRecuperacion);
+router.put('/restablecer', AuthController.restablecerContrasena);
+router.put('/cambiar-clave/:email', AuthController.cambiarContrasena);
+
+// ---------------------------
+// Rutas de seguimiento de usuarios
+// ---------------------------
+router.post('/:email/seguir', UsuarioController.seguirUsuario);
+router.delete('/:email/dejar-seguir', UsuarioController.dejarDeSeguirUsuario);
+
+// ---------------------------
+// Rutas para obtener seguidores y seguidos
+// ---------------------------
+router.get('/:email/seguidores', UsuarioController.obtenerSeguidores);
+router.get('/:email/siguiendo', UsuarioController.obtenerSiguiendo);
+
+// ---------------------------
+// Ruta para obtener usuario por nickname e ID
+// ---------------------------
+router.get('/perfil/:nickname', UsuarioController.obtenerUsuarioPorNickname);
+router.get('/id/:id', UsuarioController.obtenerUsuarioPorId);
+
 
 module.exports = router;

@@ -1,0 +1,99 @@
+@import "@/styles/variables.css"; /* Importamos las variables */
+
+/* 🏷️ Contenedor principal del header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* 🎯 Título del asset */
+.title {
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* 📚 Meta información: autor, fecha, vistas, estado */
+.metaInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  align-items: center;
+}
+
+/* 👤 Autor */
+.author {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* 🔗 Link al perfil del autor */
+.authorLink {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.authorLink:hover {
+  color: var(--color-hover);
+  text-decoration: underline;
+}
+
+/* 📅 Fecha de publicación */
+.date {
+  display: flex;
+  align-items: center;
+}
+
+/* 👁️ Número de vistas */
+.views {
+  display: flex;
+  align-items: center;
+}
+
+/* 🟢 Estado del asset */
+.status {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: var(--font-size-xs);
+}
+
+/* Disponible */
+.available {
+  background-color: #38a169; /* verde */
+  color: #ffffff;
+}
+
+/* No disponible */
+.unavailable {
+  background-color: #e53e3e; /* rojo */
+  color: #ffffff;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .metaInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+}
+
+.headerTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+  }
+  
+  /* Ya tienes .header y .title definidas */
+  

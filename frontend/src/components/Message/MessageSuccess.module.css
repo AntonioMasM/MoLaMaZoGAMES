@@ -1,0 +1,78 @@
+@import "../../styles/variables.css";
+
+/* Fondo overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  padding: var(--spacing-md);
+}
+
+/* Modal principal */
+.modal {
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.4s ease-out both;
+  text-align: center;
+}
+
+/* Icono de éxito */
+.icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Título */
+.title {
+  font-size: var(--font-size-xl);
+  color: var(--color-success, #22c55e);
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Texto */
+.text {
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Botón cerrar */
+.button {
+  background-color: var(--color-accent);
+  color: #fff;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: var(--color-hover);
+}
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

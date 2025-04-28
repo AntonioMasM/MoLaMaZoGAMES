@@ -1,0 +1,219 @@
+@import "../../styles/variables.css";
+
+/* 🧩 Contenedor principal */
+.header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  animation: fadeInZoom 0.6s ease-out both;
+}
+
+/* 🖼️ Banner */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: var(--border-radius-lg);
+  z-index: 0;
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.banner img:hover {
+  transform: scale(1.03);
+}
+
+/* 👤 Info de perfil */
+.profileInfo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -60px;
+  z-index: 1;
+}
+
+.profilePic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--color-bg);
+  object-fit: cover;
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-bg);
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.profilePic:hover {
+  transform: scale(1.05);
+}
+
+/* 📖 Textos de perfil */
+.textInfo {
+  margin-top: var(--spacing-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* 🏷️ Nickname + Badge */
+.nickname {
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-xs);
+}
+
+.badge {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  font-size: var(--font-size-xs);
+  font-weight: bold;
+  padding: 2px 8px;
+  margin-left: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  vertical-align: middle;
+}
+
+/* ✉️ Email */
+.email {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  word-break: break-word;
+}
+
+/* 📜 Bio */
+.bio {
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  margin-top: var(--spacing-sm);
+  max-width: 600px;
+}
+
+/* 🛠️ Botones de acción (Seguir o Editar) */
+.actionButtons {
+  margin-top: var(--spacing-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm); /* 🔥 Añadido: separación entre botones */
+  flex-wrap: wrap; /* 🔥 Para que no se rompa en móviles */
+}
+
+.editButton {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.editButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.messageButton {
+  background-color: var(--color-secondary, #4f46e5); /* Por defecto un azul secundario */
+  color: var(--color-bg);
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.messageButton:hover {
+  background-color: #4338ca; /* Azul más oscuro en hover */
+}
+
+.messageButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+/* 🔄 Skeleton de carga */
+.skeleton {
+  width: 100%;
+  padding: var(--spacing-xl);
+  text-align: center;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  animation: fadeInZoom 0.6s ease-out both;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .banner {
+    height: 180px;
+  }
+
+  .profilePic {
+    width: 110px;
+    height: 110px;
+  }
+
+  .nickname {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    height: 140px;
+  }
+
+  .profilePic {
+    width: 90px;
+    height: 90px;
+  }
+
+  .nickname {
+    font-size: var(--font-size-lg);
+  }
+
+  .bio {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (max-width: 400px) {
+  .textInfo {
+    padding: 0 var(--spacing-sm);
+  }
+}
+
+/* ✨ Animación de entrada mejorada */
+@keyframes fadeInZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

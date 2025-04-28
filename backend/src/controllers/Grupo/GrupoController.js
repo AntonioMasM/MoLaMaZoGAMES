@@ -66,3 +66,18 @@ exports.eliminarGrupo = async (req, res) => {
         return res.status(500).json({ message: 'Error al eliminar el grupo', error });
     }
 };
+
+exports.obtenerGruposPorUsuario = async (req, res) => {
+    const { userId } = req.params;
+  
+    try {
+      const grupos = await Grupo.find({ usuarios: userId })
+        .populate('usuarios creador assets')
+        .exec();
+  
+      return res.status(200).json(grupos);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error al obtener grupos del usuario', error });
+    }
+  };
+  

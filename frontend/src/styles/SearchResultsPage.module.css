@@ -1,0 +1,103 @@
+@import "./variables.css";
+
+/* 🎯 Contenedor general de la página de búsqueda */
+.searchPage {
+  display: flex;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🎯 Sidebar de filtros */
+.sidebar {
+  width: 250px;
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  box-sizing: border-box;
+  border-right: 1px solid var(--color-border);
+}
+
+/* 🎯 Contenedor principal de resultados */
+.results {
+  flex: 1;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  box-sizing: border-box;
+}
+
+/* 🎯 Sección de tipo (Assets, Usuarios, Categorías) */
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* 🎯 Título de cada sección */
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+/* 🎯 Grid de resultados */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🎯 Estado de carga */
+.loading,
+.error,
+.noResults {
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl);
+  text-align: center;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 🎯 Animación para elementos que aparecen */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🎯 Aplicar la animación a cada sección de resultados */
+.grid > * {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* 🎯 Responsive: sidebar colapsa en pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .searchPage {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: var(--spacing-md);
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .results {
+    padding: var(--spacing-lg);
+  }
+}

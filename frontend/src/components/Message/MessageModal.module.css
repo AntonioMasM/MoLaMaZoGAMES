@@ -1,0 +1,155 @@
+@import "../../styles/variables.css";
+
+/* Fondo oscuro de overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Más suave */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-md);
+}
+
+/* Ventana de modal */
+.modal {
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  max-width: 500px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.4s ease-out both;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: relative;
+}
+
+/* Título */
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* Área de texto */
+.textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.textarea:focus {
+  border-color: var(--color-accent);
+}
+
+/* Mensaje de error */
+.error {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* Botones */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.cancelButton,
+.sendButton {
+  flex: 1;
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Botón cancelar */
+.cancelButton {
+  background-color: var(--color-error);
+  color: #fff;
+}
+
+.cancelButton:hover {
+  background-color: #dc2626;
+}
+
+/* Botón enviar */
+.sendButton {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+.sendButton:hover {
+  background-color: var(--color-hover);
+}
+
+/* Estado deshabilitado */
+.sendButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spinner de carga dentro del botón */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #fff;
+  border-top: 3px solid var(--color-hover);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+/* Fade In del modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Spinner de carga */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .modal {
+    padding: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-lg);
+  }
+
+  .textarea {
+    min-height: 120px;
+  }
+}

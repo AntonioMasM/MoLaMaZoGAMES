@@ -1,0 +1,98 @@
+@import "./variables.css";
+
+/* 📌 Contenedor general */
+.categoriesPage {
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  position: relative;
+  z-index: 0;
+}
+
+/* 📌 Título principal */
+.pageTitle {
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-accent);
+}
+
+/* 📌 Sección de cada categoría */
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.4s ease;
+}
+
+/* 📌 Título de categoría */
+.categoryTitle {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+/* 📌 Grid de assets */
+.assetsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  transition: all 0.5s ease;
+}
+
+/* 📌 Estado de carga o error */
+.loading,
+.error {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+}
+
+/* 📌 Animaciones suaves (reutilizamos las tuyas) */
+.fadeOut {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.slideLeft {
+  animation: slideLeftAnim 0.5s ease forwards;
+}
+
+.slideRight {
+  animation: slideRightAnim 0.5s ease forwards;
+}
+
+@keyframes slideLeftAnim {
+  0% {
+    opacity: 0;
+    transform: translateX(50px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideRightAnim {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}

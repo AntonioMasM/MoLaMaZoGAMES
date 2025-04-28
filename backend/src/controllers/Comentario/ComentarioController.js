@@ -2,10 +2,10 @@ const Comentario = require('../../models/Comentario');
 const Asset = require('../../models/Asset');
 
 // Crear un nuevo comentario sobre un asset
+// Crear un nuevo comentario sobre un asset
 exports.crearComentario = async (req, res) => {
     try {
-        const { assetId, contenido } = req.body;
-        const usuarioId = req.user._id; // Asumimos que el ID del usuario está en el token JWT
+        const { usuario, assetId, contenido } = req.body; // ✅ lo leemos del body
 
         // Verificar que el asset existe
         const asset = await Asset.findById(assetId);
@@ -15,7 +15,7 @@ exports.crearComentario = async (req, res) => {
 
         // Crear el comentario
         const nuevoComentario = new Comentario({
-            usuario: usuarioId,
+            usuario,
             asset: assetId,
             contenido
         });
@@ -30,6 +30,7 @@ exports.crearComentario = async (req, res) => {
     }
 };
 
+
 // Obtener todos los comentarios de un asset
 exports.obtenerComentariosPorAsset = async (req, res) => {
     try {
@@ -42,7 +43,7 @@ exports.obtenerComentariosPorAsset = async (req, res) => {
         }
 
         // Obtener los comentarios del asset
-        const comentarios = await Comentario.find({ asset: assetId }).populate('usuario', 'nombreCompleto nickname');
+        const comentarios = await Comentario.find({ asset: assetId }).populate('usuario', 'nombreCompleto nickname fotoPerfil');
         
         return res.status(200).json({ comentarios });
     } catch (error) {

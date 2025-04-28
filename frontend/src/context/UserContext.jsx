@@ -39,8 +39,18 @@ export function UserProvider({ children }) {
     setToken(null);
   };
 
+  // 🔥 NUEVO: actualizar parte del usuario sin cerrar sesión
+  const updateUser = (updatedData) => {
+    const updatedUser = {
+      ...user,
+      ...updatedData
+    };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser)); // También actualizar en localStorage
+  };
+
   return (
-    <UserContext.Provider value={{ user, token, login, logout, loading }}>
+    <UserContext.Provider value={{ user, token, login, logout, updateUser, loading }}>
       {loading ? (
         <div
           style={{

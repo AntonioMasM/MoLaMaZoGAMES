@@ -1,0 +1,124 @@
+@import "@/styles/variables.css"; /* Asegúrate que cargas tus variables */
+
+/* 🖼️ Sección principal de la galería */
+.gallerySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* 📚 Grid de recursos multimedia */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* 📦 Cada recurso multimedia */
+.galleryItem {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✨ Hover solo en imágenes */
+.galleryItem img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+/* 🔤 Imagen, video o audio */
+.media {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--border-radius-md);
+  transition: transform 0.3s ease;
+}
+
+/* 🎵 Audio especial */
+.audio {
+  width: 100%;
+  margin-top: var(--spacing-sm);
+}
+
+/* 🏷️ Caption de cada recurso */
+.caption {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(30, 30, 30, 0.7);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-align: center;
+  box-sizing: border-box;
+  backdrop-filter: blur(4px);
+  border-bottom-left-radius: var(--border-radius-md);
+  border-bottom-right-radius: var(--border-radius-md);
+}
+
+/* 🚨 Galería vacía */
+.emptyGallery {
+  padding: var(--spacing-lg);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* ➕ Botón "Ver más" */
+.viewAllButton {
+  align-self: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-accent);
+  color: #fff;
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: var(--spacing-md);
+}
+
+.viewAllButton:hover {
+  background-color: var(--color-hover);
+  transform: translateY(-2px);
+}
+
+/* 📱 Responsive ajustes */
+@media (max-width: 768px) {
+  .galleryGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .viewAllButton {
+    width: 100%;
+  }
+}
+
+/* ✨ Animación fade-in por bloque */
+.fadeInItem {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInItemAnimation 0.6s ease forwards;
+  }
+  
+  /* 🔥 Keyframes */
+  @keyframes fadeInItemAnimation {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Delay progresivo automático para los primeros 6 elementos */
+  .galleryItem:nth-child(1) { animation-delay: 0.1s; }
+  .galleryItem:nth-child(2) { animation-delay: 0.2s; }
+  .galleryItem:nth-child(3) { animation-delay: 0.3s; }
+  .galleryItem:nth-child(4) { animation-delay: 0.4s; }
+  .galleryItem:nth-child(5) { animation-delay: 0.5s; }
+  .galleryItem:nth-child(6) { animation-delay: 0.6s; }
+  

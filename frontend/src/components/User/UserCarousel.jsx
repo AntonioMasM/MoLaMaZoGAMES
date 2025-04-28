@@ -44,8 +44,10 @@ const UserCarousel = ({ title, icon, users = [] }) => {
         {getVisibleUsers().map((user, index) => (
           <UserCard
             key={user._id || index}
+            id={user._id}
             nickname={user.nickname}
             fotoPerfil={user.fotoPerfil}
+            email={user.email}
           />
         ))}
       </div>

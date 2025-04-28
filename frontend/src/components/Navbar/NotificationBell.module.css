@@ -1,0 +1,42 @@
+@import "../../styles/variables.css";
+
+/* 🔔 Botón de campana */
+.bellButton {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs);
+  transition: color 0.3s ease;
+}
+
+/* Hover */
+.bellButton:hover {
+  color: var(--color-accent);
+}
+
+/* 🔴 Badge de notificaciones no leídas */
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--color-error);
+  color: var(--color-bg);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+}
+
+/* 📦 Contenedor principal */
+.notificationWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}

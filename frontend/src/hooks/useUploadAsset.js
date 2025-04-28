@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from "react";
 import uploadFileToCloudinary from "../services/uploadFileToCloudinary"; // ⚡ servicio Cloudinary
 import { createAssetInDB } from "../services/assetService"; // ⚡ servicio API backend
 import { useUser  } from "../context/UserContext"; // ⚡ para obtener usuario logueado (ajusta a tu proyecto)
+import { agregarAssetAlGrupo } from "../services/grupoService"; 
 
 // 🎯 Estado inicial limpio
 const initialFormData = {
@@ -90,8 +91,23 @@ export function useUploadAsset() {
   }, []);
 
   const handleFileDrop = useCallback((file) => {
-    setFormData((prev) => ({ ...prev, imagenPrincipal: file }));
+    const extension = file.name.split('.').pop().toUpperCase();
+    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+  
+    setFormData((prev) => ({
+      ...prev,
+      imagenPrincipal: file,
+      formatos: [
+        ...prev.formatos,
+        {
+          file,
+          tipo: extension,
+          tamaño: sizeInMB
+        }
+      ]
+    }));
   }, []);
+  
 
   const handleGalleryChange = useCallback((files) => {
     setFormData((prev) => ({ ...prev, galeriaMultimedia: files }));
@@ -106,75 +122,50 @@ export function useUploadAsset() {
     e.preventDefault();
     setStatus({ mensaje: "", error: "", loading: false });
     setErrors({});
-
-    // Validaciones mínimas
-    if (!formData.titulo.trim()) {
-      scrollToTop();
-      setErrors({ titulo: "El título es obligatorio." });
-      focusOnError("titulo");
-      return;
-    }
-    if (!formData.descripcion.trim()) {
-      scrollToTop();
-      setErrors({ descripcion: "La descripción es obligatoria." });
-      focusOnError("descripcion");
-      return;
-    }
-    if (!formData.categoriaPrincipal) {
-      scrollToTop();
-      setErrors({ categoriaPrincipal: "Debes seleccionar una categoría principal." });
-      focusOnError("categoriaPrincipal");
-      return;
-    }
-    if (!formData.licencia) {
-      scrollToTop();
-      setErrors({ licencia: "Debes seleccionar una licencia." });
-      focusOnError("licencia");
-      return;
-    }
-    if (!formData.imagenPrincipal) {
-      scrollToTop();
-      setErrors({ imagenPrincipal: "Debes subir una imagen principal." });
-      focusOnError("imagenPrincipal");
-      return;
-    }
-    if (formData.formatos.length === 0 || !formData.formatos.some(f => f.file)) {
-      scrollToTop();
-      setErrors({ formatos: "Debes añadir al menos un archivo de formato." });
-      focusOnError("formatos");
-      return;
-    }
-
+  
     try {
       setStatus({ mensaje: "Subiendo asset...", error: "", loading: true });
-
-      // Subida de archivos a Cloudinary
+  
       const imagenPrincipalSubida = await uploadFileToCloudinary(formData.imagenPrincipal);
-
+  
       const galeriaSubida = await Promise.all(
         formData.galeriaMultimedia.map(file => uploadFileToCloudinary(file))
       );
-
+  
       const formatosSubidos = await Promise.all(
-        formData.formatos.map(formatoObj => formatoObj.file ? uploadFileToCloudinary(formatoObj.file) : null)
+        formData.formatos.map(async (formatoObj) => {
+          if (!formatoObj.file) return null;
+          if (formatoObj.file === formData.imagenPrincipal) {
+            return {
+              secure_url: imagenPrincipalSubida.secure_url,
+              public_id: imagenPrincipalSubida.public_id,
+              resource_type: imagenPrincipalSubida.resource_type
+            };
+          }
+          return await uploadFileToCloudinary(formatoObj.file);
+        })
       );
-
-      // Construir nuevo Asset
+  
       const nuevoAsset = {
         titulo: formData.titulo,
         descripcion: formData.descripcion,
         autor: user.nickname,
-        imagenPrincipal: imagenPrincipalSubida.secure_url,
+        imagenPrincipal: {
+          url: imagenPrincipalSubida.secure_url,
+          public_id: imagenPrincipalSubida.public_id,
+        },
         galeriaMultimedia: galeriaSubida.map(file => ({
           tipo: file.resource_type,
           url: file.secure_url,
+          public_id: file.public_id
         })),
         formatos: formatosSubidos
           .filter(Boolean)
           .map((file, idx) => ({
-            tipo: formData.formatos[idx].tipo.toLowerCase() || "other",
+            tipo: formData.formatos[idx].tipo.toLowerCase(),
             tamaño: parseFloat(formData.formatos[idx].tamaño),
             url: file.secure_url,
+            public_id: file.public_id
           })),
         categorias: [
           formData.categoriaPrincipal,
@@ -182,21 +173,29 @@ export function useUploadAsset() {
         ],
         usuarioCreador: user._id,
       };
-
-      // Crear Asset en backend
-      await createAssetInDB(nuevoAsset);
-
-      // Éxito
+  
+      console.log("🚀 Enviando datos del asset:", nuevoAsset);
+  
+      // 🔥 Guardamos el asset en la base de datos y capturamos la respuesta
+      const assetCreado = await createAssetInDB(nuevoAsset);
+  
+      // 🔥 Si el usuario seleccionó un grupo, agregar el asset al grupo
+      if (formData.grupo) {
+        await agregarAssetAlGrupo(formData.grupo, assetCreado._id);
+      }
+  
       setStatus({ mensaje: "Asset subido correctamente 🎉", error: "", loading: false });
       setFormData(initialFormData);
       scrollToTop();
-
+  
     } catch (err) {
       console.error(err);
       setStatus({ mensaje: "", error: "Error al subir el asset ❌", loading: false });
       scrollToTop();
     }
   }, [formData, scrollToTop, focusOnError, user]);
+  
+  
 
   return {
     formData,

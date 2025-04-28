@@ -24,6 +24,14 @@ const UserSection = ({ isSmallScreen }) => {
     return (
       <>
         <Link
+          to="/categories"
+          className={styles.navButton}
+          aria-label="Explorar Categorías"
+        >
+          Explorar
+        </Link>
+
+        <Link
           to="/upload-asset"
           className={styles.navButton}
           aria-label="Subir un nuevo asset"

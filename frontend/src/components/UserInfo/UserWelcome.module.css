@@ -32,3 +32,10 @@
   color: var(--color-text-secondary);
   margin-top: var(--spacing-xs);
 }
+
+.newMessages {
+  color: var(--color-accent);
+  font-weight: bold;
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-md);
+}

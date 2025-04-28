@@ -8,11 +8,11 @@ const GroupSelector = ({
   error = "",
   inputRef = null,
 }) => {
-  const noGrupos = grupos.length === 0;
+  const noGrupos = !grupos || grupos.length === 0;
 
   return (
     <section className={styles.groupSelector}>
-      <label htmlFor="grupo">
+      <label htmlFor="grupo" className={styles.label}>
         Añadir Asset a Grupo
       </label>
 
@@ -23,18 +23,19 @@ const GroupSelector = ({
         onChange={onChange}
         ref={inputRef}
         disabled={noGrupos}
-        aria-invalid={error ? "true" : "false"}
+        aria-invalid={!!error}
         aria-describedby={error ? "error-grupo" : undefined}
+        className={styles.select}
       >
         <option value="" disabled hidden>
           {noGrupos ? "No hay grupos disponibles" : "Selecciona un grupo"}
         </option>
-        {!noGrupos &&
-          grupos.map((grupo) => (
-            <option key={grupo._id} value={grupo._id}>
-              {grupo.nombre}
-            </option>
-          ))}
+
+        {grupos.map((grupo) => (
+          <option key={grupo._id} value={grupo._id}>
+            {grupo.titulo}
+          </option>
+        ))}
       </select>
 
       {error && (

@@ -1,0 +1,106 @@
+@import "../../styles/variables.css";
+
+/* Botón base */
+.followButton {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.3s ease;
+  margin-top: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  min-width: 140px;
+  position: relative; /* Para posicionar el spinner dentro */
+  overflow: hidden; /* Para las animaciones internas */
+}
+
+/* Hover cuando NO está disabled */
+.followButton:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Focus accesible */
+.followButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Estados visuales */
+.notFollowing {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.notFollowing:not(:disabled):hover {
+  background-color: var(--color-hover);
+}
+
+.following {
+  background-color: var(--color-success, #22c55e);
+  color: #ffffff;
+}
+
+.following:not(:disabled):hover {
+  background-color: #16a34a;
+}
+
+.unfollowHover {
+  background-color: var(--color-error, #ef4444); /* Rojo suave */
+  color: #ffffff;
+}
+
+/* Fade suave en el texto */
+.fadeText {
+  transition: opacity 0.3s ease;
+}
+
+/* Spinner de carga */
+.loadingSpinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid transparent;
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animación de rotación */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Bounce leve al click */
+.bounce {
+  animation: bounceAnimation 0.4s ease;
+}
+
+@keyframes bounceAnimation {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Estado desactivado (solo reduce opacidad) */
+.followButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .followButton {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    min-width: 120px;
+  }
+}

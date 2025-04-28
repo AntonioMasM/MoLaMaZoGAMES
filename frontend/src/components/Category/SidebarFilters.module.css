@@ -1,0 +1,71 @@
+@import '../../styles/variables.css';
+
+/* --- CONTENEDOR DEL SIDEBAR --- */
+.sidebar {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  min-width: 240px;
+  max-width: 280px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* --- SECCIONES DEL SIDEBAR (Buscar, Formato, Ordenar) --- */
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- TÍTULOS DE SECCIÓN --- */
+.sectionTitle {
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.5px;
+}
+
+/* --- INPUT DE BÚSQUEDA --- */
+.input {
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg-input);
+  color: var(--color-text);
+  transition: border-color 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* --- SELECTS DE FILTROS --- */
+.select {
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg-input);
+  color: var(--color-text);
+  transition: border-color 0.3s ease;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* --- RESPONSIVE si quieres ajustar el sidebar en pantallas pequeñas --- */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    max-width: none;
+    padding: var(--spacing-md);
+  }
+}

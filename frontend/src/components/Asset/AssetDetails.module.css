@@ -1,0 +1,129 @@
+@import "@/styles/variables.css"; /* Importamos variables globales */
+
+/* 🎯 Contenedor principal de detalles */
+.detailsSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* 🏛️ Bloque interno de detalle (Descripción, Categorías, Formatos) */
+.detailsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* 🏷️ Título de sección principal */
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 📖 Descripción del asset */
+.description {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* 🏷️ Subtítulos de subsecciones */
+.subTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 🧩 Lista de categorías */
+.categoryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+/* 🔖 Ítem de categoría */
+.categoryItem {
+  display: flex;
+  align-items: center;
+}
+
+/* 🎯 Badge de categoría */
+.categoryBadge {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+/* 💾 Lista de formatos descargables */
+.formatList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* 📂 Ítem de formato */
+.formatItem {
+  display: flex;
+  align-items: center;
+}
+
+/* 📥 Enlace de descarga */
+.downloadLink {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* 🖱️ Hover elegante en enlace */
+.downloadLink:hover {
+  color: var(--color-hover);
+  transform: translateX(4px);
+  text-decoration: underline;
+}
+
+/* 🎯 Badge de tamaño de formato */
+.sizeBadge {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  margin-left: var(--spacing-xs);
+}
+
+/* 🚨 Estado vacío */
+.emptyState {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: var(--spacing-md);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .detailsSection {
+    padding: var(--spacing-md);
+  }
+}
