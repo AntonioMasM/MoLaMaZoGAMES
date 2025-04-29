@@ -4,9 +4,9 @@ import { useUser } from "@/context/UserContext";
 import { getUsuarioPorEmail } from "@/services/usuarios";
 import { obtenerAssetsPorUsuario } from "@/services/assetService";
 import LoadingScreen from "@/components/ui/LoadingScreen";
-import UserProfileHeader from "@/components/user/UserProfileHeader";
-import UserStats from "@/components/user/UserStats";
-import UserGallery from "@/components/user/UserGallery";
+import UserProfileHeader from "@/components/User/UserProfileHeader";
+import UserStats from "@/components/User/UserStats";
+import UserGallery from "@/components/User/UserGallery";
 import styles from "@/styles/UserExternal.module.css";
 
 const UserExternal = () => {
