@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { obtenerAssetPorId, actualizarVistasAsset } from "@/services/assetService";
 import LoadingScreen from "@/components/ui/LoadingScreen";
-import AssetHeader from "@/components/asset/AssetHeader";
-import AssetGallery from "@/components/asset/AssetGallery";
-import AssetDetails from "@/components/asset/AssetDetails";
-import AssetComments from "@/components/asset/AssetComments";
+import AssetHeader from "@/components/Asset/AssetHeader";
+import AssetGallery from "@/components/Asset/AssetGallery";
+import AssetDetails from "@/components/Asset/AssetDetails";
+import AssetComments from "@/components/Asset/AssetComments";
 import styles from "@/styles/AssetView.module.css";
 
 const AssetView = () => {
