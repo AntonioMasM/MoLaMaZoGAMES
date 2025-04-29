@@ -1,6 +1,5 @@
 /* UserInfo2.css */
-@import "./Variables.css";
-
+@import "./variables.css";
 /* Contenedor general */
 .user-info2 {
   display: flex;
