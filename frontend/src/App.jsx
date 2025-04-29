@@ -8,7 +8,7 @@ import AppProviders from "./layouts/AppProviders";
 import AppRoutes from "./routes/AppRoutes";
 
 // 🎨 Estilos globales
-import "./styles/global.css";
+import "./styles/Global.css";
 
 export default function App() {
   return (
