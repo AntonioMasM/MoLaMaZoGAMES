@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MessageModal from "@/components/message/MessageModal";
+import MessageModal from "@/components/Message/MessageModal";
 import styles from "./SendMessageButton.module.css";
 
 const SendMessageButton = ({ targetUser }) => {
