@@ -1,6 +1,6 @@
 import { useUser } from "@/context/UserContext";
-import FollowButton from "@/components/user/FollowButton";
-import SendMessageButton from "@/components/user/SendMessageButton"; // 🔥 Nuevo
+import FollowButton from "@/components/User/FollowButton";
+import SendMessageButton from "@/components/User/SendMessageButton"; // 🔥 Nuevo
 import styles from "./UserProfileHeader.module.css";
 import React from "react";
 
