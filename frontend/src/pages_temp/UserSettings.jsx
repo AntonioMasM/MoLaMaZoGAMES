@@ -3,69 +3,63 @@ import { useUser } from "../context/UserContext";
 import Sidebar from "../components/UserProfile/Sidebar";
 import uploadImageToCloudinary from "../services/uploadImageToCloudinary";
 import deleteImageFromCloudinary from "../services/deleteImageFromCloudinary";
-
 import { actualizarUsuario } from "../services/userService";
 import styles from "../styles/UserSettings.module.css";
 
-const UserSettings = () => {
-  const { user: contextUser, updateUser } = useUser();
-  const email = contextUser?.email;
+const getInitialFormData = (user) => ({
+  nombreCompleto: user?.nombreCompleto || "",
+  bio: user?.bio || "",
+  pais: user?.ubicacion?.pais || "",
+  municipio: user?.ubicacion?.municipio || "",
+  universidad: user?.formacion?.universidad || "",
+  carrera: user?.formacion?.carrera || "",
+  modo: user?.modo || "dark",
+  fotoPerfil: user?.fotoPerfil || {
+    secure_url: "/assets/users/default-avatar.png",
+    public_id: "default_local",
+  },
+  software: user?.software || [],
+  skills: user?.skills || [],
+  intereses: user?.intereses || [],
+  redesSociales: user?.redesSociales || {
+    linkedin: "",
+    artstation: "",
+    twitter: "",
+    instagram: "",
+    facebook: "",
+  },
+  currentPassword: "",
+  newPassword: "",
+  confirmNewPassword: "",
+});
 
+
+const UserSettings = () => {
+  const { user: contextUser, updateUser, loading } = useUser();
   const fileInputRef = useRef(null);
 
-  const [formData, setFormData] = useState({
-    nombreCompleto: "",
-    bio: "",
-    pais: "",
-    municipio: "",
-    universidad: "",
-    carrera: "",
-    modo: "dark",
-    fotoPerfil: "",
-    software: [],
-    skills: [],
-    intereses: [],
-    redesSociales: { linkedin: "", artstation: "", twitter: "", instagram: "", facebook: "" },
-    currentPassword: "",
-    newPassword: "",
-    confirmNewPassword: ""
-  });
-
+  const [formData, setFormData] = useState(null);
   const [mensaje, setMensaje] = useState("");
-  const [loading, setLoading] = useState(true);
-
   const [softwareInput, setSoftwareInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
   const [interesInput, setInteresInput] = useState("");
 
+  // Esperar a que user esté listo
   useEffect(() => {
-    if (contextUser) {
-      setFormData({
-        nombreCompleto: contextUser.nombreCompleto || "",
-        bio: contextUser.bio || "",
-        pais: contextUser.ubicacion?.pais || "",
-        municipio: contextUser.ubicacion?.municipio || "",
-        universidad: contextUser.formacion?.universidad || "",
-        carrera: contextUser.formacion?.carrera || "",
-        modo: contextUser.modo || "dark",
-        fotoPerfil: contextUser.fotoPerfil || "/assets/users/default-avatar.png",
-        software: contextUser.software || [],
-        skills: contextUser.skills || [],
-        intereses: contextUser.intereses || [],
-        redesSociales: contextUser.redesSociales || { linkedin: "", artstation: "", twitter: "", instagram: "", facebook: "" },
-        currentPassword: "",
-        newPassword: "",
-        confirmNewPassword: ""
-      });
-      setLoading(false);
+    if (!loading && contextUser) {
+      setFormData(getInitialFormData(contextUser));
     }
-  }, [contextUser]);
+  }, [contextUser, loading]);
+
+  if (loading || !formData) {
+    return <div style={{ padding: "2rem", textAlign: "center" }}>Cargando configuración...</div>;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -75,48 +69,43 @@ const UserSettings = () => {
       ...prev,
       redesSociales: {
         ...prev.redesSociales,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      try {
-        if (
-          typeof formData.fotoPerfil === "object" &&
-          formData.fotoPerfil?.public_id &&
-          !formData.fotoPerfil.secure_url.includes('assets/default-user.webp')
-        ) {
-          await deleteImageFromCloudinary(formData.fotoPerfil.public_id);
-        }
-        
-  
-        const newImage = await uploadImageToCloudinary(file);
-  
-        setFormData((prev) => ({
-          ...prev,
-          fotoPerfil: newImage
-        }));
-  
-      } catch (error) {
-        console.error("Error subiendo o eliminando imagen:", error);
+    if (!file) return;
+
+    try {
+      const isDefault = formData.fotoPerfil?.public_id === "default_local";
+
+      if (!isDefault && formData.fotoPerfil?.public_id) {
+        await deleteImageFromCloudinary(formData.fotoPerfil.public_id);
       }
+
+      const newImage = await uploadImageToCloudinary(file);
+
+      setFormData((prev) => ({
+        ...prev,
+        fotoPerfil: {
+          secure_url: newImage.secure_url,
+          public_id: newImage.public_id,
+        },
+      }));
+    } catch (error) {
+      console.error("Error subiendo o eliminando imagen:", error);
     }
   };
-  
-  
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleUploadClick = () => fileInputRef.current.click();
 
   const addArrayItem = (field, value, setInput) => {
     if (value.trim() !== "") {
       setFormData((prev) => ({
         ...prev,
-        [field]: [...prev[field], value.trim()]
+        [field]: [...prev[field], value.trim()],
       }));
       setInput("");
     }
@@ -125,7 +114,7 @@ const UserSettings = () => {
   const removeItem = (field, index) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: prev[field].filter((_, i) => i !== index)
+      [field]: prev[field].filter((_, i) => i !== index),
     }));
   };
 
@@ -144,11 +133,11 @@ const UserSettings = () => {
         bio: formData.bio,
         ubicacion: {
           pais: formData.pais,
-          municipio: formData.municipio
+          municipio: formData.municipio,
         },
         formacion: {
           universidad: formData.universidad,
-          carrera: formData.carrera
+          carrera: formData.carrera,
         },
         modo: formData.modo,
         fotoPerfil: formData.fotoPerfil,
@@ -156,16 +145,11 @@ const UserSettings = () => {
         skills: formData.skills,
         intereses: formData.intereses,
         redesSociales: formData.redesSociales,
-        password: formData.newPassword || undefined
+        password: formData.newPassword || undefined,
       };
 
-      await actualizarUsuario(email, payload);
-
-      updateUser({
-        ...contextUser,
-        ...payload
-      });
-
+      await actualizarUsuario(contextUser.email, payload);
+      updateUser({ ...contextUser, ...payload });
       setMensaje("Perfil actualizado correctamente ✅");
     } catch (error) {
       console.error(error);
@@ -174,10 +158,6 @@ const UserSettings = () => {
       setTimeout(() => setMensaje(""), 3000);
     }
   };
-
-  if (loading) {
-    return <div style={{ padding: "2rem", textAlign: "center" }}>Cargando configuración...</div>;
-  }
 
   return (
     <div className={styles.settingsLayout}>
@@ -189,10 +169,12 @@ const UserSettings = () => {
         {/* Imagen de Perfil */}
         <div className={styles.avatarContainer}>
         <img
-        src={formData.fotoPerfil || "/assets/users/default-avatar.png"}
-        alt={`Foto de perfil de ${formData.nombreCompleto}`}
+        src={formData.fotoPerfil?.secure_url || "/assets/users/default-avatar.png"}
+        alt={`Foto de perfil de ${formData.nombreCompleto || "usuario"}`}
         className={styles.avatar}
       />
+
+
 
           <button type="button" className={styles.changePhotoButton} onClick={handleUploadClick}>
             Cambiar Foto

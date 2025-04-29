@@ -1,14 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import { getUsuarioPorEmail } from "../services/userService";
 
-export const UserContext = createContext();
+const UserContext = createContext();
 
-// ✅ HOOK EXPORTADO DIRECTAMENTE
-export function useUser() {
-  return useContext(UserContext);
-}
+export const useUser = () => useContext(UserContext);
 
-// ✅ COMPONENTE EXPORTADO DIRECTAMENTE
-export function UserProvider({ children }) {
+const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,17 +15,44 @@ export function UserProvider({ children }) {
     const storedToken = localStorage.getItem("token");
 
     if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
       setToken(storedToken);
-    }
 
-    setLoading(false);
+      getUsuarioPorEmail(parsedUser.email)
+        .then((fullUser) => {
+          if (!fullUser._id) {
+            console.warn("⚠️ Usuario cargado sin _id:", fullUser);
+          }
+          setUser(fullUser);
+          localStorage.setItem("user", JSON.stringify(fullUser));
+        })
+        .catch((err) => {
+          console.error("❌ Error al obtener el usuario completo:", err);
+          // Fallback si no se puede recargar desde la API
+          if (parsedUser._id || parsedUser.id) {
+            setUser({
+              ...parsedUser,
+              _id: parsedUser._id || parsedUser.id,
+            });
+          } else {
+            setUser(null);
+          }
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const login = ({ userData, token }) => {
-    localStorage.setItem("user", JSON.stringify(userData));
+    const normalizedUser = {
+      ...userData,
+      _id: userData._id || userData.id, // Normalizar para siempre tener _id
+    };
+
+    localStorage.setItem("user", JSON.stringify(normalizedUser));
     localStorage.setItem("token", token);
-    setUser(userData);
+    setUser(normalizedUser);
     setToken(token);
   };
 
@@ -39,29 +63,21 @@ export function UserProvider({ children }) {
     setToken(null);
   };
 
-  // 🔥 NUEVO: actualizar parte del usuario sin cerrar sesión
   const updateUser = (updatedData) => {
     const updatedUser = {
       ...user,
-      ...updatedData
+      ...updatedData,
     };
     setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser)); // También actualizar en localStorage
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
   return (
-    <UserContext.Provider value={{ user, token, login, logout, updateUser, loading }}>
+    <UserContext.Provider
+      value={{ user, token, login, logout, updateUser, loading }}
+    >
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            fontSize: "1.5rem",
-            color: "#888",
-          }}
-        >
+        <div style={{ textAlign: "center", marginTop: "5rem" }}>
           Cargando sesión...
         </div>
       ) : (
@@ -69,4 +85,6 @@ export function UserProvider({ children }) {
       )}
     </UserContext.Provider>
   );
-}
+};
+
+export default UserProvider;

@@ -1,32 +1,27 @@
 @import "../../styles/variables.css";
 
-.favoritesBox {
-  background-color: var(--color-bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  margin-top: var(--spacing-lg);
-  transition: box-shadow 0.3s ease;
+/* 📦 Contenedor principal */
+.container {
+  padding: var(--spacing-xs);
 }
 
-.favoritesBox:hover {
-  box-shadow: var(--shadow-lg);
-}
-
-.sectionTitle {
+/* 🏷️ Título de sección */
+.title {
   font-size: var(--font-size-lg);
   font-weight: bold;
   color: var(--color-accent);
   margin-bottom: var(--spacing-md);
 }
 
-.categoriesList {
+/* 🗂️ Rejilla de categorías favoritas */
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: var(--spacing-md);
 }
 
-.categoryItem {
+/* 🧩 Ítem individual */
+.item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,11 +30,12 @@
   cursor: pointer;
 }
 
-.categoryItem:hover {
+.item:hover {
   transform: scale(1.05);
 }
 
-.categoryIcon {
+/* 🖼️ Imagen de categoría */
+.icon {
   width: 90px;
   height: 90px;
   object-fit: cover;
@@ -49,21 +45,24 @@
   transition: filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-.categoryItem:hover .categoryIcon {
+.item:hover .icon {
   filter: grayscale(0%);
   box-shadow: var(--shadow-md);
 }
 
-.categoryName {
+/* 🔤 Nombre de categoría */
+.name {
   margin-top: var(--spacing-xs);
   font-size: var(--font-size-sm);
   font-weight: bold;
   color: var(--color-text);
 }
 
-.emptyText {
+/* ❌ Texto si no hay categorías */
+.empty {
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   text-align: center;
   margin-top: var(--spacing-md);
+  font-style: italic;
 }

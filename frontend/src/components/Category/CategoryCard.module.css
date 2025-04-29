@@ -1,6 +1,16 @@
 @import "../../styles/variables.css";
 
 /* 🎯 Contenedor principal del CategoryCard */
+.cardWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* 🎯 Enlace con tarjeta clicable */
 .card {
   background-color: var(--color-bg-secondary);
   color: var(--color-text);
@@ -9,11 +19,9 @@
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.3s ease;
   width: 100%;
-  max-width: 300px;
+  text-decoration: none;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
-  text-decoration: none;
 }
 
 /* 🎯 Efecto hover */
@@ -39,12 +47,12 @@
   filter: brightness(1);
 }
 
-/* 🎯 Zoom de imagen al hacer hover */
+/* 🎯 Zoom al hacer hover */
 .card:hover .imageWrapper img {
   transform: scale(1.04);
 }
 
-/* 🎯 Info debajo de la imagen */
+/* 🎯 Contenido informativo */
 .info {
   padding: var(--spacing-md);
   display: flex;
@@ -53,7 +61,7 @@
   gap: var(--spacing-sm);
 }
 
-/* 🎯 Nombre de la categoría */
+/* 🎯 Título de categoría */
 .title {
   font-size: var(--font-size-lg);
   font-weight: bold;
@@ -64,9 +72,45 @@
   max-width: 100%;
 }
 
-/* 🎯 Responsive */
+/* 🎯 Botón de seguir */
+.followButton {
+  margin-top: 0.5rem;
+  padding: 6px 14px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.followButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.followButton.siguiendo {
+  background-color: var(--color-gray-600);
+}
+
+.followButton.siguiendo:hover {
+  background-color: var(--color-gray-700);
+}
+
+.followButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 🎯 Responsive ajustes */
 @media screen and (max-width: 768px) {
   .title {
     font-size: var(--font-size-md);
+  }
+
+  .followButton {
+    padding: 5px 10px;
+    font-size: var(--font-size-xs);
   }
 }

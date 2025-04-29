@@ -1,33 +1,65 @@
 @import "../../styles/variables.css";
 
-.followingBox {
-  background-color: var(--color-bg-secondary);
+/* 📦 Contenedor principal */
+.container {
   padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: box-shadow 0.3s ease;
 }
 
-.followingBox:hover {
-  box-shadow: var(--shadow-lg);
-}
-
-.sectionTitle {
-  font-size: var(--font-size-lg);
-  font-weight: bold;
-  color: var(--color-text);
-  margin-bottom: var(--spacing-md);
-}
-
-.followingList {
-  display: flex;
-  flex-wrap: wrap;
+/* 🧾 Lista de tarjetas de usuario */
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--spacing-md);
 }
 
-.emptyText {
-  color: var(--color-text-secondary);
+/* 📢 Zona de estados: loading, error, vacío */
+.status {
   font-size: var(--font-size-sm);
   text-align: center;
   margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.icon {
+  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+}
+
+/* ⏳ Cargando */
+.loading {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* ❌ Error */
+.error {
+  color: var(--color-error);
+  font-weight: bold;
+}
+
+/* 🚫 Sin usuarios */
+.empty {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  text-align: center;
+  margin-top: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+/* 📱 Responsive refinement */
+@media (max-width: 480px) {
+  .list {
+    grid-template-columns: 1fr;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+  }
 }

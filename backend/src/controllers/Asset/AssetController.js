@@ -43,7 +43,8 @@ const crearAsset = async (req, res) => {
     await nuevoAsset.save();
 
     // Responder al cliente
-    return res.status(201).json({ mensaje: "Asset creado con éxito", asset: nuevoAsset });
+    return res.status(201).json(nuevoAsset);
+
 
   } catch (error) {
     console.error("🔥 Error al crear el asset:", error);

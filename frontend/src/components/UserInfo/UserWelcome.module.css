@@ -1,41 +1,94 @@
 @import "../../styles/variables.css";
 
-.welcomeBox {
-  background-color: var(--color-bg-secondary);
+/* 🧱 Contenedor principal del bloque de bienvenida */
+.container {
   padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.welcomeBox:hover {
-  box-shadow: var(--shadow-lg);
-  transform: scale(1.01);
-}
-
-.welcomeTitle {
+/* 🏷️ Título principal */
+.title {
   font-size: var(--font-size-xl);
   font-weight: bold;
   color: var(--color-accent);
+  margin: 0;
 }
 
-.welcomeText {
+.nickname {
+  color: var(--color-text);
+}
+
+/* 🕒 Última conexión */
+.timestamp {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.welcomeNote {
-  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   margin-top: var(--spacing-xs);
 }
 
-.newMessages {
+/* 📩 Contenedor del estado de mensajes */
+.messageStatus {
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+/* ✉️ Estado: mensajes no leídos */
+.unread {
   color: var(--color-accent);
   font-weight: bold;
-  margin-top: var(--spacing-sm);
   font-size: var(--font-size-md);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* ⏳ Estado: cargando mensajes */
+.loading {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* ✅ Estado: sin mensajes */
+.empty {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* ❌ Estado: error al cargar */
+.error {
+  color: var(--color-error);
+  font-weight: bold;
+  font-size: var(--font-size-sm);
+}
+
+/* 🌟 Microanimación para destacar mensaje no leído */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 📱 Ajustes responsivos (opcional) */
+@media (max-width: 480px) {
+  .title {
+    font-size: var(--font-size-lg);
+  }
+
+  .unread {
+    font-size: var(--font-size-sm);
+  }
+
+  .messageStatus {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

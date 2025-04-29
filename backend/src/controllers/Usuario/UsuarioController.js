@@ -1,4 +1,5 @@
 const Usuario = require('../../models/Usuario');
+const Categoria = require('../../models/Categoria');
 const { crearNotificacion } = require('../../services/crearNotificacion'); 
 const mongoose = require('mongoose');
 
@@ -315,6 +316,83 @@ const obtenerUsuarioPorId = async (req, res) => {
       res.status(500).json({ mensaje: 'Error al obtener usuario por ID', error: error.message || 'Error desconocido' });
     }
   };
+  const seguirCategoria = async (req, res) => {
+    try {
+      const { idUsuario, idCategoria } = req.params;
+  
+      if (!mongoose.Types.ObjectId.isValid(idUsuario) || !mongoose.Types.ObjectId.isValid(idCategoria)) {
+        return res.status(400).json({ mensaje: "ID inválido" });
+      }
+  
+      const usuario = await Usuario.findById(idUsuario);
+      const categoria = await Categoria.findById(idCategoria);
+  
+      if (!usuario || !categoria) {
+        return res.status(404).json({ mensaje: 'Usuario o categoría no encontrados' });
+      }
+  
+      if (usuario.categoriasSeguidas?.includes(idCategoria)) {
+        return res.status(400).json({ mensaje: 'Ya sigues esta categoría' });
+      }
+  
+      usuario.categoriasSeguidas.push(idCategoria);
+      await usuario.save();
+  
+      res.status(200).json({ mensaje: `Ahora sigues la categoría ${categoria.nombre}` });
+    } catch (error) {
+      console.error("🔥 Error en seguirCategoria:", error);
+      res.status(500).json({ mensaje: 'Error al seguir categoría', error: error.message });
+    }
+  };
+  
+  const dejarCategoria = async (req, res) => {
+    try {
+      const { idUsuario, idCategoria } = req.params;
+  
+      if (!mongoose.Types.ObjectId.isValid(idUsuario) || !mongoose.Types.ObjectId.isValid(idCategoria)) {
+        return res.status(400).json({ mensaje: "ID inválido" });
+      }
+  
+      const usuario = await Usuario.findById(idUsuario);
+  
+      if (!usuario) {
+        return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+  
+      usuario.categoriasSeguidas = usuario.categoriasSeguidas.filter(
+        id => id.toString() !== idCategoria
+      );
+  
+      await usuario.save();
+  
+      res.status(200).json({ mensaje: 'Has dejado de seguir la categoría' });
+    } catch (error) {
+      res.status(500).json({ mensaje: 'Error al dejar de seguir categoría', error: error.message });
+    }
+  };
+  
+  const obtenerCategoriasSeguidas = async (req, res) => {
+    try {
+      const { idUsuario } = req.params;
+  
+      if (!mongoose.Types.ObjectId.isValid(idUsuario)) {
+        return res.status(400).json({ mensaje: "ID de usuario inválido" });
+      }
+  
+      const usuario = await Usuario.findById(idUsuario)
+        .populate('categoriasSeguidas', '_id nombre descripcion imagen')
+        .lean();
+  
+      if (!usuario) {
+        return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+  
+      res.status(200).json({ categoriasSeguidas: usuario.categoriasSeguidas });
+    } catch (error) {
+      res.status(500).json({ mensaje: 'Error al obtener categorías seguidas', error: error.message });
+    }
+  };
+  
   
 module.exports = {
   crearUsuario,
@@ -329,4 +407,7 @@ module.exports = {
   buscarUsuarios,
   obtenerUsuarioPorNickname,
   obtenerUsuarioPorId,
+  seguirCategoria,
+  dejarCategoria,
+  obtenerCategoriasSeguidas
 };

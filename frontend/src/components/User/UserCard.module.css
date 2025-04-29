@@ -11,7 +11,7 @@
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
   width: 100%;
   max-width: 240px;
   display: flex;
@@ -24,6 +24,7 @@
 .userCard:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: var(--shadow-md);
+  opacity: 0.95;
 }
 
 .imageWrapper {
@@ -55,5 +56,16 @@
 .assets {
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
+  min-height: 1.2em; /* Para evitar salto de altura cuando carga */
 }
 
+/* Badge especial (opcional: Verified, Admin, etc.) */
+.badge {
+  background-color: var(--color-accent);
+  color: white;
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  border-radius: var(--border-radius-sm);
+  margin-left: var(--spacing-xs);
+  white-space: nowrap;
+}

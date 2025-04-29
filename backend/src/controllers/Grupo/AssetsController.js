@@ -3,7 +3,10 @@ const Grupo = require('../../models/Grupo');
 // Agregar un asset al grupo
 exports.agregarAssetAlGrupo = async (req, res) => {
     const { grupoId, assetId } = req.body;
-
+    console.log("📥 BODY recibido en agregarAssetAlGrupo:", req.body);
+    console.log("✅ grupoId:", req.body.grupoId);
+    console.log("✅ assetId:", req.body.assetId);
+    
     try {
         const grupo = await Grupo.findById(grupoId);
         if (!grupo) return res.status(404).json({ message: 'Grupo no encontrado' });

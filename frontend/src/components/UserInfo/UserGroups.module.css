@@ -1,32 +1,12 @@
 @import "../../styles/variables.css";
 
-.groupsBox {
-  background-color: var(--color-bg-secondary);
+/* 📦 Contenedor principal del componente */
+.container {
   padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: box-shadow 0.3s ease;
 }
 
-.groupsBox:hover {
-  box-shadow: var(--shadow-lg);
-}
-
-.sectionTitle {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: var(--font-size-lg);
-  font-weight: bold;
-  color: var(--color-accent);
-  margin-bottom: var(--spacing-md);
-}
-
-.icon {
-  font-size: 1.2rem;
-}
-
-.groupList {
+/* 📋 Lista de grupos */
+.list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -35,26 +15,77 @@
   gap: var(--spacing-sm);
 }
 
-.groupItem {
-  padding: var(--spacing-sm);
+/* 🔗 Ítem individual */
+.item {
   background-color: var(--color-bg);
   border-radius: var(--border-radius-md);
-  color: var(--color-text);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.item:hover,
+.item:focus-within {
+  transform: translateX(4px);
+  background-color: var(--color-hover);
+}
+
+/* 🔗 Enlace dentro del ítem */
+.link {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: transform 0.2s ease;
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-decoration: none;
+  color: var(--color-text);
+  border-radius: inherit;
+  transition: color 0.2s ease;
 }
 
-.groupItem:hover {
-  transform: translateX(4px);
+.link:hover,
+.link:focus-visible {
+  color: #ffffff;
+  background-color: var(--color-hover);
+  outline: none;
 }
 
-.groupIcon {
+/* 👥 Icono decorativo */
+.badge {
   font-size: 1rem;
 }
 
-.emptyText {
+/* 🆔 Nombre del grupo */
+.name {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+/* ❌ Texto vacío cuando no hay grupos */
+.empty {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+/* 👤 Icono vacío (sin grupos) */
+.emptyIcon {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+}
+
+/* 📱 Mobile refinamiento */
+@media (max-width: 480px) {
+  .link {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .badge {
+    font-size: 0.9rem;
+  }
+
+  .name {
+    font-size: var(--font-size-sm);
+  }
 }

@@ -50,4 +50,22 @@ export const getUsuarioPorId = async (id) => {
     const response = await axios.get(`${API_URL}/id/${encodeURIComponent(id)}`);
     return response.data;
   };
+
+  const CATEGORIA_API_URL = "http://localhost:5000/api/categorias";
+
+  // Seguir una categoría
+  export const seguirCategoria = async (idUsuario, idCategoria) => {
+    const response = await axios.post(`${CATEGORIA_API_URL}/${idCategoria}/seguir/${idUsuario}`);
+    return response.data;
+  };
+  
+  export const dejarCategoria = async (idUsuario, idCategoria) => {
+    const response = await axios.delete(`${CATEGORIA_API_URL}/${idCategoria}/dejar/${idUsuario}`);
+    return response.data;
+  };
+  
+  export const getCategoriasSeguidas = async (idUsuario) => {
+    const response = await axios.get(`${CATEGORIA_API_URL}/seguidas/${idUsuario}`);
+    return response.data.categoriasSeguidas || [];
+  };
   

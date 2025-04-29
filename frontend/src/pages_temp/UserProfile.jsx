@@ -4,7 +4,7 @@ import { getUsuarioPorEmail } from "../services/userService"; // ✅ Hook limpio
 
 import Sidebar from "../components/UserProfile/Sidebar";
 import UserInfo from "../components/UserProfile/UserInfo";
-import ProfileComments from "../components/UserProfile/ProfileComments";
+import ProfileComments from "../components/UserProfile/ProfileNotifications";
 import UploadAsset from "../components/UserProfile/UploadAsset";
 
 import styles from "../styles/UserProfile.module.css";

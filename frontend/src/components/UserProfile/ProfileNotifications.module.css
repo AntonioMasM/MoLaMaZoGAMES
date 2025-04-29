@@ -1,0 +1,115 @@
+@import "../../styles/variables.css";
+
+.profileNotifications {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.icon {
+  font-size: var(--font-size-md);
+}
+
+.iconSmall {
+  font-size: var(--font-size-sm);
+}
+
+/* Botón "Marcar todas como leídas" */
+.markAllButton {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: color 0.2s ease;
+}
+
+.markAllButton:hover {
+  color: var(--color-hover);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Notificación individual */
+.item {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  transition: background-color 0.3s ease;
+}
+
+.item:hover {
+  background-color: var(--color-hover);
+  color: white;
+}
+
+.unread {
+  border-left: 4px solid var(--color-accent);
+  background-color: var(--color-bg-alt);
+}
+
+.content {
+  font-size: var(--font-size-sm);
+}
+
+.timestamp {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+/* Estados vacíos o de carga */
+.loading,
+.empty {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: var(--font-size-md);
+  }
+
+  .markAllButton {
+    font-size: var(--font-size-xs);
+  }
+
+  .content {
+    font-size: var(--font-size-xs);
+  }
+
+  .timestamp {
+    font-size: var(--font-size-xxs);
+  }
+}

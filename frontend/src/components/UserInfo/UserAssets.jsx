@@ -1,58 +1,68 @@
 import AssetCard from "../Asset/AssetCard";
 import styles from "./UserAssets.module.css";
+import { useNavigate } from "react-router-dom";
+import { FaBoxOpen } from "react-icons/fa";
 
-// 🎯 Función para decidir qué imagen mostrar
 const getValidImage = (asset) => {
-  if (!asset || !asset.imagenPrincipal || !asset.imagenPrincipal.url) return null;
+  if (!asset || !asset.imagenPrincipal?.url) return null;
 
   const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
-  const urlPrincipal = asset.imagenPrincipal.url;
+  const url = asset.imagenPrincipal.url.toLowerCase();
+  const extension = url.split(".").pop();
 
-  const extension = urlPrincipal.split(".").pop().toLowerCase();
+  if (formatosImagen.includes(extension)) return url;
 
-  if (formatosImagen.includes(extension)) {
-    return urlPrincipal; // ✅ Imagen principal válida
-  }
+  const galeria = asset.galeriaMultimedia || [];
+  const alternativa = galeria.find((item) => item.tipo === "image");
 
-  const primeraImagenGaleria = asset.galeriaMultimedia?.find(
-    (item) => item.tipo === "image"
-  );
-
-  return primeraImagenGaleria ? primeraImagenGaleria.url : null;
+  return alternativa?.url || null;
 };
 
-const UserAssets = ({ assets = [] }) => (
-  <section className={styles.assetsBox} aria-labelledby="titulo-assets">
-    <header className={styles.assetsHeader}>
-      <h3 id="titulo-assets" className={styles.sectionTitle}>
-        Tus últimos Assets
-      </h3>
-      <button
-        className={styles.viewAll}
-        onClick={() => alert("Redirigir a sección de todos los assets")}
-      >
-        Ver Todos
-      </button>
-    </header>
+const UserAssets = ({ assets = [] }) => {
+  const assetsRecientes = assets.slice(0, 3);
+  const navigate = useNavigate();
 
-    {assets.length > 0 ? (
-      <div className={styles.assetsList}>
-        {assets.slice(0, 3).map((asset) => (
-          <AssetCard
-            key={asset._id}
-            image={getValidImage(asset)}
-            title={asset.titulo}
-            id={asset._id}
-            author={asset.autor}
-            formats={asset.formatos.map((f) => f.tipo)}
-            category={asset.categorias[0] || "General"}
-          />
-        ))}
-      </div>
-    ) : (
-      <p className={styles.emptyText}>No has subido ningún asset aún.</p>
-    )}
-  </section>
-);
+  return (
+    <section
+      className={styles.container}
+      aria-labelledby="user-assets-title"
+      role="region"
+    >
+      <header className={styles.header}>
+        <h3 id="user-assets-title" className="sr-only">Assets subidos</h3>
+
+        <button
+          type="button"
+          className={styles.viewAll}
+          onClick={() => navigate("/gallery")}
+          aria-label="Ver todos los assets subidos"
+        >
+          Ver todos
+        </button>
+      </header>
+
+      {assetsRecientes.length > 0 ? (
+        <div className={styles.list} role="list">
+          {assetsRecientes.map((asset) => (
+            <AssetCard
+              key={asset._id}
+              image={getValidImage(asset)}
+              title={asset.titulo}
+              id={asset._id}
+              author={asset.autor}
+              formats={asset.formatos?.map((f) => f.tipo)}
+              category={asset.categorias?.[0] || "General"}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className={styles.empty}>
+          <FaBoxOpen className={styles.emptyIcon} aria-hidden="true" />
+          No has subido ningún asset aún.
+        </p>
+      )}
+    </section>
+  );
+};
 
 export default UserAssets;

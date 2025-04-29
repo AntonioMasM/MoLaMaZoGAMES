@@ -1,169 +1,187 @@
-// src/pages/GroupPage.jsx
+// ✅ GroupPage.jsx actualizado con mejoras de UX, accesibilidad y feedback visual
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { obtenerGrupoPorId } from "../services/grupoService"; // Asumimos que tienes esta función
-import { useMensajes } from "../hooks/useMensajes"; // Para enviar invitaciones
+import { obtenerGrupoPorId } from "../services/grupoService";
+import { useMensajes } from "../hooks/useMensajes";
+import { useModal } from "../context/ModalContext";
+
+import InviteModal from "../components/Modals/InviteModal";
 import AssetCard from "../components/Asset/AssetCard";
 import UserCard from "../components/User/UserCard";
 
-import styles from "../styles/GroupPage.module.css"; // Nuevo CSS
+import { FaUsers, FaBoxOpen, FaUserPlus } from "react-icons/fa";
+
+import styles from "../styles/GroupPage.module.css";
 
 const getValidImage = (asset) => {
-  if (!asset || !asset.imagenPrincipal || !asset.imagenPrincipal.url) return null;
+  if (!asset?.imagenPrincipal?.url) return null;
 
   const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
-  const urlPrincipal = asset.imagenPrincipal.url;
-  const extension = urlPrincipal.split(".").pop().toLowerCase();
+  const url = asset.imagenPrincipal.url;
+  const ext = url.split(".").pop().toLowerCase();
 
-  if (formatosImagen.includes(extension)) {
-    return urlPrincipal;
-  }
-
-  const primeraImagenGaleria = asset.galeriaMultimedia?.find(
-    (item) => item.tipo === "image"
-  );
-
-  return primeraImagenGaleria ? primeraImagenGaleria.url : null;
+  if (formatosImagen.includes(ext)) return url;
+  const galeria = asset.galeriaMultimedia?.find((item) => item.tipo === "image");
+  return galeria?.url || null;
 };
 
 const GroupPage = () => {
-  const { id } = useParams(); // ID del grupo desde la URL
+  const { id } = useParams();
   const [grupo, setGrupo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { enviarMensaje } = useMensajes(); // Hook para mandar invitaciones
+  const [modalVisible, setModalVisible] = useState(false);
+  const [enviandoInvitacion, setEnviandoInvitacion] = useState(false);
+  const { enviarMensaje } = useMensajes();
+  const { showModal } = useModal();
 
   useEffect(() => {
     const fetchGrupo = async () => {
       try {
-        const grupoData = await obtenerGrupoPorId(id);
-        setGrupo(grupoData);
-      } catch (error) {
-        console.error("Error al cargar grupo:", error);
+        const data = await obtenerGrupoPorId(id);
+        setGrupo(data);
+      } catch (err) {
+        console.error("Error al cargar grupo:", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchGrupo();
   }, [id]);
 
-  const handleInvitarUsuario = async () => {
-    const emailUsuario = prompt("Introduce el email del usuario a invitar:");
-    if (!emailUsuario) return;
-  
+  const handleInvitarUsuario = async (email) => {
     try {
-      // Paso 1: Buscar el usuario por email
-      const response = await fetch(`http://localhost:5000/api/usuarios/${emailUsuario}`);
-      if (!response.ok) {
-        alert("No se encontró el usuario.");
-        return;
-      }
-      const usuarioInvitado = await response.json();
-  
-      // Paso 2: Crear contenido automático del mensaje
-      const contenido = `Te han invitado a colaborar en el grupo "${grupo.titulo}". 
-  Haz clic aquí para unirte: http://localhost:5173/groups/${grupo._id}`;
-  
-      // Paso 3: Crear el mensaje usando tu hook
+      setEnviandoInvitacion(true);
+      const res = await fetch(`http://localhost:5000/api/usuarios/${email}`);
+      if (!res.ok) return showModal("error", { mensaje: "No se encontró el usuario." });
+
+      const user = await res.json();
+      if (user._id === grupo.creador._id)
+        return showModal("error", { mensaje: "No puedes invitarte a ti mismo." });
+
+      const yaMiembro = grupo.usuarios.some((u) => u._id === user._id);
+      if (yaMiembro)
+        return showModal("error", { mensaje: "Este usuario ya es miembro del grupo." });
+
+      const contenido = `Te han invitado a colaborar en el grupo "${grupo.titulo}".\nHaz clic aquí: http://localhost:5173/groups/${grupo._id}`;
+
       await enviarMensaje({
-        remitente: grupo.creador._id, // El creador del grupo será quien invite
-        destinatario: usuarioInvitado._id, // Usuario invitado
-        contenido: contenido,
+        remitente: grupo.creador._id,
+        destinatario: user._id,
+        contenido,
         tipoMensaje: "grupo",
       });
-  
-      alert(`Invitación enviada a ${emailUsuario}`);
-    } catch (error) {
-      console.error("Error al enviar invitación:", error);
-      alert("Hubo un problema al enviar la invitación.");
+
+      showModal("confirm", { email, grupo });
+    } catch (err) {
+      console.error("Error al enviar invitación:", err);
+      showModal("error", { mensaje: "Hubo un problema al enviar la invitación." });
+    } finally {
+      setEnviandoInvitacion(false);
     }
   };
-  
 
   if (loading) {
-    return (
-      <div className={styles.loading} role="status" aria-live="polite">
-        <p>Cargando grupo...</p>
-      </div>
-    );
+    return <div className={styles.loading}><p>Cargando grupo...</p></div>;
   }
 
   if (!grupo) {
-    return (
-      <div className={styles.error} role="alert">
-        <p>No se encontró el grupo solicitado.</p>
-      </div>
-    );
+    return <div className={styles.error}><p>No se encontró el grupo solicitado.</p></div>;
   }
 
   return (
-    <div className={styles.container}>
-      {/* 🔵 HEADER */}
-      <header className={styles.groupHeader}>
-        <h1 className={styles.groupTitle}>{grupo.titulo}</h1>
-        <button onClick={handleInvitarUsuario} className={styles.inviteButton}>
-          Invitar Usuarios
-        </button>
-      </header>
+    <main className={styles.container} role="main">
+      <GrupoHeader titulo={grupo.titulo} onInvitar={() => setModalVisible(true)} enviando={enviandoInvitacion} />
+      <section className={styles.gridTwoColumns} aria-label="Información del grupo">
+        <GrupoDescripcion descripcion={grupo.descripcion} />
+        <GrupoMiembros usuarios={grupo.usuarios} creadorId={grupo.creador._id} />
+      </section>
+      <GrupoAssets assets={grupo.assets} />
 
-      {/* 🔵 CONTENIDO */}
-      <div className={styles.content}>
-        {/* Izquierda: Descripción + Miembros */}
-        <aside className={styles.leftColumn}>
-          {/* Descripción */}
-          {grupo.descripcion && (
-            <div className={styles.descriptionBox}>
-              <p className={styles.descriptionText}>{grupo.descripcion}</p>
-            </div>
-          )}
-
-          {/* Miembros */}
-          <section className={styles.membersSection} aria-labelledby="usuarios-heading">
-            <h2 id="usuarios-heading" className={styles.sectionTitle}>Miembros</h2>
-            {grupo.usuarios.length > 0 ? (
-              <div className={styles.membersList}>
-                {grupo.usuarios.map((usuario) => (
-                  <UserCard
-                    key={usuario._id}
-                    id={usuario._id}
-                    nickname={usuario.nickname}
-                    email={usuario.email}
-                    fotoPerfil={usuario.fotoPerfil || { secure_url: "/assets/main.webp" }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className={styles.emptyText}>Este grupo no tiene miembros aún.</p>
-            )}
-          </section>
-        </aside>
-
-        {/* Derecha: Assets */}
-        <section className={styles.rightColumn}>
-          <section className={styles.assetsSection} aria-labelledby="assets-heading">
-            <h2 id="assets-heading" className={styles.sectionTitle}>Assets Relacionados</h2>
-            {grupo.assets.length > 0 ? (
-              <div className={styles.assetsList}>
-                {grupo.assets.map((asset) => (
-                  <AssetCard
-                    key={asset._id}
-                    id={asset._id}
-                    title={asset.titulo}
-                    image={getValidImage(asset)}
-                    formats={asset.formatos.map((f) => f.tipo)}
-                    author={asset.autor}
-                    category={asset.categorias[0] || "General"}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className={styles.emptyText}>Este grupo no tiene assets aún.</p>
-            )}
-          </section>
-        </section>
-      </div>
-    </div>
+      <InviteModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onInvite={handleInvitarUsuario}
+        aria-describedby="modal-invitar"
+      />
+    </main>
   );
 };
+
+const GrupoHeader = ({ titulo, onInvitar, enviando }) => (
+  <header className={styles.groupHeader} aria-labelledby="titulo-grupo">
+    <h1 id="titulo-grupo" className={styles.groupTitle}>{titulo}</h1>
+    <button
+      onClick={onInvitar}
+      className={styles.inviteButton}
+      aria-label="Invitar a un usuario"
+      disabled={enviando}
+    >
+      <FaUserPlus style={{ marginRight: "8px" }} />
+      {enviando ? "Enviando..." : "Invitar Usuarios"}
+    </button>
+  </header>
+);
+
+const GrupoDescripcion = ({ descripcion }) => (
+  descripcion ? (
+    <article className={styles.descriptionBox} aria-label="Descripción del grupo">
+      <p className={styles.descriptionText}>{descripcion}</p>
+    </article>
+  ) : null
+);
+
+const GrupoMiembros = ({ usuarios, creadorId }) => (
+  <section className={styles.membersSection} aria-labelledby="usuarios-heading">
+    <h2 id="usuarios-heading" className={styles.sectionTitle}>
+      <FaUsers style={{ marginRight: "8px" }} /> Miembros ({usuarios.length})
+    </h2>
+    <p className={styles.sectionSubtext}>Estos son los miembros actuales del grupo.</p>
+    {usuarios.length ? (
+      <ul className={styles.membersList} role="list">
+        {usuarios.map((u) => (
+          <li key={u._id} role="listitem">
+            <UserCard
+              id={u._id}
+              nickname={u.nickname}
+              email={u.email}
+              fotoPerfil={u.fotoPerfil || { secure_url: "/assets/main.webp" }}
+              badge={u._id === creadorId ? "Creador" : null}
+            />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className={styles.emptyText}>Este grupo no tiene miembros aún.</p>
+    )}
+  </section>
+);
+
+const GrupoAssets = ({ assets }) => (
+  <section className={styles.assetsSection} aria-labelledby="assets-heading">
+    <h2 id="assets-heading" className={styles.sectionTitle}>
+      <FaBoxOpen style={{ marginRight: "8px" }} /> Assets Relacionados ({assets.length})
+    </h2>
+    <p className={styles.sectionSubtext}>Archivos digitales vinculados a este grupo de trabajo.</p>
+    {assets.length ? (
+      <div className={styles.assetsList}>
+        {assets.map((asset) => (
+          <AssetCard
+            key={asset._id}
+            id={asset._id}
+            title={asset.titulo}
+            image={getValidImage(asset)}
+            formats={asset.formatos.map((f) => f.tipo)}
+            author={asset.autor}
+            category={asset.categorias?.[0] || "General"}
+            isNew={Date.now() - new Date(asset.createdAt).getTime() < 1000 * 60 * 60 * 24 * 7}
+          />
+        ))}
+      </div>
+    ) : (
+      <p className={styles.emptyText}>Este grupo no tiene assets aún.</p>
+    )}
+  </section>
+);
 
 export default GroupPage;

@@ -1,28 +1,39 @@
-// src/components/UserInfo/UserGroups.jsx
-import { Link } from "react-router-dom"; // 🚀 Necesario para los enlaces
+import { Link } from "react-router-dom";
 import styles from "./UserGroups.module.css";
 import { FaUsers } from "react-icons/fa";
 
-const UserGroups = ({ grupos = [] }) => (
-  <div className={styles.groupsBox} aria-labelledby="grupos-title">
-    <h3 id="grupos-title" className={styles.sectionTitle}>
-      <FaUsers className={styles.icon} /> Grupos de Trabajo
-    </h3>
+const UserGroups = ({ grupos = [] }) => {
+  return (
+    <section
+      className={styles.container}
+      aria-labelledby="grupos-title"
+      role="region"
+    >
+      <h3 id="grupos-title" className="sr-only">Grupos del usuario</h3>
 
-    {grupos.length > 0 ? (
-      <ul className={styles.groupList}>
-        {grupos.map((grupo) => (
-          <li key={grupo._id} className={styles.groupItem}>
-            <Link to={`/groups/${grupo._id}`} className={styles.groupLink}>
-              <span className={styles.groupIcon}>👥</span> {grupo.titulo}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p className={styles.emptyText}>No estás en ningún grupo actualmente.</p>
-    )}
-  </div>
-);
+      {grupos.length > 0 ? (
+        <ul className={styles.list} role="list">
+          {grupos.map((grupo) => (
+            <li key={grupo._id} className={styles.item}>
+              <Link
+                to={`/groups/${grupo._id}`}
+                className={styles.link}
+                aria-label={`Ir al grupo ${grupo.titulo}`}
+              >
+                <span className={styles.badge} aria-hidden="true">👥</span>
+                <span className={styles.name}>{grupo.titulo}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={styles.empty}>
+          <FaUsers className={styles.emptyIcon} aria-hidden="true" />
+          No perteneces a ningún grupo todavía.
+        </p>
+      )}
+    </section>
+  );
+};
 
 export default UserGroups;

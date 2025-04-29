@@ -2,16 +2,26 @@ import { useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection/HeroSection";
 import AssetSection from "../components/Asset/AssetSection";
 import UserSection from "../components/User/UserSection";
+import GrupoAssetSection from "../components/Grupo/GrupoAssetSection";
+import CategoriaAssetSection from "../components/Category/CategoriaAssetSection";
 import UserInfo from "../components/UserInfo/UserInfo";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useUser } from "../context/UserContext";
+import { useUserInfoData } from "../hooks/useUserInfoData";
+import { useCategoriasSeguidas } from "../hooks/useCategoriasSeguidas";
 
 const Home = () => {
   const { user, loading } = useUser();
   const isAuthenticated = !!user;
   const [showContent, setShowContent] = useState(false);
 
+  const { gruposTrabajo } = useUserInfoData(); // Grupos del usuario
+  const { categorias, cargarCategoriasSeguidas } = useCategoriasSeguidas();
   useEffect(() => {
+    if (user?._id) {
+      cargarCategoriasSeguidas(user._id);
+    }
     const timeout = setTimeout(() => {
       setShowContent(true);
     }, 100);
@@ -36,7 +46,7 @@ const Home = () => {
             </h1>
             <HeroSection />
             <AssetSection />
-            <UserSection /> {/* 👈 Añadido aquí, debajo de Assets */}
+            <UserSection />
           </motion.div>
         ) : isAuthenticated && showContent ? (
           <motion.div
@@ -49,7 +59,22 @@ const Home = () => {
             <h1 id="main-title" className="sr-only">
               Página de Usuario Autenticado
             </h1>
+
             <UserInfo />
+
+            {/* 🔥 Sección de Assets por Grupo */}
+            {gruposTrabajo?.length > 0 && (
+              <section aria-label="Tus Grupos de Trabajo">
+                <GrupoAssetSection grupos={gruposTrabajo} />
+              </section>
+            )}
+
+            {/* 🔥 Sección de Assets por Categorías Seguidas */}
+            {categorias?.length > 0 && (
+              <section aria-label="Categorías que Sigues">
+                <CategoriaAssetSection categoriasSeguidas={categorias} />
+              </section>
+            )}
           </motion.div>
         ) : null}
       </AnimatePresence>

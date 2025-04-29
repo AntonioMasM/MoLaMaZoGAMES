@@ -1,21 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const categoriaController = require('../controllers/Categoria/CategoriaController');
+const UsuarioController = require('../controllers/Usuario/UsuarioController');
 
-
-// Crear nueva categoría
+// ---------------------------
+// CRUD de categorías
+// ---------------------------
 router.post('/', categoriaController.crearCategoria);
-
-// Obtener todas las categorías
 router.get('/', categoriaController.obtenerCategorias);
-
-// Obtener una categoría por ID
 router.get('/:id', categoriaController.obtenerCategoriaPorId);
-
-// Actualizar una categoría
 router.put('/:id', categoriaController.actualizarCategoria);
-
-// Eliminar una categoría
 router.delete('/:id', categoriaController.eliminarCategoria);
+
+// ---------------------------
+// Seguimiento de categorías
+// ---------------------------
+router.post('/:idCategoria/seguir/:idUsuario', UsuarioController.seguirCategoria);
+router.delete('/:idCategoria/dejar/:idUsuario', UsuarioController.dejarCategoria);
+router.get('/seguidas/:idUsuario', UsuarioController.obtenerCategoriasSeguidas);
 
 module.exports = router;

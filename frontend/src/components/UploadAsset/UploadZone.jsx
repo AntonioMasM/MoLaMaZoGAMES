@@ -21,28 +21,50 @@ const UploadZone = ({
 
   const handleFile = (file) => {
     const allowedTypes = [
+      // 2D
       "image/png", "image/jpeg", "image/jpg", "image/svg+xml",
-      "video/mp4", "video/webm",
-      "audio/mpeg", "audio/wav",
-      "application/json", "text/plain", "application/octet-stream"
+  
+      // 3D
+      "model/fbx", "model/obj", "model/stl", "model/gltf+json", "model/gltf-binary",
+      "application/octet-stream", // usado por .blend, .fbx y otros binarios
+  
+      // Audio
+      "audio/*",
+  
+      // Video
+      "video/*",
+  
+      // Código fuente y texto
+      "text/plain", "application/json", "text/html", "text/css", "application/javascript",
+  
+      // Otros posibles
+      "application/zip", "application/x-rar-compressed", "application/x-7z-compressed"
     ];
+  
     const maxSizeMB = 100;
-
-    if (!allowedTypes.includes(file.type)) {
+  
+    const isValidType = allowedTypes.some((type) =>
+      file.type === type || file.type.startsWith(type.replace("*", ""))
+    );
+  
+    if (!isValidType) {
       setLocalError("Tipo de archivo no permitido.");
       return;
     }
+  
     if (file.size > maxSizeMB * 1024 * 1024) {
       setLocalError("Archivo demasiado grande (máximo 100MB).");
       return;
     }
-
+  
     setLocalError("");
     setSelectedFile(file);
     onFileSelect(file);
+  
     const tempUrl = URL.createObjectURL(file);
     setDynamicPreview(tempUrl);
   };
+  
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -118,7 +140,7 @@ const UploadZone = ({
 
         <input
           type="file"
-          accept="*/*"
+          accept=".png,.jpg,.jpeg,.svg,.fbx,.obj,.stl,.blend,.gltf,.glb,.wrml,.mp3,.wav,.aac,.ogg,.mp4,.webm,.avi,.mov,.txt,.html,.css,.js,.json,.zip,.rar,.7z"
           onChange={handleChange}
           hidden
           ref={inputRef}
@@ -133,11 +155,14 @@ const UploadZone = ({
       )}
 
       <ul className={styles.formatList}>
-        <li><FaFileImage /> Imágenes: PNG, JPG, SVG</li>
-        <li><FaFileVideo /> Videos: MP4, WEBM</li>
-        <li><FaFileAudio /> Audio: MP3, WAV</li>
-        <li><FaFileAlt /> Otros: TXT, JSON</li>
+        <li><FaFileImage /> 2D: PNG, JPG, JPEG, SVG</li>
+        <li><FaFileAlt /> 3D: FBX, OBJ, STL, BLEND, GLTF, WRML</li>
+        <li><FaFileAudio /> Audio: MP3, WAV, AAC, OGG...</li>
+        <li><FaFileVideo /> Video: MP4, WEBM, AVI, MOV...</li>
+        <li><FaFileAlt /> Código: TXT, HTML, CSS, JS, JSON...</li>
+        <li><FaFileAlt /> Otros: ZIP, RAR, 7Z, BIN...</li>
       </ul>
+
 
       {showError && <p id="error-file" className={styles.errorMessage}>{showError}</p>}
 

@@ -4,12 +4,10 @@ import Footer from "../components/Footer/Footer";
 
 export default function Layout({ children }) {
   return (
-    <>
+    <div className="layout-wrapper">
       <Navbar />
-      <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        {children}
-      </main>
+      <main className="layout-main">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

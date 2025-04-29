@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAssets } from "../../hooks/useAssets";
 import AssetCard from "../Asset/AssetCard";
 import UserCard from "../User/UserCard";
@@ -33,22 +33,25 @@ const SearchResultItem = ({ item }) => {
   const { cargarAssetsDeUsuario } = useAssets();
   const [totalAssets, setTotalAssets] = useState(null);
 
-  // Solo para usuarios: cargar total de assets
+  // 🔁 Evita múltiples cargas por usuario
+  const fetchedOnce = useRef(false);
+
   useEffect(() => {
-    const fetchAssetsCount = async () => {
-      if (isUsuario && item._id) {
+    if (isUsuario && item._id && !fetchedOnce.current) {
+      const fetchAssetsCount = async () => {
         try {
           const assetsUsuario = await cargarAssetsDeUsuario(item._id);
           setTotalAssets(assetsUsuario.length);
+          fetchedOnce.current = true;
         } catch (error) {
           console.error("Error al cargar assets del usuario:", error);
           setTotalAssets(0);
         }
-      }
-    };
+      };
 
-    fetchAssetsCount();
-  }, [item, isUsuario, cargarAssetsDeUsuario]);
+      fetchAssetsCount();
+    }
+  }, [item._id, isUsuario, cargarAssetsDeUsuario]);
 
   if (isAsset) {
     return (
@@ -75,7 +78,7 @@ const SearchResultItem = ({ item }) => {
           email={item.email}
           nickname={item.nickname}
           fotoPerfil={item.fotoPerfil || { secure_url: "/assets/main.webp" }}
-          totalAssets={totalAssets ?? 0} // 🔥 Si aún no se cargó, ponemos 0 como fallback
+          totalAssets={totalAssets ?? 0}
         />
       </div>
     );
@@ -88,6 +91,7 @@ const SearchResultItem = ({ item }) => {
           key={item._id}
           nombre={item.nombre}
           imagen={item.imagen}
+          _id={item._id}
         />
       </div>
     );

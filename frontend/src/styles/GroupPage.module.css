@@ -1,6 +1,6 @@
+/* 🎨 ESTILOS ACTUALIZADOS PARA GROUPPAGE CON A11Y, BADGES Y FEEDBACK */
 @import "../styles/variables.css";
 
-/* 🎯 Contenedor principal */
 .container {
   display: flex;
   flex-direction: column;
@@ -12,37 +12,24 @@
   gap: var(--spacing-xl);
 }
 
-/* ⚙️ Contenido principal */
-.content {
-  display: flex;
+.gridTwoColumns {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--spacing-xl);
-  flex-wrap: wrap;
-  width: 100%;
 }
 
-/* 🧱 Columna izquierda (usuarios, descripción) */
-.leftColumn {
-  flex: 1 1 30%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-  min-width: 280px;
+@media (min-width: 768px) {
+  .gridTwoColumns {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-/* 🎨 Columna derecha (assets relacionados) */
-.rightColumn {
-  flex: 1 1 68%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-}
-
-/* 🔵 Header del grupo */
 .groupHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
 .groupTitle {
@@ -59,31 +46,39 @@
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: var(--spacing-sm);
+  transition: background-color 0.3s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  min-width: 180px;
+  justify-content: center;
 }
 
-.inviteButton:hover {
-  background-color: var(--color-accent-hover);
+.inviteButton:hover,
+.inviteButton:focus {
+  background-color: var(--color-hover);
+  outline: none;
 }
 
-/* 📄 Descripción */
+.inviteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .descriptionBox {
   background-color: var(--color-bg-secondary);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
-  width: 100%;
-  box-sizing: border-box;
+  animation: fadeSlide 0.3s ease-out;
 }
 
 .descriptionText {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   color: var(--color-text-secondary);
 }
 
-/* 🧑‍🤝‍🧑 Miembros */
-.membersSection {
+.membersSection,
+.assetsSection {
   background-color: var(--color-bg-secondary);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
@@ -93,48 +88,80 @@
 .sectionTitle {
   font-size: var(--font-size-lg);
   font-weight: bold;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
   color: var(--color-text-primary);
-}
-
-.membersList {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: var(--spacing-sm);
 }
 
-/* 🎨 Assets */
-.assetsSection {
-  background-color: var(--color-bg-secondary);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
+.sectionSubtext {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.membersList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-sm);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.membersList li,
+.assetsList > * {
+  animation: fadeSlide 0.3s ease-out;
 }
 
 .assetsList {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--spacing-md);
 }
 
-/* 🚨 Estados de loading y error */
+.emptyText {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  font-size: var(--font-size-sm);
+}
+
 .loading,
 .error {
   text-align: center;
   padding: var(--spacing-lg);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
 }
 
-/* 📱 Responsive */
-@media (max-width: 768px) {
-  .container {
-    padding: var(--spacing-lg);
-  }
+/* 🎖 BADGES */
+.badge {
+  display: inline-block;
+  background-color: var(--color-accent);
+  color: white;
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  border-radius: var(--border-radius-sm);
+  margin-left: var(--spacing-xs);
+}
 
-  .content {
-    flex-direction: column;
+/* ✨ ANIMACIONES */
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
   }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .leftColumn, .rightColumn {
-    width: 100%;
-  }
+/* 💡 INTERACCIÓN EN CARDS */
+.assetCard:hover,
+.userCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
 }

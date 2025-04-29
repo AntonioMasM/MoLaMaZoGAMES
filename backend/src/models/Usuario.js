@@ -71,7 +71,12 @@ const usuarioSchema = new mongoose.Schema({
   },
   seguidores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }],
   siguiendo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }],
-  software: {
+  categoriasSeguidas: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Categoria',
+    default: [] // ✅ Muy recomendable
+  },
+    software: {
     type: [String],
     default: [],
     validate: [arrayLimit, 'Máximo 10 softwares permitidos'],
@@ -107,6 +112,7 @@ usuarioSchema.pre('save', async function (next) {
 usuarioSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
+
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 module.exports = Usuario;

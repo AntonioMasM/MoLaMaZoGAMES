@@ -181,6 +181,10 @@ export function useUploadAsset() {
   
       // 🔥 Si el usuario seleccionó un grupo, agregar el asset al grupo
       if (formData.grupo) {
+        console.log("📦 formData.grupo:", formData.grupo);
+        console.log("📦 assetCreado:", assetCreado); // queremos ver si tiene _id
+        console.log("📦 assetCreado._id:", assetCreado?._id);
+
         await agregarAssetAlGrupo(formData.grupo, assetCreado._id);
       }
   

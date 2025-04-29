@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSocial } from "@/hooks/useSocial";
 import { useUser } from "@/context/UserContext";
 import UserCard from "../User/UserCard";
 import styles from "./UserFollowing.module.css";
+import { FaUserPlus, FaExclamationTriangle, FaSpinner } from "react-icons/fa";
 
 const UserFollowing = () => {
   const { obtenerSiguiendo, loading, error } = useSocial();
@@ -11,11 +12,10 @@ const UserFollowing = () => {
 
   useEffect(() => {
     const fetchUsuariosSeguidos = async () => {
+      if (!user?.email) return;
       try {
-        if (user?.email) {
-          const usuarios = await obtenerSiguiendo(user.email);
-          setUsuariosSeguidos(usuarios || []);
-        }
+        const usuarios = await obtenerSiguiendo(user.email);
+        setUsuariosSeguidos(usuarios || []);
       } catch (err) {
         console.error("Error al cargar usuarios seguidos:", err);
       }
@@ -24,47 +24,38 @@ const UserFollowing = () => {
     fetchUsuariosSeguidos();
   }, [user?.email, obtenerSiguiendo]);
 
-  if (loading) {
-    return (
-      <div className={styles.loading} role="status" aria-live="polite">
-        <p>Cargando usuarios que sigues...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.error} role="alert">
-        <p>{error}</p>
-      </div>
-    );
-  }
-
-  if (usuariosSeguidos.length === 0) {
-    return (
-      <div className={styles.emptyText} role="region" aria-label="No sigues a nadie">
-        <p>Aún no sigues a ningún usuario.</p>
-      </div>
-    );
-  }
-
   return (
-    <section className={styles.followingBox} aria-labelledby="titulo-seguidores">
-      <h3 id="titulo-seguidores" className={styles.sectionTitle}>
-        Siguiendo
-      </h3>
+    <section className={styles.container} aria-labelledby="seguidores-title" role="region">
+      <h3 id="seguidores-title" className="sr-only">Usuarios que sigues</h3>
 
-      <div className={styles.followingList}>
-        {usuariosSeguidos.map((usuario) => (
-          <UserCard
-            key={usuario._id} // ✅ clave única garantizada
-            email={usuario.email}
-            id={usuario._id}
-            nickname={usuario.nickname}
-            fotoPerfil={usuario.fotoPerfil || { secure_url: "/assets/main.webp" }}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <div className={styles.status} role="status" aria-live="polite">
+          <FaSpinner className={styles.icon} aria-hidden="true" />
+          <p className={styles.loading}>Cargando usuarios que sigues...</p>
+        </div>
+      ) : error ? (
+        <div className={styles.status} role="alert">
+          <FaExclamationTriangle className={styles.icon} aria-hidden="true" />
+          <p className={styles.error}>{error}</p>
+        </div>
+      ) : usuariosSeguidos.length === 0 ? (
+        <p className={styles.empty}>
+          <FaUserPlus className={styles.icon} aria-hidden="true" />
+          Aún no sigues a ningún usuario.
+        </p>
+      ) : (
+        <div className={styles.list} role="list">
+          {usuariosSeguidos.map((usuario) => (
+            <UserCard
+              key={usuario._id}
+              id={usuario._id}
+              email={usuario.email}
+              nickname={usuario.nickname}
+              fotoPerfil={usuario.fotoPerfil || { secure_url: "/assets/main.webp" }}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };
