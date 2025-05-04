@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/UserProfile/Sidebar";
 import UserFavourites from "../components/UserProfile/UserFavourites";
-import styles from "../styles/UserProfile.module.css";
+import styles from "../styles/UserFavouritesPage.module.css";
 
 const UserFavouritesPage = () => {
   return (

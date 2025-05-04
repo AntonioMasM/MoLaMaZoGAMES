@@ -30,12 +30,3 @@
   opacity: 0.6;
 }
 
-.headerTop {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-md);
-  }
-  
-  /* Ya tienes .header y .title definidas */
-  

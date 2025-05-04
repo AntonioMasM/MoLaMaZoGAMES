@@ -9,33 +9,33 @@ import PrivateRoute from "./PrivateRoute";
 import Layout from "@/layouts/Layout";
 
 // 🖥️ Lazy Load de Páginas Públicas
-const Home = lazy(() => import("@/pages_temp/Home"));
-const Login = lazy(() => import("@/pages_temp/Login"));
-const Register = lazy(() => import("@/pages_temp/Register"));
-const Accesibility = lazy(() => import("@/pages_temp/Accesibility"));
-const Contact = lazy(() => import("@/pages_temp/Contact"));
-const Privacy = lazy(() => import("@/pages_temp/Privacy"));
-const Terms = lazy(() => import("@/pages_temp/Terms"));
-const Help = lazy(() => import("@/pages_temp/Help"));
+const Home = lazy(() => import("@/pages/Home"));
+const Login = lazy(() => import("@/pages/Login"));
+const Register = lazy(() => import("@/pages/Register"));
+const Accesibility = lazy(() => import("@/pages/Accesibility"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
+const Terms = lazy(() => import("@/pages/Terms"));
+const Help = lazy(() => import("@/pages/Help"));
 
 
 // 🔒 Lazy Load de Páginas Privadas
-const UserProfile = lazy(() => import("@/pages_temp/UserProfile"));
-const UserSettings = lazy(() => import("@/pages_temp/UserSettings"));
-const NewAsset = lazy(() => import("@/pages_temp/UploadAsset"));
-const Gallery = lazy(() => import("@/pages_temp/UserGalleryPage"));
-const UserExternal = lazy(() => import("@/pages_temp/UserExternal"));
-const MessagesPage = lazy(() => import("@/pages_temp/MessagesPage"));
-const MessageDetailPage = lazy(() => import("@/pages_temp/MessageDetailPage"));
-const NotificationsPage = lazy(() => import("@/pages_temp/NotificationsPage"));
-const NotificationDetailPage = lazy(() => import("@/pages_temp/NotificationDetailPage"));
-const AssetView = lazy(() => import("@/pages_temp/AssetView")); /* 🚀 añadido */
-const UserFavouritesPage = lazy(() => import("@/pages_temp/UserFavouritesPage")); /* 🚀 añadido */
-const UserFollowingPage = lazy(() => import("@/pages_temp/UserFollowingPage")); /* 🚀 añadido */
-const SearchResultsPage = lazy(() => import("@/pages_temp/SearchResultsPage"));
-const CategoryPage = lazy(() => import("@/pages_temp/CategoryPage"));
-const CategoriesPage = lazy(() => import("@/pages_temp/CategoriesPage"));
-const GroupPage = lazy(() => import("@/pages_temp/GroupPage"));
+const UserProfile = lazy(() => import("@/pages/UserProfile"));
+const UserSettings = lazy(() => import("@/pages/UserSettings"));
+const NewAsset = lazy(() => import("@/pages/UploadAsset"));
+const Gallery = lazy(() => import("@/pages/UserGalleryPage"));
+const UserExternal = lazy(() => import("@/pages/UserExternal"));
+const MessagesPage = lazy(() => import("@/pages/MessagesPage"));
+const MessageDetailPage = lazy(() => import("@/pages/MessageDetailPage"));
+const NotificationsPage = lazy(() => import("@/pages/NotificationsPage"));
+const NotificationDetailPage = lazy(() => import("@/pages/NotificationDetailPage"));
+const AssetView = lazy(() => import("@/pages/AssetView")); /* 🚀 añadido */
+const UserFavouritesPage = lazy(() => import("@/pages/UserFavouritesPage")); /* 🚀 añadido */
+const UserFollowingPage = lazy(() => import("@/pages/UserFollowingPage")); /* 🚀 añadido */
+const SearchResultsPage = lazy(() => import("@/pages/SearchResultsPage"));
+const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
+const CategoriesPage = lazy(() => import("@/pages/CategoriesPage"));
+const GroupPage = lazy(() => import("@/pages/GroupPage"));
 
 export default function AppRoutes() {
   const { loading } = useUser();
