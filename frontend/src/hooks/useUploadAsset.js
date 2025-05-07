@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import uploadFileToCloudinary from "../services/uploadFileToCloudinary"; // ⚡ servicio Cloudinary
-import { createAssetInDB } from "../services/assetService"; // ⚡ servicio API backend
+import { createAsset } from "@/services/assets";
 import { useUser  } from "../context/UserContext"; // ⚡ para obtener usuario logueado (ajusta a tu proyecto)
 import { agregarAssetAlGrupo } from "../services/grupoService"; 
 
@@ -177,7 +177,7 @@ export function useUploadAsset() {
       console.log("🚀 Enviando datos del asset:", nuevoAsset);
   
       // 🔥 Guardamos el asset en la base de datos y capturamos la respuesta
-      const assetCreado = await createAssetInDB(nuevoAsset);
+      const assetCreado = await createAsset(nuevoAsset);
   
       // 🔥 Si el usuario seleccionó un grupo, agregar el asset al grupo
       if (formData.grupo) {

@@ -1,14 +1,15 @@
+// src/hooks/useUser.js
 import { useState } from "react";
 import {
   crearUsuario,
   getAllUsuarios,
   getUsuarioPorEmail,
   getUsuarioPorNickname,
-  getUsuarioPorId, // 🔥 Nuevo
+  getUsuarioPorId,
   actualizarUsuario,
   eliminarUsuario,
-  buscarUsuarios
-} from "../services/userService";
+  buscarUsuarios,
+} from "@/services/users"; // ✅ Nuevo import desde el index
 
 export const useUser = () => {
   const [loading, setLoading] = useState(false);
@@ -80,6 +81,6 @@ export const useUser = () => {
     getAllUsuarios,
     getUsuarioPorEmail,
     getUsuarioPorNickname,
-    getUsuarioPorId, // 🔥 Lo añadimos aquí para poder usarlo directamente
+    getUsuarioPorId,
   };
 };

@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAssets } from "../../hooks/useAssets";
+import { useAssets } from "@/hooks/useAssets"; // ✅ Import limpio con alias
 import styles from "./UserCard.module.css";
 
 const UserCard = ({ id, email, nickname, fotoPerfil, badge }) => {
-  const profileImage = fotoPerfil.secure_url || "/assets/main.webp";
+  const profileImage = fotoPerfil?.secure_url || "/assets/main.webp";
 
-  const { cargarAssetsDeUsuario } = useAssets();
+  const { loadByUser } = useAssets(); // ✅ Nombre actualizado según hook refactorizado
   const [totalAssets, setTotalAssets] = useState(null);
 
   useEffect(() => {
     if (!id) return;
 
-    cargarAssetsDeUsuario(id)
+    loadByUser(id)
       .then((assets) => setTotalAssets(assets.length))
       .catch((err) => {
         console.error("Error al cargar assets del usuario:", err);
@@ -21,8 +21,8 @@ const UserCard = ({ id, email, nickname, fotoPerfil, badge }) => {
   }, [id]);
 
   return (
-    <Link 
-      to={`/user/${encodeURIComponent(email)}`} 
+    <Link
+      to={`/user/${encodeURIComponent(email)}`}
       className={styles.userCardLink}
       aria-label={`Perfil de ${nickname}`}
     >

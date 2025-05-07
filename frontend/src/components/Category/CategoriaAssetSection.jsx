@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CategoriaAssetCarousel from "./CategoriaAssetCarousel";
-import { obtenerTodosLosAssets } from "../../services/assetService";
+import { getAllAssets } from "@/services/assets";
 import { FaTag } from "react-icons/fa";
 import styles from "../Asset/AssetSection.module.css";
 
@@ -23,7 +23,7 @@ const CategoriaAssetSection = ({ categoriasSeguidas = [] }) => {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const allAssets = await obtenerTodosLosAssets();
+        const allAssets = await getAllAssets();
         setAssets(allAssets);
       } catch (error) {
         console.error("Error al obtener assets:", error);

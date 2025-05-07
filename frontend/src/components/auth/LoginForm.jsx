@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { useAuth as useAuthAPI } from "../../hooks/useAuth"; // 🚀 Llamadas a la API
-import { useAuth as useAuthContext } from "../../features/auth/useAuth"; // 🚀 Acceso al contexto
+import { useAuth as useAuthContext } from "../../features/auth/hooks/useAuth"; // 🚀 Acceso al contexto
 
 import { useAlertQueue } from "../../context/AlertQueueContext";
 

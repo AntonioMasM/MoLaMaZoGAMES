@@ -6,7 +6,7 @@ import {
   getUsuariosSeguidos,
   getUsuariosPorIds,
 } from "../services/usuarios";
-import { getAllAssets } from "../services/assets";
+import { getAllAssets, getAssetsByUser } from "@/services/assets";
 import { getGruposPorUsuario } from "../services/grupoService";
 
 export const useUserInfoData = () => {

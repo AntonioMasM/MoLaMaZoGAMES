@@ -1,18 +1,19 @@
 import React, { useState } from "react";
+import { FiMail } from "react-icons/fi";
 import MessageModal from "@/components/Message/MessageModal";
 import styles from "./SendMessageButton.module.css";
 
 const SendMessageButton = ({ targetUser }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [opening, setOpening] = useState(false); // 🆕 Para prevenir doble click rápido
+  const [opening, setOpening] = useState(false);
 
-  if (!targetUser) return null; // 🔥 Si no hay usuario objetivo, no muestra nada
+  if (!targetUser) return null;
 
   const handleOpenModal = () => {
-    if (opening) return; // 🛡️ Prevenir doble apertura
+    if (opening) return;
     setOpening(true);
     setIsModalOpen(true);
-    setTimeout(() => setOpening(false), 300); // Liberar tras pequeña espera
+    setTimeout(() => setOpening(false), 300);
   };
 
   const handleCloseModal = () => {
@@ -22,15 +23,19 @@ const SendMessageButton = ({ targetUser }) => {
   return (
     <>
       <button
+        type="button"
         className={styles.sendMessageButton}
         onClick={handleOpenModal}
-        aria-label={`Enviar mensaje a ${targetUser.nickname}`}
+        aria-label={`Enviar mensaje directo a ${targetUser.nickname}`}
+        title={`Enviar mensaje directo a ${targetUser.nickname}`}
+        disabled={opening}
       >
-        📩 Enviar Mensaje
+        <FiMail className={styles.icon} />
+        <span>Enviar Mensaje</span>
       </button>
 
       {isModalOpen && (
-        <div aria-live="polite"> {/* ♿ Mejor accesibilidad modal dinámico */}
+        <div aria-live="polite">
           <MessageModal
             destinatario={targetUser}
             onClose={handleCloseModal}

@@ -1,7 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getNotificacionPorId, marcarNotificacionLeida } from "../services/notificationsService";
-import { generateNotificationLink } from "../utils/generateNotificationLink";
+import generateNotificationLink from "@/utils/generateNotificationLink";
+
 import styles from "../styles/NotificationDetailPage.module.css";
 
 const NotificationsDetailPage = () => {

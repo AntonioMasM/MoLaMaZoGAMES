@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaStar, FaRegClock } from "react-icons/fa";
-import { obtenerTodosLosAssets } from "../../services/assetService";
+import { getAllAssets } from "@/services/assets";
 import AssetCarousel from "./AssetCarousel";
 import styles from "./AssetSection.module.css";
 
@@ -31,7 +31,7 @@ const AssetSection = () => {
     const fetchAssets = async () => {
       try {
         // 🎯 Buscar todos los assets (puedes usar otra llamada si quieres más control)
-        const allAssets = await obtenerTodosLosAssets(); // Vacío para traer todos
+        const allAssets = await getAllAssets(); // Vacío para traer todos
         // Separar por lógica: más vistos vs más recientes
         const recientes = [...allAssets].sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
         const populares = [...allAssets].sort((a, b) => (b.vistas || 0) - (a.vistas || 0));

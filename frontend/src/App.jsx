@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import AppProviders from "./layouts/AppProviders";
 
 // 🛤️ Rutas y navegación
-import AppRoutes from "./routes/AppRoutes";
+import { AppRoutes } from "./routes";
 
 // 🎨 Estilos globales
 import "./styles/Global.css";

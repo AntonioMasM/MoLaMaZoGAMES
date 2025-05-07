@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { FiUserPlus, FiUserCheck, FiUserX, FiLoader } from "react-icons/fi";
 import { seguirUsuario, dejarDeSeguirUsuario, obtenerSeguidores } from "@/services/socialService";
 import { useAlertQueue } from "@/context/AlertQueueContext";
 import styles from "./FollowButton.module.css";
-import React from "react";
 
 const FollowButton = ({ targetUser, currentUser, setUser }) => {
   const { showAlert } = useAlertQueue();
@@ -14,7 +14,7 @@ const FollowButton = ({ targetUser, currentUser, setUser }) => {
   const currentUserId = currentUser?._id;
   const targetUserId = targetUser?._id;
 
-  if (currentUserId === targetUserId) return null; // No seguirte a ti mismo
+  if (currentUserId === targetUserId) return null; // No puedes seguirte a ti mismo
 
   useEffect(() => {
     const fetchFollowingStatus = async () => {
@@ -80,17 +80,33 @@ const FollowButton = ({ targetUser, currentUser, setUser }) => {
     }
   };
 
-  const buttonText = loading ? (
-    <span className={styles.loadingSpinner}></span>
-  ) : isFollowing ? (
-    <span className={styles.fadeText}>
-      {hovered ? "Dejar de seguir ❌" : "Siguiendo ✅"}
-    </span>
-  ) : (
-    <span className={styles.fadeText}>
-      Seguir +
-    </span>
-  );
+  const getButtonContent = () => {
+    if (loading) {
+      return (
+        <span className={styles.fadeText} aria-hidden="true">
+          <FiLoader className={styles.iconSpin} />
+        </span>
+      );
+    }
+
+    if (isFollowing) {
+      return hovered ? (
+        <>
+          <FiUserX /> <span>Dejar de seguir</span>
+        </>
+      ) : (
+        <>
+          <FiUserCheck /> <span>Siguiendo</span>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <FiUserPlus /> <span>Seguir</span>
+      </>
+    );
+  };
 
   const buttonClassName = `
     ${styles.followButton}
@@ -107,8 +123,10 @@ const FollowButton = ({ targetUser, currentUser, setUser }) => {
       disabled={loading}
       aria-pressed={isFollowing}
       aria-label={isFollowing ? "Dejar de seguir usuario" : "Seguir usuario"}
+      title={isFollowing ? (hovered ? "Haz clic para dejar de seguir" : "Siguiendo") : "Haz clic para seguir"}
+      aria-live="polite"
     >
-      {buttonText}
+      {getButtonContent()}
     </button>
   );
 };

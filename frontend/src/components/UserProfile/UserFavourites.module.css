@@ -1,70 +1,75 @@
 @import "@/styles/variables.css";
 
-/* 🌟 Contenedor general de favoritos */
+/* 🌟 Contenedor general adaptado al layout con sidebar */
 .favouritesWrapper {
+  margin-left: 240px;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
+  box-sizing: border-box;
 }
 
-/* 🎯 Filtros: Búsqueda + Categoría */
+/* 🎯 Filtros */
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-md);
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  background-color: var(--color-bg-secondary);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
 }
 
 /* 🔍 Input de búsqueda */
 .searchInput {
-  flex: 1;
-  min-width: 240px;
+  width: 100%;
+  max-width: 300px;
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   background-color: var(--color-bg);
   color: var(--color-text);
   font-size: var(--font-size-md);
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  transition: border-color 0.3s, background-color 0.3s;
+  box-shadow: var(--shadow-sm);
 }
 
 .searchInput:focus {
   outline: none;
   border-color: var(--color-accent);
   background-color: var(--color-bg-secondary);
+  box-shadow: 0 0 5px var(--color-accent);
 }
 
 /* 🏷️ Select de categoría */
 .selectControl {
-  min-width: 200px;
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   background-color: var(--color-bg);
   color: var(--color-text);
   font-size: var(--font-size-md);
+  box-shadow: var(--shadow-sm);
   transition: border-color 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .selectControl:focus {
   outline: none;
   border-color: var(--color-accent);
-  background-color: var(--color-bg-secondary);
 }
 
-/* 🎨 Grid de AssetCards favoritas */
+/* 🎨 Grid de favoritos */
 .favouritesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
 }
 
-/* 🔄 Animación de fade-in de assets */
+/* 🔄 Animación de entrada */
 .fadeIn {
   opacity: 0;
   animation: fadeInAnimation 0.6s forwards;
@@ -112,15 +117,27 @@
   font-style: italic;
 }
 
-/* 📱 Responsive */
-@media (max-width: 768px) {
+/* 🧩 Responsive */
+@media screen and (max-width: 768px) {
+  .favouritesWrapper {
+    padding: var(--spacing-md);
+  }
+
   .filters {
     flex-direction: column;
-    align-items: stretch;
   }
 
   .searchInput,
   .selectControl {
     width: 100%;
+    max-width: none;
   }
+}
+
+/* Resultado vacío filtrado */
+.emptyText {
+  text-align: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xl);
 }

@@ -29,30 +29,42 @@ const CategoryDropdown = () => {
     navigate(`/categories/${encodeURIComponent(cat.nombre)}`);
   };
 
+  const handleKeyDown = (e, cat) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCategoryClick(cat);
+    }
+  };
+
   return (
-    <div className={styles.dropdownPanel} aria-label="Seleccionar categoría">
-      <span className={styles.dropdownTitle}>Seleccionar categoría:</span>
+    <div className={styles.dropdownPanel} aria-label="Selector de categorías">
+      <span className={styles.dropdownTitle}>Categorías disponibles</span>
 
-      {loading && <div className={styles.dropdownLoading}>Cargando categorías...</div>}
-      {error && <div className={styles.dropdownError}>{error}</div>}
-      {!loading && !error && categories.length === 0 && (
-        <div className={styles.dropdownEmpty}>No hay categorías disponibles.</div>
+      <div aria-live="polite">
+        {loading && <div className={styles.dropdownLoading}>Cargando categorías...</div>}
+        {error && <div className={styles.dropdownError}>{error}</div>}
+        {!loading && !error && categories.length === 0 && (
+          <div className={styles.dropdownEmpty}>No hay categorías disponibles.</div>
+        )}
+      </div>
+
+      {!loading && !error && categories.length > 0 && (
+        <ul className={styles.dropdownList} role="listbox">
+          {categories.map((cat) => (
+            <li
+              key={cat._id}
+              className={styles.dropdownItem}
+              tabIndex="0"
+              role="option"
+              aria-label={`Ir a la categoría ${cat.nombre}`}
+              onClick={() => handleCategoryClick(cat)}
+              onKeyDown={(e) => handleKeyDown(e, cat)}
+            >
+              {cat.nombre}
+            </li>
+          ))}
+        </ul>
       )}
-
-      <ul>
-        {categories.map((cat) => (
-          <li
-            key={cat._id}
-            onClick={() => handleCategoryClick(cat)}
-            tabIndex="0"
-            role="button"
-            aria-label={`Ir a la categoría ${cat.nombre}`}
-            className={styles.dropdownItem}
-          >
-            {cat.nombre}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

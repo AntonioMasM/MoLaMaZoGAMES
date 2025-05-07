@@ -6,6 +6,7 @@ import {
   FaInstagram,
   FaTwitter,
   FaLinkedin,
+  FaFacebook,
   FaTools,
   FaBolt,
   FaHeart,
@@ -54,7 +55,7 @@ const UserInfo = ({ user }) => {
     intereses = []
   } = user;
 
-  const { instagram, twitter, linkedin, artstation } = redesSociales;
+  const { instagram, twitter, linkedin, artstation, facebook } = redesSociales;
   const { pais, municipio } = ubicacion;
   const { universidad, carrera } = formacion;
 
@@ -124,6 +125,11 @@ const UserInfo = ({ user }) => {
             {artstation && (
               <a href={artstation} title="ArtStation" aria-label="ArtStation">
                 <FaArtstation/>
+              </a>
+            )}
+            {facebook && (
+              <a href={facebook} title="Facebook" aria-label="Facebook">
+                <FaFacebook />
               </a>
             )}
           </div>

@@ -1,4 +1,12 @@
 import React from "react";
+import {
+  FaInstagram,
+  FaTwitter,
+  FaLinkedin,
+  FaFacebook,
+  FaArtstation
+} from "react-icons/fa";
+
 import styles from "./UserStats.module.css";
 
 const UserStats = ({ user, assets }) => {
@@ -11,11 +19,13 @@ const UserStats = ({ user, assets }) => {
   const numSiguiendo = user.siguiendo?.length || 0;
 
   const { universidad, carrera } = user.formacion || {};
-  const { software = [], skills = [], intereses = [] } = user;
+  const { software = [], skills = [], intereses = [], redesSociales = {} } = user;
+  const { instagram, twitter, linkedin, facebook, artstation } = redesSociales;
+
+  const hasSocialLinks = instagram || twitter || linkedin || facebook || artstation;
 
   return (
     <section className={styles.statsSection} aria-label="Estadísticas y perfil del usuario">
-      
       {/* Estadísticas numéricas */}
       <div className={styles.statGrid}>
         <StatItem number={numAssets} label="Assets" />
@@ -23,7 +33,7 @@ const UserStats = ({ user, assets }) => {
         <StatItem number={numSiguiendo} label="Siguiendo" />
       </div>
 
-      {/* Estudios */}
+      {/* Formación */}
       {(universidad || carrera) && (
         <InfoBox title="Formación">
           <ul className={styles.infoList} role="list">
@@ -62,6 +72,39 @@ const UserStats = ({ user, assets }) => {
             {intereses.map((item) => (
               <span key={item} className={styles.tagItem}>{item}</span>
             ))}
+          </div>
+        </InfoBox>
+      )}
+
+      {/* Redes Sociales */}
+      {hasSocialLinks && (
+        <InfoBox title="Redes Sociales">
+          <div className={styles.socialLinks}>
+            {instagram && (
+              <a href={instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <FaInstagram className={`${styles.socialIcon} ${styles["socialIcon--instagram"]}`} />
+              </a>
+            )}
+            {twitter && (
+              <a href={twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <FaTwitter className={`${styles.socialIcon} ${styles["socialIcon--twitter"]}`} />
+              </a>
+            )}
+            {linkedin && (
+              <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <FaLinkedin className={`${styles.socialIcon} ${styles["socialIcon--linkedin"]}`} />
+              </a>
+            )}
+            {facebook && (
+              <a href={facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <FaFacebook className={`${styles.socialIcon} ${styles["socialIcon--facebook"]}`} />
+              </a>
+            )}
+            {artstation && (
+              <a href={artstation} target="_blank" rel="noopener noreferrer" aria-label="ArtStation">
+                <FaArtstation className={`${styles.socialIcon} ${styles["socialIcon--artstation"]}`} />
+              </a>
+            )}
           </div>
         </InfoBox>
       )}

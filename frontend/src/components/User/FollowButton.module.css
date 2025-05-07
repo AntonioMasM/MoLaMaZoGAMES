@@ -1,14 +1,13 @@
 @import "../../styles/variables.css";
 
-/* Botón base */
+/* 🔘 Botón base */
 .followButton {
   padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: var(--font-size-md);
+  font-size: clamp(0.875rem, 2.5vw, var(--font-size-md));
   font-weight: 600;
   border: none;
   border-radius: var(--border-radius-lg);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.3s ease;
   margin-top: var(--spacing-md);
   box-shadow: var(--shadow-sm);
   display: inline-flex;
@@ -16,23 +15,26 @@
   justify-content: center;
   gap: var(--spacing-xs);
   min-width: 140px;
-  position: relative; /* Para posicionar el spinner dentro */
-  overflow: hidden; /* Para las animaciones internas */
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.3s ease;
+  will-change: transform, box-shadow;
+  margin-bottom: 20px;
 }
 
-/* Hover cuando NO está disabled */
+/* 🖱️ Hover interactivo */
 .followButton:not(:disabled):hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-/* Focus accesible */
+/* ♿ Accesibilidad */
 .followButton:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
-/* Estados visuales */
+/* 🟡 Estados visuales */
 .notFollowing {
   background-color: var(--color-accent);
   color: #ffffff;
@@ -52,16 +54,16 @@
 }
 
 .unfollowHover {
-  background-color: var(--color-error, #ef4444); /* Rojo suave */
+  background-color: var(--color-error, #ef4444);
   color: #ffffff;
 }
 
-/* Fade suave en el texto */
+/* ✨ Transición suave de texto */
 .fadeText {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
-/* Spinner de carga */
+/* 🔄 Spinner de carga */
 .loadingSpinner {
   width: 20px;
   height: 20px;
@@ -71,36 +73,36 @@
   animation: spin 1s linear infinite;
 }
 
-/* Animación de rotación */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Bounce leve al click */
+/* 🧨 Bounce al hacer click */
 .bounce {
   animation: bounceAnimation 0.4s ease;
 }
 
 @keyframes bounceAnimation {
   0% { transform: scale(1); }
-  30% { transform: scale(1.1); }
+  30% { transform: scale(1.08); box-shadow: var(--shadow-md); }
   50% { transform: scale(0.95); }
   100% { transform: scale(1); }
 }
 
-/* Estado desactivado (solo reduce opacidad) */
+/* 🚫 Estado desactivado */
 .followButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
-/* Responsive */
+/* 📱 Responsive */
 @media (max-width: 480px) {
   .followButton {
     font-size: var(--font-size-sm);
     padding: var(--spacing-xs) var(--spacing-md);
     min-width: 120px;
+    flex-shrink: 1;
   }
 }

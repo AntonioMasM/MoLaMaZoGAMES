@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useUser } from "../context/UserContext";
+import { getUsuarioPorEmail, actualizarUsuario } from "../services/userService";
 import Sidebar from "../components/UserProfile/Sidebar";
 import uploadImageToCloudinary from "../services/uploadImageToCloudinary";
 import deleteImageFromCloudinary from "../services/deleteImageFromCloudinary";
-import { actualizarUsuario } from "../services/userService";
 import styles from "../styles/UserSettings.module.css";
 
 const getInitialFormData = (user) => ({
@@ -33,60 +33,65 @@ const getInitialFormData = (user) => ({
   confirmNewPassword: "",
 });
 
-
 const UserSettings = () => {
-  const { user: contextUser, updateUser, loading } = useUser();
+  const { user: contextUser, updateUser } = useUser();
+  const email = contextUser?.email;
   const fileInputRef = useRef(null);
 
+  const [userData, setUserData] = useState(null);
   const [formData, setFormData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [mensaje, setMensaje] = useState("");
   const [softwareInput, setSoftwareInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
   const [interesInput, setInteresInput] = useState("");
 
-  // Esperar a que user esté listo
   useEffect(() => {
-    if (!loading && contextUser) {
-      setFormData(getInitialFormData(contextUser));
-    }
-  }, [contextUser, loading]);
+    const cargarUsuario = async () => {
+      try {
+        if (!email) return;
+        const usuario = await getUsuarioPorEmail(email);
+        setUserData(usuario);
+        setFormData(getInitialFormData(usuario));
+      } catch (error) {
+        console.error("Error al cargar el usuario:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargarUsuario();
+  }, [email]);
 
-  if (loading || !formData) {
-    return <div style={{ padding: "2rem", textAlign: "center" }}>Cargando configuración...</div>;
+  if (loading) {
+    return <div className={styles.loadingWrapper}>Cargando configuración del usuario…</div>;
+  }
+
+  if (!formData) {
+    return <main className={styles.emptyState}>No se pudo cargar la configuración.</main>;
   }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSocialChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      redesSociales: {
-        ...prev.redesSociales,
-        [name]: value,
-      },
+      redesSociales: { ...prev.redesSociales, [name]: value },
     }));
   };
 
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     try {
       const isDefault = formData.fotoPerfil?.public_id === "default_local";
-
-      if (!isDefault && formData.fotoPerfil?.public_id) {
+      if (!isDefault) {
         await deleteImageFromCloudinary(formData.fotoPerfil.public_id);
       }
-
       const newImage = await uploadImageToCloudinary(file);
-
       setFormData((prev) => ({
         ...prev,
         fotoPerfil: {
@@ -95,14 +100,14 @@ const UserSettings = () => {
         },
       }));
     } catch (error) {
-      console.error("Error subiendo o eliminando imagen:", error);
+      console.error("Error cambiando la imagen:", error);
     }
   };
 
-  const handleUploadClick = () => fileInputRef.current.click();
+  const handleUploadClick = () => fileInputRef.current?.click();
 
   const addArrayItem = (field, value, setInput) => {
-    if (value.trim() !== "") {
+    if (value.trim()) {
       setFormData((prev) => ({
         ...prev,
         [field]: [...prev[field], value.trim()],
@@ -148,8 +153,8 @@ const UserSettings = () => {
         password: formData.newPassword || undefined,
       };
 
-      await actualizarUsuario(contextUser.email, payload);
-      updateUser({ ...contextUser, ...payload });
+      await actualizarUsuario(email, payload);
+      updateUser({ ...userData, ...payload });
       setMensaje("Perfil actualizado correctamente ✅");
     } catch (error) {
       console.error(error);
@@ -162,20 +167,15 @@ const UserSettings = () => {
   return (
     <div className={styles.settingsLayout}>
       <Sidebar />
-
       <main className={styles.profileContent} aria-label="Configuración de Perfil">
         <h1 className={styles.pageTitle}>Configuración de Perfil</h1>
 
-        {/* Imagen de Perfil */}
         <div className={styles.avatarContainer}>
-        <img
-        src={formData.fotoPerfil?.secure_url || "/assets/users/default-avatar.png"}
-        alt={`Foto de perfil de ${formData.nombreCompleto || "usuario"}`}
-        className={styles.avatar}
-      />
-
-
-
+          <img
+            src={formData.fotoPerfil.secure_url}
+            alt={`Foto de perfil de ${formData.nombreCompleto || "usuario"}`}
+            className={styles.avatar}
+          />
           <button type="button" className={styles.changePhotoButton} onClick={handleUploadClick}>
             Cambiar Foto
           </button>
@@ -188,10 +188,8 @@ const UserSettings = () => {
           />
         </div>
 
-        {/* Formulario de configuración */}
         <form onSubmit={handleSubmit} className={styles.form}>
-          
-          {/* Información Personal */}
+          {/* Información personal */}
           <section className={styles.section}>
             <h2>Información Personal</h2>
             <label>Nombre completo:</label>
@@ -204,7 +202,7 @@ const UserSettings = () => {
             <input type="text" name="municipio" value={formData.municipio} onChange={handleChange} />
           </section>
 
-          {/* Formación Académica */}
+          {/* Formación */}
           <section className={styles.section}>
             <h2>Formación Académica</h2>
             <label>Universidad:</label>
@@ -217,27 +215,25 @@ const UserSettings = () => {
           <section className={styles.section}>
             <h2>Redes Sociales</h2>
             <label>Twitter / X:</label>
-            <input type="text" name="twitter" value={formData.redesSociales.twitter} onChange={handleSocialChange} placeholder="https://twitter.com/tuusuario" />
+            <input type="text" name="twitter" value={formData.redesSociales.twitter} onChange={handleSocialChange} />
             <label>Instagram:</label>
-            <input type="text" name="instagram" value={formData.redesSociales.instagram} onChange={handleSocialChange} placeholder="https://instagram.com/tuusuario" />
-            <label>Facebook:</label>
-            <input type="text" name="facebook" value={formData.redesSociales.facebook} onChange={handleSocialChange} placeholder="https://facebook.com/tuusuario" />
+            <input type="text" name="instagram" value={formData.redesSociales.instagram} onChange={handleSocialChange} />
+            <label>Linkedin:</label>
+            <input type="text" name="linkedin" value={formData.redesSociales?.linkedin ?? ""} onChange={handleSocialChange} />
             <label>ArtStation:</label>
-            <input type="text" name="artstation" value={formData.redesSociales.artstation} onChange={handleSocialChange} placeholder="https://www.artstation.com/tuusuario" />
+            <input type="text" name="artstation" value={formData.redesSociales.artstation} onChange={handleSocialChange} />
           </section>
 
           {/* Software */}
           <section className={styles.section}>
             <h2>Software</h2>
             <div className={styles.arrayInput}>
-              <input type="text" placeholder="Añadir software" value={softwareInput} onChange={(e) => setSoftwareInput(e.target.value)} />
-              <button type="button" onClick={() => addArrayItem('software', softwareInput, setSoftwareInput)}>Añadir</button>
+              <input type="text" value={softwareInput} onChange={(e) => setSoftwareInput(e.target.value)} placeholder="Añadir software" />
+              <button type="button" onClick={() => addArrayItem("software", softwareInput, setSoftwareInput)}>Añadir</button>
             </div>
             <ul className={styles.tagList}>
-              {formData.software.map((soft, index) => (
-                <li key={index}>
-                  {soft} <button type="button" onClick={() => removeItem('software', index)}>x</button>
-                </li>
+              {formData.software.map((item, index) => (
+                <li key={index}>{item} <button type="button" onClick={() => removeItem("software", index)}>x</button></li>
               ))}
             </ul>
           </section>
@@ -246,14 +242,12 @@ const UserSettings = () => {
           <section className={styles.section}>
             <h2>Skills</h2>
             <div className={styles.arrayInput}>
-              <input type="text" placeholder="Añadir skill" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} />
-              <button type="button" onClick={() => addArrayItem('skills', skillInput, setSkillInput)}>Añadir</button>
+              <input type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} placeholder="Añadir skill" />
+              <button type="button" onClick={() => addArrayItem("skills", skillInput, setSkillInput)}>Añadir</button>
             </div>
             <ul className={styles.tagList}>
-              {formData.skills.map((skill, index) => (
-                <li key={index}>
-                  {skill} <button type="button" onClick={() => removeItem('skills', index)}>x</button>
-                </li>
+              {formData.skills.map((item, index) => (
+                <li key={index}>{item} <button type="button" onClick={() => removeItem("skills", index)}>x</button></li>
               ))}
             </ul>
           </section>
@@ -262,14 +256,12 @@ const UserSettings = () => {
           <section className={styles.section}>
             <h2>Intereses</h2>
             <div className={styles.arrayInput}>
-              <input type="text" placeholder="Añadir interés" value={interesInput} onChange={(e) => setInteresInput(e.target.value)} />
-              <button type="button" onClick={() => addArrayItem('intereses', interesInput, setInteresInput)}>Añadir</button>
+              <input type="text" value={interesInput} onChange={(e) => setInteresInput(e.target.value)} placeholder="Añadir interés" />
+              <button type="button" onClick={() => addArrayItem("intereses", interesInput, setInteresInput)}>Añadir</button>
             </div>
             <ul className={styles.tagList}>
-              {formData.intereses.map((interes, index) => (
-                <li key={index}>
-                  {interes} <button type="button" onClick={() => removeItem('intereses', index)}>x</button>
-                </li>
+              {formData.intereses.map((item, index) => (
+                <li key={index}>{item} <button type="button" onClick={() => removeItem("intereses", index)}>x</button></li>
               ))}
             </ul>
           </section>
@@ -296,10 +288,7 @@ const UserSettings = () => {
             </select>
           </section>
 
-          <button type="submit" className={styles.saveButton}>
-            Guardar Cambios
-          </button>
-
+          <button type="submit" className={styles.saveButton}>Guardar Cambios</button>
           {mensaje && <p className={styles.message}>{mensaje}</p>}
         </form>
       </main>

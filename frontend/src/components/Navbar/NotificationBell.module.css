@@ -1,5 +1,12 @@
 @import "../../styles/variables.css";
 
+/* 📦 Contenedor principal */
+.notificationWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 /* 🔔 Botón de campana */
 .bellButton {
   position: relative;
@@ -15,28 +22,46 @@
   transition: color 0.3s ease;
 }
 
-/* Hover */
-.bellButton:hover {
+.bellButton:hover,
+.bellButton:focus-visible {
   color: var(--color-accent);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* 🔴 Badge de notificaciones no leídas */
 .badge {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: 4px;
+  right: 4px;
+  transform: translate(50%, -50%);
   background-color: var(--color-error);
   color: var(--color-bg);
-  font-size: 10px;
-  font-weight: bold;
+  font-size: 0.65rem;
+  font-weight: 700;
   padding: 2px 6px;
-  border-radius: 50%;
+  border-radius: 999px;
   box-shadow: var(--shadow-sm);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
 }
 
-/* 📦 Contenedor principal */
-.notificationWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+/* ✅ Opcional: animación al mostrar el dropdown */
+.notificationDropdown {
+  animation: fadeIn 0.2s ease-out both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

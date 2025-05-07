@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+@import '../../styles/variables.css';
+
+/* --- BOTONES DE USUARIO AUTENTICADO --- */
+
+.profilePic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 6px;
+  border: 2px solid transparent;
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+}
+
+.profilePic:hover,
+.profilePic:focus-visible {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 1px var(--color-hover);
+  border-color: var(--color-hover);
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.logoutButton:hover,
+.logoutButton:focus-visible {
+  color: var(--color-hover);
+  background-color: rgba(255, 255, 255, 0.08);
+  outline: 2px solid var(--color-hover);
+  transform: scale(1.05);
+}
+
+/* --- BOTONES DE USUARIO NO AUTENTICADO --- */
+
+.navButton {
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: var(--button-font-size);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--border-radius-md);
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.navButton:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-hover);
+}
+
+/* --- RESPONSIVE --- */
+
+@media (max-width: 768px) {
+  .navButton {
+    justify-content: center;
+    width: 100%;
+    font-size: var(--font-size-md);
+  }
+
+  .navButton svg {
+    margin: 0;
+  }
+
+  .logoutButton {
+    justify-content: center;
+    width: 100%;
+  }
+}

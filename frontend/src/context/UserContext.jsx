@@ -1,11 +1,19 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { getUsuarioPorEmail } from "../services/userService";
+// src/context/UserContext.jsx
+import { createContext, useState, useEffect, useContext } from "react";
+import { getUsuarioPorEmail } from "@/services/userService";
 
-const UserContext = createContext();
+export const UserContext = createContext({
+  user: null,
+  token: null,
+  login: () => {},
+  logout: () => {},
+  updateUser: () => {},
+  loading: true,
+});
 
 export const useUser = () => useContext(UserContext);
 
-const UserProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +36,6 @@ const UserProvider = ({ children }) => {
         })
         .catch((err) => {
           console.error("❌ Error al obtener el usuario completo:", err);
-          // Fallback si no se puede recargar desde la API
           if (parsedUser._id || parsedUser.id) {
             setUser({
               ...parsedUser,
@@ -47,9 +54,8 @@ const UserProvider = ({ children }) => {
   const login = ({ userData, token }) => {
     const normalizedUser = {
       ...userData,
-      _id: userData._id || userData.id, // Normalizar para siempre tener _id
+      _id: userData._id || userData.id,
     };
-
     localStorage.setItem("user", JSON.stringify(normalizedUser));
     localStorage.setItem("token", token);
     setUser(normalizedUser);
@@ -64,27 +70,24 @@ const UserProvider = ({ children }) => {
   };
 
   const updateUser = (updatedData) => {
-    const updatedUser = {
-      ...user,
-      ...updatedData,
-    };
+    const updatedUser = { ...user, ...updatedData };
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
   };
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "5rem" }}>
+        Cargando sesión...
+      </div>
+    );
+  }
 
   return (
     <UserContext.Provider
       value={{ user, token, login, logout, updateUser, loading }}
     >
-      {loading ? (
-        <div style={{ textAlign: "center", marginTop: "5rem" }}>
-          Cargando sesión...
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </UserContext.Provider>
   );
 };
-
-export default UserProvider;

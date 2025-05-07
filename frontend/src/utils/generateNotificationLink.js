@@ -1,15 +1,17 @@
-export function generateNotificationLink(notificacion) {
-    if (!notificacion.referencia) return '/notifications';
-  
-    switch (notificacion.tipo) {
-      case "mensaje":
-        return `/messages/${notificacion.referencia}`; // referencia = id del mensaje
-      case "seguimiento":
-        return `/user/${encodeURIComponent(notificacion.referencia)}`; // referencia = email del usuario
-      case "grupo":
-        return `/groups/${notificacion.referencia}`; // referencia = id del grupo
-      default:
-        return '/notifications';
-    }
+// src/utils/generateNotificationLink.js
+import { ROUTES } from "@/routes";
+
+export default function generateNotificationLink(notificacion) {
+  if (!notificacion.referencia) return ROUTES.NOTIFICATIONS;
+
+  switch (notificacion.tipo) {
+    case "mensaje":
+      return ROUTES.MESSAGE_DETAIL(notificacion.referencia);
+    case "seguimiento":
+      return ROUTES.USER_EXTERNAL(notificacion.referencia);
+    case "grupo":
+      return ROUTES.GROUP_PAGE(notificacion.referencia);
+    default:
+      return ROUTES.NOTIFICATIONS;
   }
-  
+}

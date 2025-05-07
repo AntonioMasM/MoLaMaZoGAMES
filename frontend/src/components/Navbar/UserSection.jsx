@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useUser } from "../../context/UserContext";
-import { useAuth } from "../../features/auth/useAuth";
+import { useAuth } from "../../features/auth/hooks/useAuth";
 import { useAlertQueue } from "../../context/AlertQueueContext";
 import { getUsuarioPorEmail } from "../../services/userService";
-import styles from "./Navbar.module.css";
+import styles from "./UserSection.module.css";
 
 const UserSection = ({ isSmallScreen }) => {
   const { user: contextUser, logout: userLogout } = useUser();
@@ -20,32 +20,35 @@ const UserSection = ({ isSmallScreen }) => {
 
   useEffect(() => {
     const fetchFullUserData = async () => {
-      if (!email) return;
+      if (!email || userData) return;
       try {
         const usuario = await getUsuarioPorEmail(email);
         setUserData(usuario);
       } catch (error) {
-        console.error("Error al obtener datos completos del usuario:", error);
+        console.error("Error al obtener datos del usuario:", error);
       }
     };
 
     fetchFullUserData();
-  }, [email]);
+  }, [email, userData]);
 
   const handleLogout = () => {
-    userLogout();       // Borra user del contexto
-    authLogout();       // Borra token / isAuthenticated
+    userLogout();
+    authLogout();
     showAlert("Sesión cerrada correctamente 👋🏻", "info");
     navigate("/");
   };
 
   if (isAuthenticated && userData) {
+    const avatarUrl =
+      userData.fotoPerfil?.secure_url || "/assets/users/default-avatar.png";
+
     return (
       <>
         <Link
           to="/categories"
           className={styles.navButton}
-          aria-label="Explorar Categorías"
+          aria-label="Explorar todas las categorías"
         >
           Explorar
         </Link>
@@ -61,10 +64,10 @@ const UserSection = ({ isSmallScreen }) => {
         <Link
           to="/profile"
           className={styles.navButton}
-          aria-label="Ir a tu perfil"
+          aria-label={`Ir al perfil de ${userData.nickname || "usuario"}`}
         >
           <img
-            src={userData.fotoPerfil?.secure_url || "/assets/users/default-avatar.png"}
+            src={avatarUrl}
             alt={`Foto de perfil de ${userData.nickname || "usuario"}`}
             className={styles.profilePic}
             loading="lazy"
@@ -75,22 +78,23 @@ const UserSection = ({ isSmallScreen }) => {
         </Link>
 
         <button
-        onClick={handleLogout}
-        className={styles.logoutButton}
-        aria-label="Cerrar sesión"
-      >
-        <FaSignOutAlt /> {isSmallScreen ? null : "Cerrar Sesión"}
-      </button>
-
+          onClick={handleLogout}
+          className={styles.logoutButton}
+          aria-label="Cerrar sesión"
+        >
+          <FaSignOutAlt />
+          {!isSmallScreen && "Cerrar Sesión"}
+        </button>
       </>
     );
   }
 
+  // No autenticado
   return (
     <Link
       to="/login"
       className={styles.navButton}
-      aria-label="Ir a inicio de sesión"
+      aria-label="Acceder a inicio de sesión o registro"
     >
       {isSmallScreen ? <FaUser /> : "Inicio Sesión / Registro"}
     </Link>

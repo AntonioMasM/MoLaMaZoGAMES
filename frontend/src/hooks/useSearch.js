@@ -1,9 +1,9 @@
-// hooks/useSearch.js
+// src/hooks/useSearch.js
 import { useState, useEffect } from "react";
-import { buscarAssets } from "../services/assetService";
-import { buscarUsuarios } from "../services/userService";
-import { getCategorias } from "../services/categorias";
-import debounce from "lodash/debounce"; // ✅ Importación correcta
+import { searchAssets } from "@/services/assets"; // ✅ Actualizado
+import { buscarUsuarios } from "@/services/userService";
+import { getCategorias } from "@/services/categorias";
+import debounce from "lodash/debounce";
 
 export const useSearch = (query) => {
   const [assets, setAssets] = useState([]);
@@ -39,7 +39,7 @@ export const useSearch = (query) => {
       setError(null);
       try {
         const [assetsResults, usuariosResults] = await Promise.all([
-          buscarAssets(query),
+          searchAssets(query),
           buscarUsuarios(query),
         ]);
 
@@ -56,14 +56,10 @@ export const useSearch = (query) => {
       } finally {
         setLoading(false);
       }
-    }, 300); // Milisegundos de debounce (0.3 segundos)
+    }, 300);
 
     fetchResults();
-
-    return () => {
-      fetchResults.cancel();
-    };
-
+    return () => fetchResults.cancel();
   }, [query, allCategorias]);
 
   return {

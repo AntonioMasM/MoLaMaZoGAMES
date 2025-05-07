@@ -1,9 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme";
-import { useUser } from "../../context/UserContext";
-
 import {
-  FaSignOutAlt,
   FaPalette,
   FaUniversalAccess,
   FaQuestionCircle,
@@ -12,31 +9,16 @@ import {
   FaAdjust,
 } from "react-icons/fa";
 
-import styles from "./Navbar.module.css";
+import styles from "./SettingsDropdown.module.css";
 
 const SettingsDropdown = ({ onClose }) => {
-  const { user, logout } = useUser();
-  const isAuthenticated = !!user;
-
   const { theme, setDark, setLight, setContrast } = useTheme();
   const navigate = useNavigate();
 
   return (
-    <div className={styles.dropdown}>
-      {isAuthenticated && (
-        <button
-          className={styles.dropdownItem}
-          onClick={() => {
-            logout();
-            onClose();
-            navigate("/login");
-          }}
-        >
-          <FaSignOutAlt /> Cerrar Sesión
-        </button>
-      )}
-
+    <div className={styles.dropdown} aria-label="Configuración">
       <div className={styles.dropdownTitle}>Tema:</div>
+
       <button className={styles.dropdownItem} onClick={setDark}>
         <FaMoon /> Oscuro {theme === "dark" && "✓"}
       </button>
@@ -47,6 +29,7 @@ const SettingsDropdown = ({ onClose }) => {
         <FaAdjust /> Alto Contraste {theme === "high-contrast" && "✓"}
       </button>
 
+      <div className={styles.dropdownTitle}>Preferencias:</div>
       <button
         className={styles.dropdownItem}
         onClick={() => {

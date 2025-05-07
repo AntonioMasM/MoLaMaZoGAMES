@@ -1,34 +1,43 @@
+// src/hooks/useAuth.js
 import { useState } from "react";
-import { login, logout, solicitarRecuperacion, restablecerContrasena, cambiarContrasena } from "../services/authService";
+import {
+  login,
+  logout,
+  solicitarRecuperacion,
+  restablecerContrasena,
+  cambiarContrasena,
+} from "@/services/auth"; // ✅ Ruta centralizada
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // 🔐 Iniciar sesión
   const iniciarSesion = async (email, password) => {
     setLoading(true);
     setError(null);
-  
     try {
       const data = await login(email, password);
       return data;
-    } catch (error) {
-      console.error("🔥 Error en iniciarSesion:", error);
-      setError(error.response?.data?.mensaje || "Error en el inicio de sesión");
-      throw error;
+    } catch (err) {
+      console.error("🔥 Error en iniciarSesion:", err);
+      setError(err.response?.data?.mensaje || "Error en el inicio de sesión");
+      throw err;
     } finally {
       setLoading(false);
     }
   };
-  
+
+  // 🔐 Cerrar sesión
   const cerrarSesion = async () => {
     try {
       await logout();
     } catch (err) {
-      console.error("Error al cerrar sesión", err);
+      console.error("❌ Error al cerrar sesión", err);
     }
   };
 
+  // 📩 Solicitar recuperación
   const solicitarRecuperacionContrasena = async (email) => {
     setLoading(true);
     setError(null);
@@ -41,6 +50,7 @@ export const useAuth = () => {
     }
   };
 
+  // 🔄 Restablecer contraseña
   const restablecerPassword = async (token, nuevaPassword) => {
     setLoading(true);
     setError(null);
@@ -53,6 +63,7 @@ export const useAuth = () => {
     }
   };
 
+  // 🔒 Cambiar contraseña autenticado
   const cambiarPassword = async (email, passwordActual, nuevaPassword) => {
     setLoading(true);
     setError(null);

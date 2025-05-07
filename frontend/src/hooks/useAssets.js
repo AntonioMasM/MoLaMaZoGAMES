@@ -1,27 +1,26 @@
 // hooks/useAssets.js
 import { useState } from "react";
 import {
-  createAssetInDB,
-  obtenerAssetsPorUsuario,
-  eliminarAssetPorId,
-  obtenerAssetPorId,
-  buscarAssets,
-  actualizarVistasAsset,
-  actualizarAssetPorId,
-} from "../services/assetService";
+  createAsset,
+  getAssetsByUser,
+  deleteAsset,
+  getAssetById,
+  searchAssets,
+  incrementViews,
+  updateAsset
+} from "@/services/assets";
 
 export const useAssets = () => {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  /* 🎯 Crear un asset */
-  const crearAsset = async (assetData) => {
+  const create = async (assetData) => {
     setLoading(true);
     setError(null);
     try {
-      const nuevoAsset = await createAssetInDB(assetData);
-      setAssets((prev) => [nuevoAsset.asset, ...prev]); // Insertar al principio
+      const nuevoAsset = await createAsset(assetData);
+      setAssets((prev) => [nuevoAsset.asset, ...prev]);
       return nuevoAsset;
     } catch (err) {
       setError(err);
@@ -31,12 +30,11 @@ export const useAssets = () => {
     }
   };
 
-  /* 🎯 Cargar assets de un usuario */
-  const cargarAssetsDeUsuario = async (usuarioId) => {
+  const loadByUser = async (userId) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await obtenerAssetsPorUsuario(usuarioId);
+      const data = await getAssetsByUser(userId);
       setAssets(data);
       return data;
     } catch (err) {
@@ -46,12 +44,11 @@ export const useAssets = () => {
     }
   };
 
-  /* 🎯 Eliminar un asset */
-  const eliminarAsset = async (assetId) => {
+  const remove = async (assetId) => {
     setLoading(true);
     setError(null);
     try {
-      await eliminarAssetPorId(assetId);
+      await deleteAsset(assetId);
       setAssets((prev) => prev.filter((asset) => asset._id !== assetId));
     } catch (err) {
       setError(err);
@@ -61,13 +58,11 @@ export const useAssets = () => {
     }
   };
 
-  /* 🎯 Buscar assets */
-  const buscar = async (query) => {
+  const search = async (query) => {
     setLoading(true);
     setError(null);
     try {
-      const resultados = await buscarAssets(query);
-      return resultados;
+      return await searchAssets(query);
     } catch (err) {
       setError(err);
       throw err;
@@ -76,22 +71,19 @@ export const useAssets = () => {
     }
   };
 
-  /* 🎯 Actualizar vistas */
-  const incrementarVistas = async (assetId) => {
+  const increaseViews = async (assetId) => {
     try {
-      await actualizarVistasAsset(assetId);
+      await incrementViews(assetId);
     } catch (err) {
       console.error("Error actualizando vistas:", err);
     }
   };
 
-  /* 🎯 Actualizar asset */
-  const actualizarAsset = async (assetId, assetDataActualizado) => {
+  const update = async (assetId, updatedData) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await actualizarAssetPorId(assetId, assetDataActualizado);
-      return data;
+      return await updateAsset(assetId, updatedData);
     } catch (err) {
       setError(err);
       throw err;
@@ -104,11 +96,11 @@ export const useAssets = () => {
     assets,
     loading,
     error,
-    crearAsset,
-    cargarAssetsDeUsuario,
-    eliminarAsset,
-    buscar,
-    incrementarVistas,
-    actualizarAsset,
+    create,
+    loadByUser,
+    remove,
+    search,
+    increaseViews,
+    update,
   };
 };
