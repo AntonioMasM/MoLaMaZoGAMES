@@ -30,7 +30,7 @@ const SearchResultItem = ({ item }) => {
   const isUsuario = item.nickname !== undefined;
   const isCategoria = item.nombre !== undefined;
 
-  const { cargarAssetsDeUsuario } = useAssets();
+  const { loadByUser } = useAssets();
   const [totalAssets, setTotalAssets] = useState(null);
 
   // 🔁 Evita múltiples cargas por usuario
@@ -40,7 +40,7 @@ const SearchResultItem = ({ item }) => {
     if (isUsuario && item._id && !fetchedOnce.current) {
       const fetchAssetsCount = async () => {
         try {
-          const assetsUsuario = await cargarAssetsDeUsuario(item._id);
+          const assetsUsuario = await loadByUser(item._id);
           setTotalAssets(assetsUsuario.length);
           fetchedOnce.current = true;
         } catch (error) {
@@ -51,7 +51,7 @@ const SearchResultItem = ({ item }) => {
 
       fetchAssetsCount();
     }
-  }, [item._id, isUsuario, cargarAssetsDeUsuario]);
+  }, [item._id, isUsuario, loadByUser]);
 
   if (isAsset) {
     return (

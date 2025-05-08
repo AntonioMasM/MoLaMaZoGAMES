@@ -85,9 +85,14 @@ const Navbar = () => {
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
             <FaSearch className={styles.searchIcon} onClick={handleSearch} />
+
             {query && <SearchDropdown query={query} onClose={() => setQuery("")} />}
             {/* 🔥 Integrado aquí */}
+            <Link to="/search" className={styles.authButton} aria-label="Búsqueda Avanzada">
+                    Búsqueda Avanzada
+              </Link>
           </div>
+          
         )}
       </div>
 
@@ -120,6 +125,7 @@ const Navbar = () => {
               <FaSearch className={styles.dropdownSearchIcon} onClick={handleSearch} />
               {query && <SearchDropdown query={query} onClose={() => setQuery("")} />}
               {/* 🔥 También en versión móvil */}
+
             </div>
           )}
 
