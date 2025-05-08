@@ -86,11 +86,14 @@ const UserSettings = () => {
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+  
     try {
-      const isDefault = formData.fotoPerfil?.public_id === "default_local";
-      if (!isDefault) {
-        await deleteImageFromCloudinary(formData.fotoPerfil.public_id);
+      const publicId = formData.fotoPerfil?.public_id;
+  
+      if (publicId && publicId !== "default_local") {
+        await deleteImageFromCloudinary(publicId);
       }
+  
       const newImage = await uploadImageToCloudinary(file);
       setFormData((prev) => ({
         ...prev,
@@ -103,6 +106,7 @@ const UserSettings = () => {
       console.error("Error cambiando la imagen:", error);
     }
   };
+  
 
   const handleUploadClick = () => fileInputRef.current?.click();
 
