@@ -28,7 +28,7 @@ const SearchDropdown = ({ query, onClose }) => {
 
   if (!query.trim()) return null;
   if (loading) return <div className={styles.dropdown}>Buscando...</div>;
-  if (error) return <div className={styles.dropdown}>Error en búsqueda</div>;
+  
 
   const hasResults = assets.length > 0 || usuarios.length > 0 || categorias.length > 0;
 

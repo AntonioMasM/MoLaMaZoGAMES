@@ -29,7 +29,7 @@ const SearchPage = () => {
 
       <main className={styles.results}>
         {loading && <div className={styles.loading}>Buscando...</div>}
-        {error && <div className={styles.error}>Ocurrió un error: {error}</div>}
+        {error && <div className={styles.error}>No se encontraron resultados</div>}
 
         {!loading && !error && (
           <>
