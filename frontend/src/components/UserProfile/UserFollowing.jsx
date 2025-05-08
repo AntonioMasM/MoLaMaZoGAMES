@@ -50,9 +50,7 @@ const UserFollowing = () => {
 
   return (
     <section aria-labelledby="siguiendo-heading" className={styles.followingSection}>
-      <h2 id="siguiendo-heading" className={styles.sectionTitle}>
-        Usuarios que sigues
-      </h2>
+      
 
       <div className={styles.followingGrid} role="list" aria-label="Lista de usuarios seguidos">
         {siguiendo.map((usuario) => (

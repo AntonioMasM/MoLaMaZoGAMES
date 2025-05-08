@@ -1,5 +1,6 @@
 import styles from "./UserWelcome.module.css";
 import { useMensajesNoLeidos } from "../../hooks/useMensajesNoLeidos";
+import { Link } from "react-router-dom";
 
 const UserWelcome = ({ nickname, ultimoInicioSesion, userId }) => {
   const { mensajesNoLeidos, loading, error } = useMensajesNoLeidos(userId);
@@ -37,9 +38,9 @@ const UserWelcome = ({ nickname, ultimoInicioSesion, userId }) => {
         )}
 
         {!loading && !error && mensajesNoLeidos > 0 && (
-          <p className={styles.unread} role="alert">
+          <Link to="/messages" className={styles.unread} role="link">
             ✉️ Tienes <strong>{mensajesNoLeidos}</strong> mensaje(s) sin leer.
-          </p>
+          </Link>
         )}
 
         {!loading && !error && mensajesNoLeidos === 0 && (
