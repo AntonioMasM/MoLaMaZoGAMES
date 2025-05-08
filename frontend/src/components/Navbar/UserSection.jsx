@@ -41,7 +41,7 @@ const UserSection = ({ isSmallScreen }) => {
 
   if (isAuthenticated && userData) {
     const avatarUrl =
-      userData.fotoPerfil?.secure_url || "/assets/users/default-avatar.png";
+      userData.fotoPerfil?.secure_url || "/users/defaultProfile.webp";
 
     return (
       <>
@@ -72,7 +72,7 @@ const UserSection = ({ isSmallScreen }) => {
             className={styles.profilePic}
             loading="lazy"
             onError={(e) => {
-              e.currentTarget.src = "/assets/users/default-avatar.png";
+              e.currentTarget.src = "/users/defaultProfile.webp";
             }}
           />
         </Link>

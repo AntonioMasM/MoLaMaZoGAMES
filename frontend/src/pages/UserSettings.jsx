@@ -15,7 +15,7 @@ const getInitialFormData = (user) => ({
   carrera: user?.formacion?.carrera || "",
   modo: user?.modo || "dark",
   fotoPerfil: user?.fotoPerfil || {
-    secure_url: "/assets/users/default-avatar.png",
+    secure_url: "/users/defaultProfile.webp",
     public_id: "default_local",
   },
   software: user?.software || [],
