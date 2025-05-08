@@ -151,7 +151,7 @@ const UserGallery = () => {
                 </button>
                 <button
                   className={styles.actionButton}
-                  onClick={() => window.location.href = `/editar-asset/${asset._id}`}
+                  onClick={() => window.location.href = `/asset/${asset._id}/edit`}
                   title="Editar"
                 >
                   ✏️

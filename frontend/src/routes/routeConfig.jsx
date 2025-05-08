@@ -30,6 +30,7 @@ const SearchResultsPage = lazy(() => import("@/pages/SearchResultsPage"));
 const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
 const CategoriesPage = lazy(() => import("@/pages/CategoriesPage"));
 const GroupPage = lazy(() => import("@/pages/GroupPage"));
+const AssetEdit = lazy(() => import("@/pages/AssetEdit"))
 
 const publicRoutes = [
   { path: ROUTES.HOME, element: <Home /> },
@@ -59,6 +60,7 @@ const privateRoutes = [
   { path: ROUTES.CATEGORY(), element: <PrivateRoute><CategoryPage /></PrivateRoute> },
   { path: ROUTES.CATEGORIES, element: <PrivateRoute><CategoriesPage /></PrivateRoute> },
   { path: ROUTES.GROUP_PAGE(), element: <PrivateRoute><GroupPage /></PrivateRoute> },
+  { path: ROUTES.ASSET_EDIT(), element: <PrivateRoute><AssetEdit /></PrivateRoute>},
 ];
 
 export const routeConfig = [...publicRoutes, ...privateRoutes].map(route => ({

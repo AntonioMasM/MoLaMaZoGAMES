@@ -1,0 +1,119 @@
+@import "@/styles/variables.css"; /* 🎨 Variables globales */
+
+/* 📦 Contenedor principal */
+.galleryWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* 🎞️ Grid de imágenes */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* 🧩 Contenedor individual de imagen con botón */
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-bg-secondary);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 🖼️ Imagen previsualizada */
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--border-radius-md);
+  transition: transform 0.3s ease;
+}
+
+.image:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+/* ❌ Botón de eliminar imagen */
+.deleteButton {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background-color: var(--color-error);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.deleteButton:hover {
+  background-color: var(--color-error-dark);
+  transform: scale(1.1);
+}
+
+/* ➕ Input oculto para subir archivos */
+.fileInput {
+  display: none;
+}
+
+/* 🆕 Estilo del botón de carga */
+.uploadLabel {
+  align-self: flex-start;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.uploadLabel:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+/* 🔁 Animación suave para cada imagen */
+.fadeInItem {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInItemAnimation 0.6s ease forwards;
+}
+
+@keyframes fadeInItemAnimation {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ⏱️ Delay progresivo */
+.imageContainer:nth-child(1) { animation-delay: 0.1s; }
+.imageContainer:nth-child(2) { animation-delay: 0.2s; }
+.imageContainer:nth-child(3) { animation-delay: 0.3s; }
+.imageContainer:nth-child(4) { animation-delay: 0.4s; }
+.imageContainer:nth-child(5) { animation-delay: 0.5s; }
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .galleryGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .uploadLabel {
+    width: 100%;
+    text-align: center;
+  }
+}

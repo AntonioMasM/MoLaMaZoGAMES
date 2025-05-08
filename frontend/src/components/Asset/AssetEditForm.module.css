@@ -1,0 +1,207 @@
+@import "@/styles/variables.css";
+
+/* 🔷 Contenedor principal del formulario */
+.form {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  animation: fadeInUp 0.5s ease;
+}
+
+/* 📝 Etiquetas */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ✏️ Inputs, selects y textareas */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-accent);
+  background-color: var(--color-bg-secondary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(100, 149, 237, 0.2);
+}
+
+/* 🛑 Estados inválidos */
+[aria-invalid="true"] {
+  border-color: var(--color-error);
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+/* ❗ Mensajes de error */
+.errorMsg {
+  font-size: var(--font-size-xxs);
+  color: var(--color-error);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ↔️ Fila de elementos */
+.row {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* 🧮 Contador de caracteres */
+.charCounter {
+  font-size: var(--font-size-xxs);
+  color: var(--color-text-secondary);
+  align-self: flex-end;
+  margin-top: var(--spacing-xs);
+}
+
+/* 🎯 Grupo de etiquetas seleccionables */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Contenedor de Tags */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  min-height: 48px;
+}
+
+/* Botón de categoría (multi selección) */
+.categoryTag {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.categoryTag:hover,
+.categoryTag:focus-visible {
+  background-color: var(--color-hover);
+  color: var(--color-bg);
+}
+
+.categoryTag.selectedTag {
+  background-color: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* ⚙️ Opciones */
+.opcionesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.opciones {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.optionBtn {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.optionBtn:hover,
+.optionBtn:focus-visible {
+  background-color: var(--color-hover);
+  color: white;
+}
+
+.optionBtn.active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+
+/* ✅ Botón de envío */
+button[type="submit"] {
+  align-self: flex-start;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-success);
+  color: #fff;
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--color-success-dark);
+  transform: translateY(-1px);
+}
+
+button[type="submit"]:disabled {
+  background-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+/* ✨ Animación de aparición */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .form {
+    padding: var(--spacing-lg);
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    text-align: center;
+  }
+}

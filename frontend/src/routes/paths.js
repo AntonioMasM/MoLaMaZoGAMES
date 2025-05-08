@@ -20,6 +20,7 @@ export const ROUTES = {
   NOTIFICATION_DETAIL: (id = ":id") => `/notifications/${id}`,
 
   ASSET_VIEW: (id = ":id") => `/asset/${id}`,
+  ASSET_EDIT: (id = ":id") => `/asset/${id}/edit`,
   FAVOURITES: "/favourites",
   FOLLOWING: "/following",
   SEARCH: "/search",

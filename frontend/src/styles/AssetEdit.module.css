@@ -1,0 +1,124 @@
+@import "./variables.css"; /* 🎨 Variables globales */
+
+/* 🎯 Contenedor principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  box-sizing: border-box;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  gap: var(--spacing-xl);
+}
+
+/* 📝 Título de la página */
+.pageTitle {
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+  color: var(--color-primary);
+  text-align: left;
+}
+
+/* ⚙️ Contenido dividido en dos columnas */
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-xl);
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* 🧩 Columna izquierda: Formulario de edición */
+.leftColumn {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  min-width: 300px;
+}
+
+/* 🧩 Columna derecha: Vista previa */
+.rightColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  min-width: 280px;
+}
+
+/* 📦 Cada sección interna */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background-color: var(--color-surface);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 🏷️ Título de sección */
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ❌ Títulos y mensajes de error */
+.errorTitle {
+  font-size: var(--font-size-xxl);
+  color: var(--color-error);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.errorMessage {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* ✨ Animación suave de entrada */
+.fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInAnimation 0.6s ease forwards;
+}
+
+.leftColumn > .section:nth-child(1),
+.rightColumn > .section:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.leftColumn > .section:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+/* 🎥 Animación */
+@keyframes fadeInAnimation {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive: columnas apiladas en pantallas pequeñas */
+@media (max-width: 1024px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    flex: 1 1 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-lg);
+  }
+}
