@@ -38,6 +38,10 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  --color-success: #2ecc71;
+  --color-success-light: #d4f6e8;
+  --color-success-dark: #1e8449;
 }
 
 /* ☀️ Modo Claro */
@@ -60,4 +64,8 @@
   --color-accent: #00ffff;
   --color-hover: #00ffcc;
   --color-border: #ffffff;
+
+
+
+
 }

@@ -3,6 +3,7 @@ import styles from "./CategoryCard.module.css";
 import { useCategoriasSeguidas } from "../../hooks/useCategoriasSeguidas";
 import { useUser } from "../../context/UserContext";
 import { useEffect, useRef } from "react";
+import { FaCheck } from "react-icons/fa"; // ✅ Icono para "siguiendo"
 
 function dropboxToDirectLink(url) {
   return url
@@ -13,7 +14,6 @@ function dropboxToDirectLink(url) {
 const CategoryCard = ({ nombre, imagen, _id }) => {
   const { user } = useUser();
   const {
-    categorias,
     estaSiguiendo,
     seguir,
     dejar,
@@ -44,6 +44,8 @@ const CategoryCard = ({ nombre, imagen, _id }) => {
     }
   };
 
+  const siguiendo = estaSiguiendo(_id);
+
   return (
     <div className={styles.cardWrapper}>
       <div className={styles.card}>
@@ -70,17 +72,20 @@ const CategoryCard = ({ nombre, imagen, _id }) => {
         {user && (
           <button
             onClick={handleToggleSeguir}
-            className={`${styles.followButton} ${
-              estaSiguiendo(_id) ? styles.siguiendo : ""
-            }`}
+            className={`${styles.followButton} ${siguiendo ? styles.siguiendo : ""}`}
             disabled={loading}
-            aria-pressed={estaSiguiendo(_id)}
+            aria-pressed={siguiendo}
           >
-            {loading
-              ? "..."
-              : estaSiguiendo(_id)
-              ? "Siguiendo"
-              : "Seguir"}
+            {loading ? (
+              "..."
+            ) : siguiendo ? (
+              <>
+                <FaCheck style={{ marginRight: "6px" }} />
+                Siguiendo
+              </>
+            ) : (
+              "Seguir"
+            )}
           </button>
         )}
       </div>

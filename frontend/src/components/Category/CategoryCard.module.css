@@ -1,6 +1,6 @@
 @import "../../styles/variables.css";
 
-/* 🎯 Contenedor principal del CategoryCard */
+/* 📦 Contenedor principal del CategoryCard */
 .cardWrapper {
   position: relative;
   display: flex;
@@ -10,7 +10,7 @@
   max-width: 300px;
 }
 
-/* 🎯 Enlace con tarjeta clicable */
+/* 📦 Enlace principal clicable */
 .card {
   background-color: var(--color-bg-secondary);
   color: var(--color-text);
@@ -24,13 +24,13 @@
   flex-direction: column;
 }
 
-/* 🎯 Efecto hover */
+/* 📦 Hover de tarjeta */
 .card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
 }
 
-/* 🎯 Imagen de categoría */
+/* 🖼️ Imagen de categoría */
 .imageWrapper {
   overflow: hidden;
   position: relative;
@@ -47,12 +47,12 @@
   filter: brightness(1);
 }
 
-/* 🎯 Zoom al hacer hover */
+/* 🖼️ Zoom en hover */
 .card:hover .imageWrapper img {
   transform: scale(1.04);
 }
 
-/* 🎯 Contenido informativo */
+/* 📄 Contenido de información */
 .info {
   padding: var(--spacing-md);
   display: flex;
@@ -61,7 +61,7 @@
   gap: var(--spacing-sm);
 }
 
-/* 🎯 Título de categoría */
+/* 📄 Título de categoría */
 .title {
   font-size: var(--font-size-lg);
   font-weight: bold;
@@ -72,38 +72,54 @@
   max-width: 100%;
 }
 
-/* 🎯 Botón de seguir */
+/* Enlace que envuelve la tarjeta */
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* ✅ Botón de seguir */
 .followButton {
-  margin-top: 0.5rem;
+  margin: 0.5rem auto 1rem;
   padding: 6px 14px;
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: 600;
   border: none;
   border-radius: var(--border-radius-md);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background-color: var(--color-primary);
+  background-color: var(--color-accent);
   color: white;
+  min-width: 110px;
+  text-align: center;
 }
 
 .followButton:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--color-hover);
 }
 
+/* ✅ Estilo cuando ya sigue */
 .followButton.siguiendo {
-  background-color: var(--color-gray-600);
+  background-color: var(--color-success-light);
+  color: var(--color-success-dark);
+  border: 1px solid var(--color-success-dark);
+  font-weight: 700;
 }
 
 .followButton.siguiendo:hover {
-  background-color: var(--color-gray-700);
+  background-color: var(--color-success);
+  color: white;
+  border-color: var(--color-success);
 }
 
+/* ❌ Deshabilitado */
 .followButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* 🎯 Responsive ajustes */
+/* 📱 Responsive */
 @media screen and (max-width: 768px) {
   .title {
     font-size: var(--font-size-md);
