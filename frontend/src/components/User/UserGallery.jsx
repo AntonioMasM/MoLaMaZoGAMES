@@ -21,37 +21,41 @@ const UserGallery = ({ assets = [] }) => {
   if (!assets.length) {
     return (
       <section className={styles.emptyGallery} role="region" aria-label="Galería vacía">
+        <h2 className={styles.title}>Galería</h2>
         <p>No se han encontrado assets.</p>
       </section>
     );
   }
 
   return (
-    <section className={styles.gallery} role="region" aria-label="Galería de assets del usuario">
-      {assets.map((asset) => {
-        const { _id, titulo = "Sin título", autor, formatos = [], categorias = [] } = asset;
-        const image = getValidImage(asset);
-        const category = categorias[0] || "General";
+    <>
+      <h2 className={styles.title}>Galería</h2>
+      <section className={styles.gallery} role="region" aria-label="Galería de assets del usuario">
+        {assets.map((asset) => {
+          const { _id, titulo = "Sin título", autor, formatos = [], categorias = [] } = asset;
+          const image = getValidImage(asset);
+          const category = categorias[0] || "General";
 
-        return (
-          <Link
-            to={`/asset/${_id}`}
-            key={_id}
-            className={styles.assetLink}
-            aria-label={`Ver asset: ${titulo}`}
-          >
-            <AssetCard
-              image={image}
-              title={titulo}
-              id={_id}
-              author={autor}
-              formats={formatos.map(f => f.tipo)}
-              category={category}
-            />
-          </Link>
-        );
-      })}
-    </section>
+          return (
+            <Link
+              to={`/asset/${_id}`}
+              key={_id}
+              className={styles.assetLink}
+              aria-label={`Ver asset: ${titulo}`}
+            >
+              <AssetCard
+                image={image}
+                title={titulo}
+                id={_id}
+                author={autor}
+                formats={formatos.map(f => f.tipo)}
+                category={category}
+              />
+            </Link>
+          );
+        })}
+      </section>
+    </>
   );
 };
 

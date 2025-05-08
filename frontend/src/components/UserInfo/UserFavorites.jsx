@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./UserFavorites.module.css";
 
 function dropboxToDirectLink(url) {
@@ -8,11 +9,17 @@ function dropboxToDirectLink(url) {
 
 const UserFavorites = ({ categorias = [] }) => (
   <section className={styles.container} aria-labelledby="titulo-favoritas">
+    
 
     {categorias.length > 0 ? (
       <div className={styles.grid} role="list">
         {categorias.map((cat) => (
-          <div className={styles.item} key={cat._id} role="listitem">
+          <Link
+            to={`/categories/${encodeURIComponent(cat.nombre)}`}
+            key={cat._id}
+            className={styles.item}
+            role="listitem"
+          >
             <img
               src={dropboxToDirectLink(cat.imagen)}
               alt={`Categoría: ${cat.nombre}`}
@@ -23,7 +30,7 @@ const UserFavorites = ({ categorias = [] }) => (
               }}
             />
             <p className={styles.name}>{cat.nombre}</p>
-          </div>
+          </Link>
         ))}
       </div>
     ) : (

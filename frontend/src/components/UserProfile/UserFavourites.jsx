@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useFavoritos } from "@/hooks/useFavoritos";
+import { getCategorias } from "../../services/categorias";
 import AssetCard from "../Asset/AssetCard";
 import styles from "./UserFavourites.module.css";
 
-// Función para obtener una imagen válida del asset
 const getValidImage = (asset) => {
   const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
   if (!asset?.imagenPrincipal) return null;
@@ -20,7 +20,9 @@ const UserFavourites = () => {
   const [favoritos, setFavoritos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
   const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
+  const [categorias, setCategorias] = useState([]);
 
+  // Cargar favoritos
   useEffect(() => {
     const fetchFavoritos = async () => {
       try {
@@ -34,7 +36,20 @@ const UserFavourites = () => {
     fetchFavoritos();
   }, []);
 
-  // 🔍 Filtros aplicados
+  // Cargar categorías
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const data = await getCategorias();
+        setCategorias(data);
+      } catch (err) {
+        console.error("Error al obtener categorías:", err);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
   const favoritosFiltrados = favoritos
     .filter((fav) =>
       fav.asset.titulo.toLowerCase().includes(busqueda.toLowerCase())
@@ -69,7 +84,6 @@ const UserFavourites = () => {
 
   return (
     <div className={styles.favouritesWrapper}>
-      
       {/* 🎯 Barra de filtros */}
       <div className={styles.filters}>
         <input
@@ -88,10 +102,11 @@ const UserFavourites = () => {
           aria-label="Filtrar por categoría"
         >
           <option value="Todas">Todas las categorías</option>
-          <option value="Entorno">Entorno</option>
-          <option value="Ciencia Ficción">Ciencia Ficción</option>
-          <option value="Personaje">Personaje</option>
-          {/* Puedes mapear dinámicamente si quieres más adelante */}
+          {categorias.map((cat) => (
+            <option key={cat._id} value={cat.nombre}>
+              {cat.nombre}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -109,7 +124,7 @@ const UserFavourites = () => {
                 image={getValidImage(fav.asset)}
                 title={fav.asset.titulo}
                 author={fav.asset.autor}
-                formats={fav.asset.formatos?.map(f => f.tipo)}
+                formats={fav.asset.formatos?.map((f) => f.tipo)}
                 category={fav.asset.categorias?.[0] || "General"}
               />
             </div>

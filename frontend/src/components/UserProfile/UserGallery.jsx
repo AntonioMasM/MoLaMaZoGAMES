@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../context/UserContext";
 import { obtenerAssetsPorUsuario, eliminarAssetPorId } from "../../services/assetService";
+import { getCategorias } from "../../services/categorias";
 import AssetCard from "../Asset/AssetCard";
 import styles from "./UserGallery.module.css";
 
@@ -23,8 +24,24 @@ const UserGallery = () => {
   const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
   const [orden, setOrden] = useState("recientes");
   const [paginaActual, setPaginaActual] = useState(1);
+  const [categorias, setCategorias] = useState([]);
   const assetsPorPagina = 9;
 
+  // Cargar categorías
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const data = await getCategorias();
+        setCategorias(data);
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
+  // Cargar assets del usuario
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -43,15 +60,10 @@ const UserGallery = () => {
 
   const eliminarAsset = async (assetId) => {
     if (!window.confirm("¿Seguro que deseas eliminar este asset?")) return;
-  
     try {
-      // Opcional: mostrar loading específico
       setLoading(true);
-  
       await eliminarAssetPorId(assetId);
-  
       setAssets((prev) => prev.filter((asset) => asset._id !== assetId));
-  
       alert("✅ Asset eliminado correctamente.");
     } catch (error) {
       console.error("Error al eliminar asset:", error);
@@ -60,7 +72,6 @@ const UserGallery = () => {
       setLoading(false);
     }
   };
-  
 
   const assetsFiltrados = assets
     .filter((asset) =>
@@ -70,18 +81,10 @@ const UserGallery = () => {
       categoriaFiltro === "Todas" || asset.categorias?.includes(categoriaFiltro)
     )
     .sort((a, b) => {
-      if (orden === "recientes") {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      }
-      if (orden === "antiguos") {
-        return new Date(a.createdAt) - new Date(b.createdAt);
-      }
-      if (orden === "a-z") {
-        return a.titulo.localeCompare(b.titulo);
-      }
-      if (orden === "z-a") {
-        return b.titulo.localeCompare(a.titulo);
-      }
+      if (orden === "recientes") return new Date(b.createdAt) - new Date(a.createdAt);
+      if (orden === "antiguos") return new Date(a.createdAt) - new Date(b.createdAt);
+      if (orden === "a-z") return a.titulo.localeCompare(b.titulo);
+      if (orden === "z-a") return b.titulo.localeCompare(a.titulo);
       return 0;
     });
 
@@ -95,7 +98,8 @@ const UserGallery = () => {
 
   return (
     <div className={styles.galleryContainer}>
-      
+      <h2 className={styles.title}>Galería</h2>
+
       {/* Controles de filtrado */}
       <div className={styles.galleryControls}>
         <input
@@ -113,9 +117,11 @@ const UserGallery = () => {
           onChange={(e) => setCategoriaFiltro(e.target.value)}
         >
           <option value="Todas">Todas las Categorías</option>
-          {/* Opcionalmente podrías mapear categorías dinámicas */}
-          <option value="Entorno">Entorno</option>
-          <option value="Ciencia Ficción">Ciencia Ficción</option>
+          {categorias.map((cat) => (
+            <option key={cat._id} value={cat.nombre}>
+              {cat.nombre}
+            </option>
+          ))}
         </select>
 
         <select
@@ -135,7 +141,6 @@ const UserGallery = () => {
         <div className={styles.galleryGrid}>
           {assetsPagina.map((asset) => (
             <div key={asset._id} className={styles.assetWrapper}>
-              {/* Acciones rápidas */}
               <div className={styles.assetActions}>
                 <button
                   className={styles.actionButton}
@@ -160,17 +165,14 @@ const UserGallery = () => {
                 </button>
               </div>
 
-              {/* AssetCard real */}
               <AssetCard
-          key={asset._id}
-          image={getValidImage(asset)}
-          title={asset.titulo}
-          id={asset._id}          
-          author={asset.autor}
-          formats={asset.formatos.map((f) => f.tipo)}
-          category={asset.categorias?.[0] || "General"}
-        />
-
+                image={getValidImage(asset)}
+                title={asset.titulo}
+                id={asset._id}
+                author={asset.autor}
+                formats={asset.formatos.map((f) => f.tipo)}
+                category={asset.categorias?.[0] || "General"}
+              />
             </div>
           ))}
         </div>
@@ -200,7 +202,6 @@ const UserGallery = () => {
           </button>
         </div>
       )}
-
     </div>
   );
 };
