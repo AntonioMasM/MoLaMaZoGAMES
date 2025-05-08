@@ -3,13 +3,16 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4); /* un poco más transparente */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* soporte Safari */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
   padding: var(--spacing-lg);
 }
+
 
 .modal {
   background: var(--color-bg-secondary);

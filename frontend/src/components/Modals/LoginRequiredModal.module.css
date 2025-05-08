@@ -1,0 +1,49 @@
+@import "../../styles/variables.css";
+
+.message {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.loginButton,
+.registerButton {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  min-width: 120px;
+}
+
+.loginButton {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.loginButton:hover {
+  background-color: var(--color-primary-dark);
+  transform: scale(1.03);
+}
+
+.registerButton {
+  background-color: var(--color-neutral);
+  color: #fff;
+}
+
+.registerButton:hover {
+  background-color: var(--color-neutral-dark);
+  transform: scale(1.03);
+}

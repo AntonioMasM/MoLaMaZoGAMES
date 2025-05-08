@@ -1,9 +1,19 @@
 // src/routes/guards/PrivateRoute.jsx
-import { Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth";
+import LoginRequiredModal from "@/components/Modals/LoginRequiredModal";
 
 export default function PrivateRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
+  const [modalVisible, setModalVisible] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!loading && isAuthenticated === false) {
+      setModalVisible(true);
+    }
+  }, [loading, isAuthenticated]);
 
   if (loading || isAuthenticated === null) {
     return (
@@ -15,7 +25,14 @@ export default function PrivateRoute({ children }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return (
+      <>
+        <LoginRequiredModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
+      </>
+    );
   }
 
   return children;
