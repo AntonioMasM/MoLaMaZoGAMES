@@ -18,6 +18,7 @@ const RegisterForm = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); // nuevo campo
   const [cargo, setCargo] = useState("");
 
   // Estado de errores de validación
@@ -32,14 +33,17 @@ const RegisterForm = () => {
     setErrors((prev) => ({
       ...prev,
       email: email && !emailRegex.test(email) ? "Introduce un correo electrónico válido" : "",
-      password: password && !passwordRegex.test(password)
-        ? "Debe tener 8 caracteres, mayúscula, número y símbolo"
-        : "",
-      cargo: cargo && !cargoRegex.test(cargo)
-        ? "El cargo solo puede contener letras y espacios"
-        : "",
+      password:
+        password && !passwordRegex.test(password)
+          ? "Debe tener 8 caracteres, mayúscula, número y símbolo"
+          : "",
+      confirmPassword:
+        confirmPassword && confirmPassword !== password
+          ? "Las contraseñas no coinciden"
+          : "",
+      cargo: cargo && !cargoRegex.test(cargo) ? "El cargo solo puede contener letras y espacios" : "",
     }));
-  }, [email, password, cargo]);
+  }, [email, password, confirmPassword, cargo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +56,8 @@ const RegisterForm = () => {
       password: !passwordRegex.test(password)
         ? "Debe tener 8 caracteres, mayúscula, número y símbolo"
         : "",
+      confirmPassword:
+        confirmPassword !== password ? "Las contraseñas no coinciden" : "",
       cargo: !cargoRegex.test(cargo) ? "El cargo solo puede contener letras y espacios" : "",
     };
 
@@ -120,6 +126,16 @@ const RegisterForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="••••••••"
         error={errors.password}
+      />
+
+      <FormInput
+        id="confirmPassword"
+        label="Repetir Contraseña"
+        type="password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        placeholder="••••••••"
+        error={errors.confirmPassword}
       />
 
       <FormInput
