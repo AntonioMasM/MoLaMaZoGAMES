@@ -59,6 +59,10 @@ const UserInfo = ({ user }) => {
   const { pais, municipio } = ubicacion;
   const { universidad, carrera } = formacion;
 
+  // Comprobar si hay alguna red social vinculada
+  const socialLinks = [instagram, twitter, linkedin, artstation, facebook];
+  const hasSocial = socialLinks.some(link => link && link.trim() !== "");
+
   return (
     <section className={styles.userInfo} aria-label="Información del perfil del usuario" role="region">
       <header className={styles.header}>
@@ -107,33 +111,38 @@ const UserInfo = ({ user }) => {
           <section aria-labelledby="social-title">
             <h2 id="social-title">Redes Sociales</h2>
             <div className={styles.socialList}>
-            {instagram && (
-              <a href={instagram} title="Instagram" aria-label="Instagram">
-                <FaInstagram />
-              </a>
-            )}
-            {twitter && (
-              <a href={twitter} title="Twitter" aria-label="Twitter">
-                <FaTwitter />
-              </a>
-            )}
-            {linkedin && (
-              <a href={linkedin} title="LinkedIn" aria-label="LinkedIn">
-                <FaLinkedin />
-              </a>
-            )}
-            {artstation && (
-              <a href={artstation} title="ArtStation" aria-label="ArtStation">
-                <FaArtstation/>
-              </a>
-            )}
-            {facebook && (
-              <a href={facebook} title="Facebook" aria-label="Facebook">
-                <FaFacebook />
-              </a>
-            )}
-          </div>
-
+              {hasSocial ? (
+                <>
+                  {instagram && (
+                    <a href={instagram} title="Instagram" aria-label="Instagram">
+                      <FaInstagram />
+                    </a>
+                  )}
+                  {twitter && (
+                    <a href={twitter} title="Twitter" aria-label="Twitter">
+                      <FaTwitter />
+                    </a>
+                  )}
+                  {linkedin && (
+                    <a href={linkedin} title="LinkedIn" aria-label="LinkedIn">
+                      <FaLinkedin />
+                    </a>
+                  )}
+                  {artstation && (
+                    <a href={artstation} title="ArtStation" aria-label="ArtStation">
+                      <FaArtstation />
+                    </a>
+                  )}
+                  {facebook && (
+                    <a href={facebook} title="Facebook" aria-label="Facebook">
+                      <FaFacebook />
+                    </a>
+                  )}
+                </>
+              ) : (
+                <p className={styles.noSocial}>No está vinculado a ninguna red social.</p>
+              )}
+            </div>
           </section>
         </div>
 
