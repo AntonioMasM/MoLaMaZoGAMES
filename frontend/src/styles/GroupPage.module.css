@@ -20,7 +20,7 @@
 
 @media (min-width: 768px) {
   .gridTwoColumns {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 30% 70%;
   }
 }
 

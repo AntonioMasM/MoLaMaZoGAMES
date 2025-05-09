@@ -1,10 +1,10 @@
 import { useState, useCallback, useRef } from "react";
-import uploadFileToCloudinary from "../services/uploadFileToCloudinary"; // ⚡ servicio Cloudinary
+import { v4 as uuidv4 } from "uuid";
+import uploadFileToCloudinary from "../services/uploadFileToCloudinary";
 import { createAsset } from "@/services/assets";
-import { useUser  } from "../context/UserContext"; // ⚡ para obtener usuario logueado (ajusta a tu proyecto)
-import { agregarAssetAlGrupo } from "../services/grupoService"; 
+import { useUser } from "../context/UserContext";
+import { agregarAssetAlGrupo } from "../services/grupoService";
 
-// 🎯 Estado inicial limpio
 const initialFormData = {
   titulo: "",
   descripcion: "",
@@ -23,9 +23,8 @@ export function useUploadAsset() {
   const [status, setStatus] = useState({ mensaje: "", error: "", loading: false });
   const [errors, setErrors] = useState({});
 
-  const { user } = useUser (); // ⚡ tu contexto de autenticación real
+  const { user } = useUser();
 
-  // 🎯 Refs para focus en errores
   const tituloRef = useRef(null);
   const descripcionRef = useRef(null);
   const categoriaRef = useRef(null);
@@ -49,7 +48,6 @@ export function useUploadAsset() {
     refs[campo]?.current?.focus();
   }, []);
 
-  // 🎯 Handlers memoizados
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -62,52 +60,61 @@ export function useUploadAsset() {
     }));
   }, []);
 
+  // ✅ Añadir nuevo formato con ID
   const handleAddFormato = useCallback(() => {
+    const nuevoFormato = {
+      id: uuidv4(),
+      file: null,
+      tipo: "",
+      tamaño: "",
+    };
     setFormData((prev) => ({
       ...prev,
-      formatos: [...prev.formatos, { file: null, tipo: "", tamaño: "" }],
+      formatos: [...prev.formatos, nuevoFormato],
     }));
   }, []);
 
-  const handleFormatoFileChange = useCallback((e, idx) => {
+  // ✅ Cambiar archivo de un formato por ID
+  const handleFormatoFileChange = useCallback((e, id) => {
     const file = e.target.files[0];
-    if (file) {
-      const extension = file.name.split('.').pop().toUpperCase();
-      const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+    if (!file) return;
 
-      const updatedFormatos = [...formData.formatos];
-      updatedFormatos[idx] = { file, tipo: extension, tamaño: sizeInMB };
+    const tipo = file.name.split(".").pop().toUpperCase();
+    const tamaño = (file.size / (1024 * 1024)).toFixed(2);
 
-      setFormData((prev) => ({ ...prev, formatos: updatedFormatos }));
-    }
-  }, [formData.formatos]);
+    setFormData((prev) => ({
+      ...prev,
+      formatos: prev.formatos.map((f) =>
+        f.id === id ? { ...f, file, tipo, tamaño } : f
+      ),
+    }));
+  }, []);
 
-  const handleFormatoRemove = useCallback((idx) => {
-    setFormData((prev) => {
-      const updated = [...prev.formatos];
-      updated.splice(idx, 1);
-      return { ...prev, formatos: updated };
-    });
+  // ✅ Eliminar formato por ID
+  const handleFormatoRemove = useCallback((id) => {
+    setFormData((prev) => ({
+      ...prev,
+      formatos: prev.formatos.filter((f) => f.id !== id),
+    }));
   }, []);
 
   const handleFileDrop = useCallback((file) => {
-    const extension = file.name.split('.').pop().toUpperCase();
-    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-  
+    const tipo = file.name.split(".").pop().toUpperCase();
+    const tamaño = (file.size / (1024 * 1024)).toFixed(2);
+
+    const nuevoFormato = {
+      id: uuidv4(),
+      file,
+      tipo,
+      tamaño,
+    };
+
     setFormData((prev) => ({
       ...prev,
       imagenPrincipal: file,
-      formatos: [
-        ...prev.formatos,
-        {
-          file,
-          tipo: extension,
-          tamaño: sizeInMB
-        }
-      ]
+      formatos: [...prev.formatos, nuevoFormato],
     }));
   }, []);
-  
 
   const handleGalleryChange = useCallback((files) => {
     setFormData((prev) => ({ ...prev, galeriaMultimedia: files }));
@@ -117,35 +124,34 @@ export function useUploadAsset() {
     setFormData((prev) => ({ ...prev, grupo: e.target.value }));
   }, []);
 
-  // 🎯 Submit real
   const handleSubmitAsset = useCallback(async (e) => {
     e.preventDefault();
-    setStatus({ mensaje: "", error: "", loading: false });
+    setStatus({ mensaje: "", error: "", loading: true });
     setErrors({});
-  
+
     try {
-      setStatus({ mensaje: "Subiendo asset...", error: "", loading: true });
-  
       const imagenPrincipalSubida = await uploadFileToCloudinary(formData.imagenPrincipal);
-  
+
       const galeriaSubida = await Promise.all(
-        formData.galeriaMultimedia.map(file => uploadFileToCloudinary(file))
+        formData.galeriaMultimedia.map((file) => uploadFileToCloudinary(file))
       );
-  
+
       const formatosSubidos = await Promise.all(
-        formData.formatos.map(async (formatoObj) => {
-          if (!formatoObj.file) return null;
-          if (formatoObj.file === formData.imagenPrincipal) {
+        formData.formatos.map(async (formato) => {
+          if (!formato.file) return null;
+
+          if (formato.file === formData.imagenPrincipal) {
             return {
               secure_url: imagenPrincipalSubida.secure_url,
               public_id: imagenPrincipalSubida.public_id,
-              resource_type: imagenPrincipalSubida.resource_type
+              resource_type: imagenPrincipalSubida.resource_type,
             };
           }
-          return await uploadFileToCloudinary(formatoObj.file);
+
+          return await uploadFileToCloudinary(formato.file);
         })
       );
-  
+
       const nuevoAsset = {
         titulo: formData.titulo,
         descripcion: formData.descripcion,
@@ -154,52 +160,45 @@ export function useUploadAsset() {
           url: imagenPrincipalSubida.secure_url,
           public_id: imagenPrincipalSubida.public_id,
         },
-        galeriaMultimedia: galeriaSubida.map(file => ({
+        galeriaMultimedia: galeriaSubida.map((file) => ({
           tipo: file.resource_type,
           url: file.secure_url,
-          public_id: file.public_id
+          public_id: file.public_id,
         })),
         formatos: formatosSubidos
-          .filter(Boolean)
-          .map((file, idx) => ({
-            tipo: formData.formatos[idx].tipo.toLowerCase(),
-            tamaño: parseFloat(formData.formatos[idx].tamaño),
-            url: file.secure_url,
-            public_id: file.public_id
-          })),
+          .map((file, idx) => {
+            if (!file) return null;
+            const original = formData.formatos[idx];
+            return {
+              tipo: original.tipo.toLowerCase(),
+              tamaño: parseFloat(original.tamaño),
+              url: file.secure_url,
+              public_id: file.public_id,
+            };
+          })
+          .filter(Boolean),
         categorias: [
           formData.categoriaPrincipal,
-          ...formData.otrasCategorias
+          ...formData.otrasCategorias,
         ],
         usuarioCreador: user._id,
       };
-  
-      console.log("🚀 Enviando datos del asset:", nuevoAsset);
-  
-      // 🔥 Guardamos el asset en la base de datos y capturamos la respuesta
-      const assetCreado = await createAsset(nuevoAsset);
-  
-      // 🔥 Si el usuario seleccionó un grupo, agregar el asset al grupo
-      if (formData.grupo) {
-        console.log("📦 formData.grupo:", formData.grupo);
-        console.log("📦 assetCreado:", assetCreado); // queremos ver si tiene _id
-        console.log("📦 assetCreado._id:", assetCreado?._id);
 
+      const assetCreado = await createAsset(nuevoAsset);
+
+      if (formData.grupo) {
         await agregarAssetAlGrupo(formData.grupo, assetCreado._id);
       }
-  
+
       setStatus({ mensaje: "Asset subido correctamente 🎉", error: "", loading: false });
       setFormData(initialFormData);
       scrollToTop();
-  
     } catch (err) {
       console.error(err);
       setStatus({ mensaje: "", error: "Error al subir el asset ❌", loading: false });
       scrollToTop();
     }
-  }, [formData, scrollToTop, focusOnError, user]);
-  
-  
+  }, [formData, scrollToTop, user]);
 
   return {
     formData,
@@ -213,7 +212,7 @@ export function useUploadAsset() {
     handleFileDrop,
     handleGalleryChange,
     handleGroupChange,
-    handleSubmitAsset, // 🔥 actualizado
+    handleSubmitAsset,
     refs: {
       tituloRef,
       descripcionRef,

@@ -1,8 +1,7 @@
-// src/components/UserProfile/UserFollowing.jsx
 import React, { useEffect, useState } from "react";
 import { useSocial } from "@/hooks/useSocial";
 import { useUser } from "@/context/UserContext";
-import UserCard from "../User/UserCard"; // ✅ Import correcto
+import UserCard from "../User/UserCard";
 import styles from "./UserFollowing.module.css";
 
 const UserFollowing = () => {
@@ -24,6 +23,7 @@ const UserFollowing = () => {
     fetchSiguiendo();
   }, [user?.email]);
 
+  // === Loading ===
   if (loading) {
     return (
       <div className={styles.loading} role="status" aria-live="polite">
@@ -32,6 +32,7 @@ const UserFollowing = () => {
     );
   }
 
+  // === Error ===
   if (error) {
     return (
       <div className={styles.error} role="alert">
@@ -40,29 +41,36 @@ const UserFollowing = () => {
     );
   }
 
+  // === Vacío ===
   if (siguiendo.length === 0) {
     return (
-      <div className={styles.emptyState} role="region" aria-label="No sigues a nadie">
+      <div className={styles.emptyState} role="region" aria-label="Sin usuarios seguidos">
         <p>No estás siguiendo a ningún usuario todavía.</p>
       </div>
     );
   }
 
+  // === Resultado ===
   return (
-    <section aria-labelledby="siguiendo-heading" className={styles.followingSection}>
-      
+    <section className={styles.followingSection} aria-labelledby="siguiendo-heading">
+      <header className={styles.header}>
+        <p className={styles.subtitle}>
+          Estás siguiendo a {siguiendo.length} {siguiendo.length === 1 ? "usuario" : "usuarios"}.
+        </p>
+      </header>
 
-      <div className={styles.followingGrid} role="list" aria-label="Lista de usuarios seguidos">
-        {siguiendo.map((usuario) => (
-          <UserCard
-            key={usuario.email} // ✅ Usamos email como key, 100% seguro
-            email={usuario.email}
-            id={usuario._id}
-            nickname={usuario.nickname}
-            fotoPerfil={usuario.fotoPerfil || { secure_url: "/assets/main.webp" }}
-          />
+      <ul className={styles.followingGrid} role="list" aria-label="Lista de usuarios seguidos">
+        {siguiendo.map((usuario, i) => (
+          <li key={usuario.email} style={{ animationDelay: `${i * 0.05}s` }} className={styles.item}>
+            <UserCard
+              email={usuario.email}
+              id={usuario._id}
+              nickname={usuario.nickname}
+              fotoPerfil={usuario.fotoPerfil || { secure_url: "/assets/main.webp" }}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 };

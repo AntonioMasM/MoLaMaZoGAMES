@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useUploadAsset } from "../hooks/useUploadAsset";
-import { getGruposPorUsuario } from "../services/grupoService"; // 👈 importar
-import { useUser } from "../context/UserContext"; // 👈 importar
+import { getGruposPorUsuario } from "../services/grupoService";
+import { useUser } from "../context/UserContext";
 
 import AssetForm from "../components/UploadAsset/AssetForm";
 import UploadZone from "../components/UploadAsset/UploadZone";
@@ -28,8 +28,8 @@ const UploadAsset = () => {
     handleSubmitAsset,
   } = useUploadAsset();
 
-  const { user: sessionUser } = useUser(); // 👈 coger el usuario logueado
-  const [userGroups, setUserGroups] = useState([]); // 👈 nuevo estado
+  const { user: sessionUser } = useUser();
+  const [userGroups, setUserGroups] = useState([]);
 
   useEffect(() => {
     const fetchGrupos = async () => {
@@ -87,7 +87,7 @@ const UploadAsset = () => {
         />
 
         <GroupSelector
-          grupos={userGroups} // 👈 ahora sí pasamos grupos REALES
+          grupos={userGroups}
           selectedGroup={formData.grupo}
           onChange={handleGroupChange}
         />

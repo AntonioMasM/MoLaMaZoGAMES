@@ -3,6 +3,8 @@
 /* 📦 Contenedor principal */
 .container {
   padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* 🧾 Lista de tarjetas de usuario */
@@ -10,56 +12,72 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 
 /* 📢 Zona de estados: loading, error, vacío */
-.status {
-  font-size: var(--font-size-sm);
+.status,
+.empty {
   text-align: center;
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
 }
 
+/* 🎯 Iconos universales */
 .icon {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--color-text-secondary);
+  animation: pulse 1.2s infinite ease-in-out;
 }
 
 /* ⏳ Cargando */
 .loading {
   color: var(--color-text-secondary);
   font-style: italic;
+  font-size: var(--font-size-sm);
 }
 
 /* ❌ Error */
 .error {
   color: var(--color-error);
-  font-weight: bold;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
 }
 
 /* 🚫 Sin usuarios */
 .empty {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
   font-style: italic;
-  text-align: center;
-  margin-top: var(--spacing-md);
-  display: flex;
-  align-items: center;
+  font-size: var(--font-size-sm);
   justify-content: center;
-  gap: var(--spacing-xs);
+}
+
+/* 💫 Animación de "cargando" */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 
 /* 📱 Responsive refinement */
 @media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+
   .list {
     grid-template-columns: 1fr;
   }
 
   .icon {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 }

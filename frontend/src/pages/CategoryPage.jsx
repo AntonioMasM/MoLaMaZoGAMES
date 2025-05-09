@@ -10,13 +10,11 @@ import styles from "../styles/CategoryPage.module.css";
 const getValidImage = (asset) => {
   if (!asset || !asset.imagenPrincipal || !asset.imagenPrincipal.url) return null;
 
-  const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg","mp3","mp4"];
-  const urlPrincipal = asset.imagenPrincipal.url;
-
-  const extension = urlPrincipal.split(".").pop().toLowerCase();
+  const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"]; // ✅ Solo imágenes válidas
+  const extension = asset.imagenPrincipal.url.split(".").pop().toLowerCase();
 
   if (formatosImagen.includes(extension)) {
-    return urlPrincipal;
+    return asset.imagenPrincipal.url;
   }
 
   const primeraImagenGaleria = asset.galeriaMultimedia?.find(
@@ -25,6 +23,7 @@ const getValidImage = (asset) => {
 
   return primeraImagenGaleria ? primeraImagenGaleria.url : null;
 };
+
 
 const CategoryPage = () => {
   const { nombreCategoria } = useParams();

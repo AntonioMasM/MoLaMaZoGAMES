@@ -2,51 +2,63 @@ import React, { useState } from "react";
 import styles from "./FormatUploader.module.css";
 import { getFileIcon, formatFileSize, truncateFileName } from "../../utils/fileUtils";
 import Toast from "../ui/Toast";
+import { v4 as uuidv4 } from "uuid";
 
 const FORMATOS_PERMITIDOS = [
-    "PDF", "ZIP", "MP4", "MP3", "JPG", "PNG",
-    "FBX", "OBJ", "WAV", "GLB", "GLTF"
-  ];
+  "PDF", "ZIP", "MP4", "MP3", "JPG", "PNG",
+  "FBX", "OBJ", "WAV", "GLB", "GLTF"
+];
 
-  
-const MAX_FILE_SIZE_MB = 50; // 🚫 No permitir archivos > 50MB
+const MAX_FILE_SIZE_MB = 50;
 
 const FormatUploader = ({
   formatos = [],
   onAddFormato = () => {},
   onFormatoFileChange = () => {},
   onFormatoRemove = () => {},
-  error = "", // 🚨 Soporte de error externo si quieres
+  error = "",
   inputRef = null,
 }) => {
-  const [deletingIndex, setDeletingIndex] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
 
-  const handleRemove = (idx) => {
-    setDeletingIndex(idx);
+  const handleRemove = (id) => {
+    setDeletingId(id);
     setTimeout(() => {
-      onFormatoRemove(idx);
-      setDeletingIndex(null);
+      onFormatoRemove(id);
+      setDeletingId(null);
       setToastMessage("Archivo eliminado correctamente ✅");
     }, 300);
   };
 
-  const handleFileSelect = (e, idx) => {
+  const handleFileSelect = (e, id) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // reset input for duplicate file selection
+    e.target.value = "";
 
     const sizeInMB = file.size / 1024 / 1024;
     if (sizeInMB > MAX_FILE_SIZE_MB) {
       setToastMessage(`El archivo supera los ${MAX_FILE_SIZE_MB}MB ❌`);
       return;
     }
-    const extension = file.name.split('.').pop().toUpperCase();
+
+    const extension = file.name.split(".").pop()?.toUpperCase();
     if (!FORMATOS_PERMITIDOS.includes(extension)) {
       alert("Formato no permitido: " + extension);
       return;
     }
-    onFormatoFileChange(e, idx);
+
+    onFormatoFileChange(e, id);
     setToastMessage("Archivo subido correctamente 📂");
+  };
+
+  const handleAdd = () => {
+    onAddFormato({
+      id: uuidv4(),
+      file: null
+    });
   };
 
   return (
@@ -58,24 +70,25 @@ const FormatUploader = ({
           {formatos
             .slice()
             .sort((a, b) => (a.file?.name || "").localeCompare(b.file?.name || ""))
-            .map((formato, idx) => {
-              const hasError = formato.file && (formato.file.size / 1024 / 1024) > MAX_FILE_SIZE_MB;
+            .map((formato) => {
+              const { id, file } = formato;
+              const hasError = file && (file.size / 1024 / 1024) > MAX_FILE_SIZE_MB;
 
               return (
                 <div
-                  key={idx}
-                  className={`${styles.formatoItem} ${deletingIndex === idx ? styles.fadeOut : styles.bounceIn} ${hasError ? styles.errorFormato : ""}`}
-                  >
+                  key={id}
+                  className={`${styles.formatoItem} ${deletingId === id ? styles.fadeOut : styles.bounceIn} ${hasError ? styles.errorFormato : ""}`}
+                >
                   <div className={styles.fileIcon}>
-                    {getFileIcon(formato.file?.name)}
+                    {getFileIcon(file?.name)}
                   </div>
 
                   <div className={styles.fileName}>
-                    {formato.file ? truncateFileName(formato.file.name) : "Sin archivo"}
+                    {file ? truncateFileName(file.name) : "Sin archivo"}
                   </div>
 
                   <div className={styles.fileSize}>
-                    {formato.file ? formatFileSize(formato.file.size) : "-"}
+                    {file ? formatFileSize(file.size) : "-"}
                   </div>
 
                   <div className={styles.fileActions}>
@@ -83,34 +96,34 @@ const FormatUploader = ({
                       className={styles.selectFileButton}
                       role="button"
                       tabIndex={0}
-                      aria-label={`Seleccionar archivo para formato ${idx + 1}`}
+                      aria-label={`Seleccionar archivo para formato`}
                     >
-                      {formato.file ? "Cambiar" : "Seleccionar"}
+                      {file ? "Cambiar" : "Seleccionar"}
                       <input
+                        key={id}
                         type="file"
                         accept="*/*"
-                        onChange={(e) => handleFileSelect(e, idx)}
+                        onChange={(e) => handleFileSelect(e, id)}
                         className={styles.hiddenInput}
                         aria-invalid={hasError ? "true" : "false"}
-                        aria-describedby={hasError ? `error-formato-${idx}` : undefined}
+                        aria-describedby={hasError ? `error-formato-${id}` : undefined}
                       />
                     </label>
 
-                    {formato.file && (
+                    {file && (
                       <button
                         type="button"
                         className={styles.deleteFileButton}
-                        aria-label={`Eliminar archivo ${formato.file.name}`}
-                        onClick={() => handleRemove(idx)}
+                        aria-label={`Eliminar archivo ${file.name}`}
+                        onClick={() => handleRemove(id)}
                       >
                         ✖
                       </button>
                     )}
                   </div>
 
-                  {/* Error asociado al archivo */}
                   {hasError && (
-                    <p id={`error-formato-${idx}`} className={styles.errorMessage}>
+                    <p id={`error-formato-${id}`} className={styles.errorMessage}>
                       Archivo supera los {MAX_FILE_SIZE_MB}MB
                     </p>
                   )}
@@ -120,14 +133,7 @@ const FormatUploader = ({
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={onAddFormato}
-        className={styles.addFormatButton}
-        aria-label="Añadir nuevo formato de archivo"
-      >
-        + Añadir nuevo Formato
-      </button>
+
 
       {toastMessage && (
         <Toast

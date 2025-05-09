@@ -56,8 +56,12 @@
   font-size: var(--font-size-sm);
   font-weight: bold;
   color: var(--color-text);
+  text-decoration: none;
 }
 
+a{
+  text-decoration: none;
+}
 /* ❌ Texto si no hay categorías */
 .empty {
   color: var(--color-text-secondary);

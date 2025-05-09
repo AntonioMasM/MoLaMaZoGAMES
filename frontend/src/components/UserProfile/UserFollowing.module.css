@@ -1,94 +1,113 @@
 @import "@/styles/variables.css";
 
-/* 📂 Contenedor general */
-.followingGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
+/* 📦 Contenedor principal de la sección */
+.followingSection {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* 📄 Card de usuario */
-.userCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-md);
+/* 🧭 Encabezado de la sección */
+.header {
+  margin-bottom: var(--spacing-md);
   text-align: center;
-  text-decoration: none;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
   color: var(--color-text);
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.userCard:hover {
-  background-color: var(--color-hover);
-  color: var(--color-bg);
-  transform: translateY(-4px);
-}
-
-/* 📸 Imagen de avatar */
-.avatarWrapper {
-  width: 80px;
-  height: 80px;
-  margin-bottom: var(--spacing-sm);
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid var(--color-accent);
-}
-
-/* 📄 Info de usuario */
-.userInfo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.nickname {
-  font-weight: bold;
-  font-size: var(--font-size-md);
-}
-
-.nombreCompleto {
+.subtitle {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  opacity: 0.8;
 }
 
-/* 🔄 Loading */
-.loading {
-  width: 100%;
-  min-height: 60vh;
+/* 🔄 Estados */
+.loading,
+.error,
+.emptyState {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: var(--font-size-lg);
+  min-height: 60vh;
+  text-align: center;
+  font-size: var(--font-size-md);
   color: var(--color-text-secondary);
 }
 
-/* ❌ Error */
 .error {
-  width: 100%;
-  min-height: 60vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: var(--font-size-lg);
   color: var(--color-error);
 }
 
-/* 🕊️ Estado vacío */
 .emptyState {
-  width: 100%;
-  min-height: 60vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-style: italic;
-  color: var(--color-text-secondary);
+}
+
+/* 🧾 Contenedor general de la lista */
+.followingGrid {
+  display: flex; /* 🔄 De grid a flex */
+  flex-wrap: wrap;
+  gap: var(--spacing-md); /* Espaciado reducido entre elementos */
+  justify-content: flex-start; /* ⬅️ Alineación a la izquierda */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* 🎞️ Animación fade-in + desplazamiento */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🧩 Cada item de la lista */
+.item {
+  animation: fadeInUp 0.4s ease-out both;
+  flex: 0 1 auto;
+}
+
+/* 💳 Card de usuario */
+.userCard {
+  width: 180px; /* ✅ Tamaño fijo más compacto */
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-sm);
+  text-align: center;
+  color: var(--color-text);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.userCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 📱 Responsive refinement */
+@media (max-width: 480px) {
+  .followingSection {
+    padding: var(--spacing-md);
+  }
+
+  .title {
+    font-size: var(--font-size-lg);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-xs);
+  }
+
+  .followingGrid {
+    grid-template-columns: 1fr;
+  }
 }

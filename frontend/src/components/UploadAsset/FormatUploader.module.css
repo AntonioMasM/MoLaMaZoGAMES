@@ -15,9 +15,11 @@
 
 /* 🖋️ Título */
 .sectionTitle {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   color: var(--color-accent);
+  font-weight: 700;
   margin-bottom: var(--spacing-sm);
+  text-align: center;
 }
 
 /* 📄 Lista de formatos */
@@ -31,18 +33,22 @@
 .formatoItem {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: var(--color-bg);
   padding: var(--spacing-sm);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-md);
   transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
   gap: var(--spacing-md);
+  box-shadow: var(--shadow-xs);
+  will-change: transform, opacity;
 }
 
 /* 🎨 Icono de archivo */
 .fileIcon {
   font-size: 1.8rem;
   color: var(--color-accent);
+  flex-shrink: 0;
 }
 
 /* 📑 Nombre de archivo */
@@ -68,6 +74,7 @@
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+  flex-shrink: 0;
 }
 
 /* 📤 Botón seleccionar/cambiar archivo */
@@ -79,7 +86,7 @@
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-xs);
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .selectFileButton:hover,
@@ -95,14 +102,14 @@
   background: transparent;
   color: var(--color-error);
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .deleteFileButton:hover,
 .deleteFileButton:focus-visible {
-  transform: scale(1.1);
+  transform: scale(1.15);
   color: var(--color-hover);
   outline: none;
 }
@@ -119,6 +126,7 @@
   color: var(--color-error);
   margin-top: var(--spacing-xs);
   font-weight: 600;
+  text-align: left;
 }
 
 /* ➕ Botón añadir nuevo formato */
@@ -132,7 +140,7 @@
   border-radius: var(--border-radius-md);
   cursor: pointer;
   align-self: center;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .addFormatButton:hover,
@@ -158,53 +166,58 @@
   .fileSize {
     text-align: left;
   }
+
+  .fileActions {
+    align-self: stretch;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
-/* ✨ Animaciones Fade */
+/* ✨ Animaciones */
 .fadeIn {
   animation: fadeIn 0.4s forwards;
 }
 
 .fadeOut {
-    animation: fadeOut 0.5s forwards;
-  }
+  animation: fadeOut 0.5s forwards;
+}
 
 .bounceIn {
-    animation: bounceIn 0.5s forwards;
-  }
-  
-  @keyframes bounceIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.95) translateY(10px);
-    }
-    60% {
-      opacity: 1;
-      transform: scale(1.05) translateY(0);
-    }
-    100% {
-      transform: scale(1) translateY(0);
-    }
-  }
+  animation: bounceIn 0.5s forwards;
+}
 
-  
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-  
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.95) translateY(20px);
-    }
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
-  
-/* ✨ Animación entrada sección */
+  100% {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+}
+
+/* ✨ Entrada general */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
