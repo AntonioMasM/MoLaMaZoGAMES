@@ -224,15 +224,20 @@ const dejarDeSeguirUsuario = async (req, res) => {
 const obtenerSeguidores = async (req, res) => {
   try {
     const { email } = req.params;
-    const usuario = await Usuario.findOne({ email }, 'seguidores').lean();
+    const usuario = await Usuario.findOne({ email })
+      .populate("seguidores", "email nickname fotoPerfil") // <--- esta línea
+      .lean();
+
     if (!usuario) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      return res.status(404).json({ mensaje: 'Usuario noss encontrado' });
     }
+
     res.status(200).json({ seguidores: usuario.seguidores });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener seguidores', error: error.message || 'Error desconocido' });
+    res.status(500).json({ mensaje: 'Error al obtener seguidores', error: error.message });
   }
 };
+
 
 // Controlador en el backend (UsuarioController.js)
 const obtenerSiguiendo = async (req, res) => {

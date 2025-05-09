@@ -1,0 +1,80 @@
+@import "../../styles/variables.css";
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  text-align: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.modal p {
+  margin-bottom: 1.8rem;
+  color: #bbbbbb;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.confirmBtn {
+  background-color: #d64545;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelBtn {
+  background-color: #333;
+  color: #ccc;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirmBtn:hover {
+  background-color: #b93030;
+}
+
+.cancelBtn:hover {
+  background-color: #444;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

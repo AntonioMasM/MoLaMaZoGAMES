@@ -8,6 +8,7 @@ import LoadingScreen from "@/components/ui/LoadingScreen";
 import AssetEditForm from "@/components/Asset/AssetEditForm";
 import EditableGallery from "@/components/Asset/EditableGallery";
 import styles from "@/styles/AssetEdit.module.css";
+import uploadImageToCloudinary from "@/services/uploadImageToCloudinary";
 
 const AssetEdit = () => {
   const { id } = useParams();
@@ -74,18 +75,33 @@ const AssetEdit = () => {
   const handleSave = async () => {
     try {
       setSaving(true);
-
-      // Construcción de galería final
-      const galeriaFinal = media
-        .filter((item) => !item.isNew)
-        .map((item) => ({ url: item.url, tipo: item.tipo }));
-
+  
+      // 1. Subir nuevos archivos
+      const nuevasImagenesSubidas = await Promise.all(
+        newFiles.map(async (file) => {
+          const subida = await uploadImageToCloudinary(file); // asegúrate que devuelve { secure_url }
+          return {
+            url: subida.secure_url,
+            tipo: file.type.startsWith("image/") ? "image"
+                 : file.type.startsWith("video/") ? "video"
+                 : "otro"
+          };
+        })
+      );
+  
+      // 2. Combinar con galería anterior
+      const galeriaFinal = [
+        ...media.filter((item) => !item.isNew).map(({ url, tipo }) => ({ url, tipo })),
+        ...nuevasImagenesSubidas
+      ];
+  
+      // 3. Construir y enviar datos
       const updatedData = {
         ...formData,
         galeriaMultimedia: galeriaFinal,
       };
-
-      await updateAsset(id, updatedData, newFiles);
+  
+      await updateAsset(id, updatedData);
       navigate(`/asset/${id}`);
     } catch (err) {
       console.error("Error al guardar:", err);
@@ -94,6 +110,7 @@ const AssetEdit = () => {
       setSaving(false);
     }
   };
+  
 
   if (loading) return <LoadingScreen />;
   if (error) {

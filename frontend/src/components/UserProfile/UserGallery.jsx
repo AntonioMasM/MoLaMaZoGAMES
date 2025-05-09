@@ -3,15 +3,14 @@ import { useUser } from "../../context/UserContext";
 import { obtenerAssetsPorUsuario, eliminarAssetPorId } from "../../services/assetService";
 import { getCategorias } from "../../services/categorias";
 import AssetCard from "../Asset/AssetCard";
+import EliminarAssetModal from "../Modals/EliminarAssetModal";
 import styles from "./UserGallery.module.css";
 
 const getValidImage = (asset) => {
   const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
   if (!asset?.imagenPrincipal) return null;
-
   const extension = asset.imagenPrincipal.url.split(".").pop().toLowerCase();
   if (formatosImagen.includes(extension)) return asset.imagenPrincipal.url;
-
   const primeraImagen = asset.galeriaMultimedia?.find((item) => item.tipo === "image");
   return primeraImagen?.url || null;
 };
@@ -25,9 +24,9 @@ const UserGallery = () => {
   const [orden, setOrden] = useState("recientes");
   const [paginaActual, setPaginaActual] = useState(1);
   const [categorias, setCategorias] = useState([]);
+  const [assetAEliminar, setAssetAEliminar] = useState(null);
   const assetsPorPagina = 9;
 
-  // Cargar categorías
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -37,11 +36,9 @@ const UserGallery = () => {
         console.error("Error al cargar categorías:", error);
       }
     };
-
     fetchCategorias();
   }, []);
 
-  // Cargar assets del usuario
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -54,17 +51,16 @@ const UserGallery = () => {
         setLoading(false);
       }
     };
-
     fetchAssets();
   }, [user?._id]);
 
-  const eliminarAsset = async (assetId) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este asset?")) return;
+  const confirmarEliminacion = async () => {
+    if (!assetAEliminar) return;
     try {
       setLoading(true);
-      await eliminarAssetPorId(assetId);
-      setAssets((prev) => prev.filter((asset) => asset._id !== assetId));
-      alert("✅ Asset eliminado correctamente.");
+      await eliminarAssetPorId(assetAEliminar);
+      setAssets((prev) => prev.filter((asset) => asset._id !== assetAEliminar));
+      setAssetAEliminar(null);
     } catch (error) {
       console.error("Error al eliminar asset:", error);
       alert("❌ Error al eliminar el asset.");
@@ -74,12 +70,8 @@ const UserGallery = () => {
   };
 
   const assetsFiltrados = assets
-    .filter((asset) =>
-      asset.titulo.toLowerCase().includes(busqueda.toLowerCase())
-    )
-    .filter((asset) =>
-      categoriaFiltro === "Todas" || asset.categorias?.includes(categoriaFiltro)
-    )
+    .filter((asset) => asset.titulo.toLowerCase().includes(busqueda.toLowerCase()))
+    .filter((asset) => categoriaFiltro === "Todas" || asset.categorias?.includes(categoriaFiltro))
     .sort((a, b) => {
       if (orden === "recientes") return new Date(b.createdAt) - new Date(a.createdAt);
       if (orden === "antiguos") return new Date(a.createdAt) - new Date(b.createdAt);
@@ -100,7 +92,7 @@ const UserGallery = () => {
     <div className={styles.galleryContainer}>
       <h2 className={styles.title}>Galería</h2>
 
-      {/* Controles de filtrado */}
+      {/* Controles */}
       <div className={styles.galleryControls}>
         <input
           type="text"
@@ -136,7 +128,7 @@ const UserGallery = () => {
         </select>
       </div>
 
-      {/* Grid de assets */}
+      {/* Galería */}
       {assetsPagina.length > 0 ? (
         <div className={styles.galleryGrid}>
           {assetsPagina.map((asset) => (
@@ -158,7 +150,7 @@ const UserGallery = () => {
                 </button>
                 <button
                   className={styles.actionButton}
-                  onClick={() => eliminarAsset(asset._id)}
+                  onClick={() => setAssetAEliminar(asset._id)}
                   title="Eliminar"
                 >
                   🗑️
@@ -180,7 +172,7 @@ const UserGallery = () => {
         <p className={styles.emptyText}>No se encontraron assets.</p>
       )}
 
-      {/* Controles de paginación */}
+      {/* Paginación */}
       {totalPaginas > 1 && (
         <div className={styles.pagination}>
           <button
@@ -202,6 +194,13 @@ const UserGallery = () => {
           </button>
         </div>
       )}
+
+      {/* Modal para eliminar asset */}
+      <EliminarAssetModal
+        visible={!!assetAEliminar}
+        onCancel={() => setAssetAEliminar(null)}
+        onConfirm={confirmarEliminacion}
+      />
     </div>
   );
 };

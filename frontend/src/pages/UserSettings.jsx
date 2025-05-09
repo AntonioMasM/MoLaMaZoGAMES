@@ -4,6 +4,7 @@ import { getUsuarioPorEmail, actualizarUsuario } from "../services/userService";
 import Sidebar from "../components/UserProfile/Sidebar";
 import uploadImageToCloudinary from "../services/uploadImageToCloudinary";
 import deleteImageFromCloudinary from "../services/deleteImageFromCloudinary";
+import { useTheme } from "../hooks/useTheme";
 import styles from "../styles/UserSettings.module.css";
 
 const getInitialFormData = (user) => ({
@@ -35,6 +36,7 @@ const getInitialFormData = (user) => ({
 
 const UserSettings = () => {
   const { user: contextUser, updateUser } = useUser();
+  const { setDark, setLight, setContrast } = useTheme();
   const email = contextUser?.email;
   const fileInputRef = useRef(null);
 
@@ -86,14 +88,13 @@ const UserSettings = () => {
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     try {
       const publicId = formData.fotoPerfil?.public_id;
-  
       if (publicId && publicId !== "default_local") {
         await deleteImageFromCloudinary(publicId);
       }
-  
+
       const newImage = await uploadImageToCloudinary(file);
       setFormData((prev) => ({
         ...prev,
@@ -106,7 +107,6 @@ const UserSettings = () => {
       console.error("Error cambiando la imagen:", error);
     }
   };
-  
 
   const handleUploadClick = () => fileInputRef.current?.click();
 
@@ -125,6 +125,12 @@ const UserSettings = () => {
       ...prev,
       [field]: prev[field].filter((_, i) => i !== index),
     }));
+  };
+
+  const aplicarTema = (modo) => {
+    if (modo === "dark") setDark();
+    else if (modo === "white") setLight();
+    else if (modo === "high-contrast") setContrast();
   };
 
   const handleSubmit = async (e) => {
@@ -159,6 +165,7 @@ const UserSettings = () => {
 
       await actualizarUsuario(email, payload);
       updateUser({ ...userData, ...payload });
+      aplicarTema(formData.modo);
       setMensaje("Perfil actualizado correctamente ✅");
     } catch (error) {
       console.error(error);
@@ -193,8 +200,8 @@ const UserSettings = () => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
-          {/* Información personal */}
-          <section className={styles.section}>
+           {/* Información personal */}
+           <section className={styles.section}>
             <h2>Información Personal</h2>
             <label>Nombre completo:</label>
             <input type="text" name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} required />
@@ -280,15 +287,13 @@ const UserSettings = () => {
             <label>Confirmar nueva contraseña:</label>
             <input type="password" name="confirmNewPassword" value={formData.confirmNewPassword} onChange={handleChange} />
           </section>
-
-          {/* Preferencias */}
           <section className={styles.section}>
             <h2>Preferencias</h2>
             <label>Tema:</label>
             <select name="modo" value={formData.modo} onChange={handleChange}>
               <option value="dark">Oscuro</option>
               <option value="white">Claro</option>
-              <option value="high-contrast">Texto Grande</option>
+              <option value="high-contrast">Alto Contraste</option>
             </select>
           </section>
 

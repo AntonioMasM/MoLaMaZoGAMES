@@ -10,7 +10,7 @@ import styles from "../styles/CategoryPage.module.css";
 const getValidImage = (asset) => {
   if (!asset || !asset.imagenPrincipal || !asset.imagenPrincipal.url) return null;
 
-  const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
+  const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg","mp3","mp4"];
   const urlPrincipal = asset.imagenPrincipal.url;
 
   const extension = urlPrincipal.split(".").pop().toLowerCase();

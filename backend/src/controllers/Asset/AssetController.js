@@ -108,30 +108,39 @@ const eliminarAsset = async (req, res) => {
     const { id } = req.params;
 
     const asset = await Asset.findById(id);
-    if (!asset) {
-      return res.status(404).json({ mensaje: "Asset no encontrado" });
-    }
+    if (!asset) return res.status(404).json({ mensaje: "Asset no encontrado" });
 
-    // Eliminar imagen principal
     if (asset.imagenPrincipal?.public_id) {
-      await eliminarArchivoCloudinary(asset.imagenPrincipal.public_id, "image");
+      try {
+        console.log("Eliminando imagen principal:", asset.imagenPrincipal.public_id);
+        await eliminarArchivoCloudinary(asset.imagenPrincipal.public_id, "image");
+      } catch (err) {
+        console.warn("Error al eliminar imagen principal:", err.message);
+      }
     }
 
-    // Eliminar galería multimedia
-    for (const item of asset.galeriaMultimedia) {
+    for (const item of asset.galeriaMultimedia || []) {
       if (item.public_id) {
-        await eliminarArchivoCloudinary(item.public_id, item.tipo === "video" ? "video" : "image");
+        try {
+          console.log("Eliminando multimedia:", item.public_id);
+          await eliminarArchivoCloudinary(item.public_id, item.tipo === "video" ? "video" : "image");
+        } catch (err) {
+          console.warn("Error al eliminar galería:", err.message);
+        }
       }
     }
 
-    // Eliminar formatos descargables
-    for (const formato of asset.formatos) {
+    for (const formato of asset.formatos || []) {
       if (formato.public_id) {
-        await eliminarArchivoCloudinary(formato.public_id, "raw");
+        try {
+          console.log("Eliminando formato:", formato.public_id);
+          await eliminarArchivoCloudinary(formato.public_id, "raw");
+        } catch (err) {
+          console.warn("Error al eliminar formato:", err.message);
+        }
       }
     }
 
-    // Eliminar el documento en MongoDB
     await Asset.findByIdAndDelete(id);
 
     res.status(200).json({ mensaje: "Asset y archivos eliminados con éxito" });

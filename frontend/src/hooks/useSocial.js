@@ -61,6 +61,18 @@ export const useSocial = () => {
     }
   };
 
+  const obtenerSeguidores = async (email) => {
+    const res = await fetch(`http://localhost:5000/api/usuarios/${email}/seguidores`);
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error("Error al obtener seguidores: " + text);
+    }
+    const data = await res.json();
+    return data.seguidores;
+  };
+
+
+
   return {
     seguir,
     dejarDeSeguir,

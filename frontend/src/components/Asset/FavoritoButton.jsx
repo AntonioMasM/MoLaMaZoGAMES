@@ -12,7 +12,8 @@ const FavoritoButton = ({ assetId }) => {
     const fetchFavoritos = async () => {
       try {
         const favoritosData = await obtenerTodosFavoritos();
-        setFavoritos(favoritosData.favoritos || []);
+        const limpios = (favoritosData.favoritos || []).filter(f => f.asset);
+        setFavoritos(limpios);
       } catch (error) {
         console.error(error);
       }
@@ -22,7 +23,7 @@ const FavoritoButton = ({ assetId }) => {
   }, []);
 
   useEffect(() => {
-    const encontrado = favoritos.find(fav => fav.asset._id === assetId);
+    const encontrado = favoritos.find(fav => fav.asset && fav.asset._id === assetId);
     setFavoritoExistente(encontrado);
   }, [favoritos, assetId]);
 
@@ -34,7 +35,7 @@ const FavoritoButton = ({ assetId }) => {
         await agregarAssetAFavoritos(assetId);
       }
       const nuevosFavoritos = await obtenerTodosFavoritos();
-      setFavoritos(nuevosFavoritos.favoritos || []);
+      setFavoritos((nuevosFavoritos.favoritos || []).filter(f => f.asset));
     } catch (error) {
       console.error(error);
     }

@@ -27,7 +27,8 @@ const UserFavourites = () => {
     const fetchFavoritos = async () => {
       try {
         const favoritosData = await obtenerTodosFavoritos();
-        setFavoritos(favoritosData.favoritos || []);
+        const limpios = (favoritosData.favoritos || []).filter((f) => f.asset);
+        setFavoritos(limpios);
       } catch (err) {
         console.error("Error al cargar favoritos:", err);
       }
@@ -51,11 +52,16 @@ const UserFavourites = () => {
   }, []);
 
   const favoritosFiltrados = favoritos
-    .filter((fav) =>
-      fav.asset.titulo.toLowerCase().includes(busqueda.toLowerCase())
+    .filter(
+      (fav) =>
+        fav.asset &&
+        fav.asset.titulo &&
+        fav.asset.titulo.toLowerCase().includes(busqueda.toLowerCase())
     )
-    .filter((fav) =>
-      categoriaFiltro === "Todas" || fav.asset.categorias?.includes(categoriaFiltro)
+    .filter(
+      (fav) =>
+        categoriaFiltro === "Todas" ||
+        fav.asset.categorias?.includes(categoriaFiltro)
     );
 
   if (loading) {

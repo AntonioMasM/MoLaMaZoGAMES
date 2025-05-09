@@ -138,3 +138,12 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-light);
 }
+.joinedButton {
+  background-color: #444;
+  color: #ccc;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: not-allowed;
+}

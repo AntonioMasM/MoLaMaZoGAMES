@@ -6,7 +6,7 @@ import MessageModal from "../components/Message/MessageModal";
 import LoadingScreen from "../components/ui/LoadingScreen";
 import styles from "../styles/MessageDetailPage.module.css";
 import { aceptarInvitacion } from "../services/grupoService";
-
+import { eliminarMensaje } from "../services/mensajeService";
 
 const MessageDetailPage = () => {
   const { id } = useParams();
@@ -25,30 +25,27 @@ const MessageDetailPage = () => {
   const handleAceptarInvitacion = async () => {
     try {
       if (!mensaje || !mensaje.contenido || !currentUser) return;
-  
-      // Extraer ID del grupo desde el contenido del mensaje (expresión regular)
+
       const regex = /groups\/([a-fA-F0-9]{24})/;
       const match = mensaje.contenido.match(regex);
-  
+
       if (!match) {
         alert("No se pudo encontrar el grupo en la invitación.");
         return;
       }
-  
-      const grupoId = match[1]; // ID extraído
-  
+
+      const grupoId = match[1];
+
       await aceptarInvitacion(grupoId, currentUser._id);
-  
+      await eliminarMensaje(mensaje._id); // 🗑️ Borrar el mensaje tras aceptar
       alert("¡Te has unido al grupo correctamente!");
-  
-      // Opcional: Redirigir directamente al grupo
       navigate(`/groups/${grupoId}`);
     } catch (error) {
       console.error("Error al aceptar invitación:", error);
       alert("Hubo un problema al aceptar la invitación.");
     }
   };
-  
+
   useEffect(() => {
     if (!id || !localLoading) return;
 
@@ -62,11 +59,7 @@ const MessageDetailPage = () => {
         }
       } catch (err) {
         console.error("Error cargando mensaje:", err);
-        if (err.response?.status === 404) {
-          setError("Mensaje no encontrado.");
-        } else {
-          setError("Error al cargar el mensaje.");
-        }
+        setError(err.response?.status === 404 ? "Mensaje no encontrado." : "Error al cargar el mensaje.");
       } finally {
         setLocalLoading(false);
       }
@@ -76,12 +69,8 @@ const MessageDetailPage = () => {
   }, [id, localLoading, obtenerMensajePorIdHook, marcarMensajeComoLeidoHook]);
 
   useEffect(() => {
-    if (replyButtonRef.current) {
-      replyButtonRef.current.focus();
-    }
-    if (titleRef.current) {
-      titleRef.current.focus();
-    }
+    if (replyButtonRef.current) replyButtonRef.current.focus();
+    if (titleRef.current) titleRef.current.focus();
   }, [mensaje]);
 
   useEffect(() => {
@@ -148,7 +137,7 @@ const MessageDetailPage = () => {
       </div>
 
       <p className={styles.date}>
-        Enviado el: {" "}
+        Enviado el:{" "}
         {new Date(mensaje.fechaEnvio).toLocaleString("es-ES", {
           day: "2-digit",
           month: "2-digit",
@@ -179,15 +168,16 @@ const MessageDetailPage = () => {
         >
           Volver
         </button>
+
         {mensaje.tipoMensaje === "grupo" && (
-        <button
-          className={styles.acceptButton}
-          onClick={handleAceptarInvitacion}
-          aria-label="Aceptar invitación al grupo"
-        >
-          Aceptar Invitación
-        </button>
-      )}
+          <button
+            className={styles.acceptButton}
+            onClick={handleAceptarInvitacion}
+            aria-label="Aceptar invitación al grupo"
+          >
+            Aceptar Invitación
+          </button>
+        )}
       </div>
 
       {isReplyModalOpen && (

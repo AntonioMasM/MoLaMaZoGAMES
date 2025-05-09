@@ -32,11 +32,49 @@ const SidebarFilters = ({
           aria-label="Filtrar por formato"
         >
           <option value="">Todos</option>
-          <option value="obj">OBJ</option>
-          <option value="fbx">FBX</option>
-          <option value="png">PNG</option>
-          <option value="jpg">JPG</option>
-          <option value="glb">GLB</option>
+
+        {/* Formatos 3D */}
+        <option value="obj">OBJ</option>
+        <option value="fbx">FBX</option>
+        <option value="stl">STL</option>
+        <option value="blend">BLEND</option>
+        <option value="gltf">GLTF</option>
+        <option value="glb">GLB</option>
+        <option value="wrml">WRML</option>
+
+        {/* Formatos 2D */}
+        <option value="png">PNG</option>
+        <option value="jpg">JPG</option>
+        <option value="jpeg">JPEG</option>
+        <option value="svg">SVG</option>
+        <option value="webp">WEBP</option>
+        <option value="gif">GIF</option>
+
+        {/* Formatos Audio */}
+        <option value="mp3">MP3</option>
+        <option value="wav">WAV</option>
+        <option value="aac">AAC</option>
+        <option value="ogg">OGG</option>
+
+        {/* Formatos Video */}
+        <option value="mp4">MP4</option>
+        <option value="webm">WEBM</option>
+        <option value="avi">AVI</option>
+        <option value="mov">MOV</option>
+
+        {/* Formatos Código */}
+        <option value="txt">TXT</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="js">JS</option>
+        <option value="json">JSON</option>
+
+        {/* Otros */}
+        <option value="zip">ZIP</option>
+        <option value="rar">RAR</option>
+        <option value="7z">7Z</option>
+        <option value="bin">BIN</option>
+
         </select>
       </div>
 
