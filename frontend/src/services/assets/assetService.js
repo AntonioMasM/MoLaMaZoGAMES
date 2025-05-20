@@ -59,7 +59,7 @@ export const incrementViews = async (assetId) => {
 
 /* ✏️ Actualizar asset */
 export const updateAsset = async (assetId, updatedData) => {
-  const { data } = await axios.put(`${API_URL}/${assetId}`, updatedData, {
+  const { data } = await axios.put(`http://localhost:5000/api/assets/${assetId}`, updatedData, {
     headers: { "Content-Type": "application/json" },
   });
   return data;

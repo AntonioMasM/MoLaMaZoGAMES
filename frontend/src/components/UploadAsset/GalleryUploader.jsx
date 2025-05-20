@@ -9,21 +9,53 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
   const fileInputRef = useRef(null);
 
   const MAX_FILES = 20;
-  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB por archivo
+  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
-  // Al montar, inicializar galería si ya había
+  // Inicializar galería al montar
   useEffect(() => {
-    const initializedGallery = galeriaMultimedia.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
+    const initializedGallery = galeriaMultimedia.map((item) => {
+      if (typeof item === "string") {
+        return { file: null, preview: item, tipo: "image", isNew: false };
+      }
+
+      if (item && typeof item === "object" && "preview" in item && "tipo" in item) {
+        return {
+          file: item.file || null,
+          preview: item.preview,
+          tipo: item.tipo,
+          public_id: item.public_id,
+          isNew: item.isNew || false,
+        };
+      }
+
+      if (item instanceof File) {
+        return {
+          file: item,
+          preview: URL.createObjectURL(item),
+          tipo: item.type.startsWith("image/")
+            ? "image"
+            : item.type.startsWith("video/")
+            ? "video"
+            : "otro",
+          isNew: true,
+        };
+      }
+
+      console.warn("Elemento no reconocido en galeriaMultimedia:", item);
+      return { file: null, preview: "", tipo: "otro", isNew: false };
+    });
+
     setLocalGallery(initializedGallery);
+
     return () => {
-      initializedGallery.forEach((item) => URL.revokeObjectURL(item.preview));
+      initializedGallery.forEach((item) => {
+        if (item.isNew && item.file) {
+          URL.revokeObjectURL(item.preview);
+        }
+      });
     };
   }, [galeriaMultimedia]);
 
-  // ✅ Añadir archivos desde input o drop
   const handleFiles = (files) => {
     const incomingFiles = Array.from(files);
     const validFiles = incomingFiles.filter((file) => {
@@ -39,12 +71,18 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
     const formatted = validFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
+      tipo: file.type.startsWith("image/")
+        ? "image"
+        : file.type.startsWith("video/")
+        ? "video"
+        : "otro",
+      isNew: true,
     }));
 
     const updatedGallery = [...localGallery, ...formatted].slice(0, MAX_FILES);
 
     setLocalGallery(updatedGallery);
-    onGalleryChange(updatedGallery.map((f) => f.file));
+    onGalleryChange(updatedGallery);
 
     if (updatedGallery.length >= MAX_FILES) {
       setErrorMessage(`Máximo ${MAX_FILES} archivos permitidos.`);
@@ -63,14 +101,19 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
 
   const handleRemove = (idx) => {
     const updatedGallery = [...localGallery];
-    URL.revokeObjectURL(updatedGallery[idx].preview);
+    const item = updatedGallery[idx];
+    if (item.file) URL.revokeObjectURL(item.preview);
     updatedGallery.splice(idx, 1);
     setLocalGallery(updatedGallery);
-    onGalleryChange(updatedGallery.map((f) => f.file));
+    onGalleryChange(updatedGallery);
   };
 
   const clearGallery = () => {
-    localGallery.forEach((item) => URL.revokeObjectURL(item.preview));
+    localGallery.forEach((item) => {
+      if (item.isNew && item.file) {
+        URL.revokeObjectURL(item.preview);
+      }
+    });
     setLocalGallery([]);
     onGalleryChange([]);
   };
@@ -79,7 +122,6 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
     <section className={styles.gallerySection}>
       <h2 className={styles.sectionTitle}>Galería Multimedia</h2>
 
-      {/* Área Drag and Drop */}
       <div
         className={`${styles.dropArea} ${isDragging ? styles.dragging : ""} ${errorMessage ? styles.errorBorder : ""}`}
         onDragOver={(e) => {
@@ -92,14 +134,13 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
         tabIndex={0}
         onClick={() => fileInputRef.current.click()}
         aria-label="Haz clic o arrastra archivos aquí"
-        aria-invalid={errorMessage ? "true" : "false"}
+        aria-invalid={!!errorMessage}
         aria-describedby={errorMessage ? "error-gallery" : undefined}
       >
         <p>Haz clic o arrastra archivos aquí</p>
         <small>(Máximo 20 archivos / 20MB por archivo)</small>
       </div>
 
-      {/* Input oculto */}
       <input
         id="galeriaMultimedia"
         type="file"
@@ -110,22 +151,20 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
         className={styles.hiddenInput}
       />
 
-      {/* Error mensaje */}
       {errorMessage && (
         <p id="error-gallery" className={styles.errorMessage}>
           {errorMessage}
         </p>
       )}
 
-      {/* Galería Preview */}
       {localGallery.length > 0 ? (
         <div className={styles.galleryPreview}>
           {localGallery.map((item, idx) => (
             <PreviewItem
               key={idx}
               src={item.preview}
-              type={item.file.type}
-              name={item.file.name}
+              type={item.tipo || "image"}
+              name={item.file?.name || `Archivo ${idx + 1}`}
               onRemove={() => handleRemove(idx)}
             />
           ))}
@@ -136,22 +175,19 @@ const GalleryUploader = ({ galeriaMultimedia = [], onGalleryChange = () => {} })
         </p>
       )}
 
-      {/* Contador de archivos */}
       {localGallery.length > 0 && (
-        <p className={styles.fileCounter}>
-          {localGallery.length} / {MAX_FILES} archivos seleccionados
-        </p>
-      )}
-
-      {/* Botón limpiar galería */}
-      {localGallery.length > 0 && (
-        <button
-          type="button"
-          className={styles.clearGalleryButton}
-          onClick={clearGallery}
-        >
-          Limpiar Galería
-        </button>
+        <>
+          <p className={styles.fileCounter}>
+            {localGallery.length} / {MAX_FILES} archivos seleccionados
+          </p>
+          <button
+            type="button"
+            className={styles.clearGalleryButton}
+            onClick={clearGallery}
+          >
+            Limpiar Galería
+          </button>
+        </>
       )}
     </section>
   );

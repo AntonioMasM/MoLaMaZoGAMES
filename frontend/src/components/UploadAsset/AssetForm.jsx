@@ -52,22 +52,46 @@ const AssetForm = ({
     onChange(e);
   };
 
-  const handleToggleOtraCategoria = (categoriaNombre) => {
-    let updatedCategorias;
+const handleToggleOtraCategoria = (categoriaNombre) => {
+  // 🚫 No permitir quitar la categoría principal
+  if (categoriaNombre === categoriaPrincipal) return;
 
-    if (otrasCategorias.includes(categoriaNombre)) {
-      updatedCategorias = otrasCategorias.filter((cat) => cat !== categoriaNombre);
-    } else {
-      updatedCategorias = [...otrasCategorias, categoriaNombre];
-    }
+  let updatedCategorias;
+  if (otrasCategorias.includes(categoriaNombre)) {
+    updatedCategorias = otrasCategorias.filter((cat) => cat !== categoriaNombre);
+  } else {
+    updatedCategorias = [...otrasCategorias, categoriaNombre];
+  }
 
+  onChange({
+    target: {
+      name: "otrasCategorias",
+      value: updatedCategorias,
+    },
+  });
+};
+
+const handleCategoriaPrincipalChange = (e) => {
+  const { value } = e.target;
+
+  // Actualiza categoría principal
+  onChange({
+    target: {
+      name: "categoriaPrincipal",
+      value,
+    },
+  });
+
+  // Asegúrate de que también está en otrasCategorias
+  if (!otrasCategorias.includes(value)) {
     onChange({
       target: {
         name: "otrasCategorias",
-        value: updatedCategorias,
+        value: [...otrasCategorias, value],
       },
     });
-  };
+  }
+};
 
   return (
     <section className={styles.formSection}>
@@ -128,7 +152,7 @@ const AssetForm = ({
               id="categoriaPrincipal"
               name="categoriaPrincipal"
               value={categoriaPrincipal}
-              onChange={onChange}
+              onChange={handleCategoriaPrincipalChange}
               required
               ref={refs.categoriaRef}
               aria-invalid={errors.categoriaPrincipal ? "true" : "false"}
@@ -178,17 +202,20 @@ const AssetForm = ({
         ) : (
           <div className={styles.tagsContainer}>
             {categoriasDB.map((cat) => (
-              <button
-                type="button"
-                key={cat._id}
-                className={`${styles.categoryTag} ${
-                  otrasCategorias.includes(cat.nombre) ? styles.selectedTag : ""
-                }`}
-                onClick={() => handleToggleOtraCategoria(cat.nombre)}
-                aria-pressed={otrasCategorias.includes(cat.nombre)}
-              >
-                {cat.nombre}
-              </button>
+            <button
+              type="button"
+              key={cat._id}
+              className={`${styles.categoryTag} ${
+                otrasCategorias.includes(cat.nombre) ? styles.selectedTag : ""
+              } ${categoriaPrincipal === cat.nombre ? styles.lockedTag : ""}`}
+              onClick={() => handleToggleOtraCategoria(cat.nombre)}
+              aria-pressed={otrasCategorias.includes(cat.nombre)}
+              disabled={categoriaPrincipal === cat.nombre}
+              title={categoriaPrincipal === cat.nombre ? "Esta es la categoría principal" : ""}
+            >
+              {cat.nombre}
+            </button>
+
             ))}
           </div>
         )}

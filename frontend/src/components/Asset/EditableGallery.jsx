@@ -3,11 +3,16 @@ import styles from "./EditableGallery.module.css";
 
 const SUPPORTED_TYPES = ["image/", "video/", "audio/"];
 
+const ICONS = {
+  image: "📷",
+  video: "🎥",
+  audio: "🎵",
+};
+
 const EditableGallery = ({ initialItems = [], onChange }) => {
   const [items, setItems] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
 
-  // 🎯 Inicializa galería con elementos existentes (URL + tipo)
   useEffect(() => {
     const parsed = initialItems.map((item) =>
       typeof item === "string"
@@ -19,7 +24,7 @@ const EditableGallery = ({ initialItems = [], onChange }) => {
           }
     );
     setItems(parsed);
-    setNewFiles([]); // solo añadiremos archivos nuevos desde input
+    setNewFiles([]);
   }, [initialItems]);
 
   const getTipo = (file) => {
@@ -31,7 +36,6 @@ const EditableGallery = ({ initialItems = [], onChange }) => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-
     const validFiles = files.filter((file) =>
       SUPPORTED_TYPES.some((type) => file.type.startsWith(type))
     );
@@ -67,24 +71,45 @@ const EditableGallery = ({ initialItems = [], onChange }) => {
 
   return (
     <div className={styles.galleryWrapper}>
-      <div className={styles.galleryGrid}>
-        {items.map((item, i) => (
-          <div key={i} className={styles.imageContainer}>
+      <div className={styles.galleryGrid} role="list">
+        {items.map((item, index) => (
+          <div
+            key={`${item.url}-${item.tipo}-${index}`}
+            role="listitem"
+            className={styles.imageContainer}
+            data-new={item.isNew ? "true" : "false"}
+          >
+            <div className={styles.typeBadge} title={item.tipo}>
+              {ICONS[item.tipo] || "📁"}
+            </div>
+
             {item.tipo === "image" && (
-              <img src={item.url} alt={`Imagen ${i + 1}`} className={styles.image} />
+              <img
+                src={item.url}
+                alt={`Imagen ${index + 1}`}
+                className={styles.image}
+              />
             )}
             {item.tipo === "video" && (
-              <video src={item.url} controls className={styles.image}></video>
+              <video
+                src={item.url}
+                controls
+                className={styles.image}
+              />
             )}
             {item.tipo === "audio" && (
-              <audio src={item.url} controls className={styles.audio}></audio>
+              <audio
+                src={item.url}
+                controls
+                className={styles.audio}
+              />
             )}
 
             <button
               type="button"
               className={styles.deleteButton}
-              onClick={() => handleRemove(i)}
-              aria-label={`Eliminar archivo ${i + 1}`}
+              onClick={() => handleRemove(index)}
+              aria-label={`Eliminar archivo ${index + 1}`}
             >
               ✕
             </button>
@@ -93,7 +118,7 @@ const EditableGallery = ({ initialItems = [], onChange }) => {
       </div>
 
       <label htmlFor="media-upload" className={styles.uploadLabel}>
-        Añadir archivos
+        + Añadir archivos
         <input
           type="file"
           id="media-upload"

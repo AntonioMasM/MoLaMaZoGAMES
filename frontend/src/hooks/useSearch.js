@@ -39,8 +39,14 @@ export const useSearch = (query = "", tipoSeleccionado = "Todos", filtros = {}) 
     const queryTrimmed = query.trim();
 
     // ❌ Si el query no cambió, no volver a buscar
-    if (lastQueryRef.current === queryTrimmed) return;
-    lastQueryRef.current = queryTrimmed;
+if (lastQueryRef.current === queryTrimmed && tipoSeleccionado === "Todos") {
+  // Solo evitar si query y tipo no han cambiado y no hay filtros nuevos
+  const filtrosVacios = Object.keys(filtros).length === 0;
+  if (filtrosVacios) return;
+}
+
+lastQueryRef.current = queryTrimmed;
+
 
     const fetchData = async () => {
       setLoading(true);

@@ -77,30 +77,19 @@ const obtenerAssetPorId = async (req, res) => {
 };
 
 // Actualizar un asset por su ID
+// Controller backend
 const actualizarAsset = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, descripcion, autor, imagenPrincipal, galeriaMultimedia, formatos, categorias } = req.body;
-
-    const asset = await Asset.findById(id);
-    if (!asset) {
-      return res.status(404).json({ mensaje: "Asset no encontrado" });
-    }
-
-    asset.titulo = titulo || asset.titulo;
-    asset.descripcion = descripcion || asset.descripcion;
-    asset.autor = autor || asset.autor;
-    asset.imagenPrincipal = imagenPrincipal || asset.imagenPrincipal;
-    asset.galeriaMultimedia = galeriaMultimedia || asset.galeriaMultimedia;
-    asset.formatos = formatos || asset.formatos;
-    asset.categorias = categorias || asset.categorias;
-
-    await asset.save();
+    const asset = await Asset.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
     res.status(200).json({ mensaje: "Asset actualizado con éxito", asset });
   } catch (error) {
+    console.error("Error en backend:", error);
     res.status(500).json({ mensaje: "Error al actualizar el asset", error: error.message });
   }
 };
+
+
 
 // Eliminar un asset y borrar archivos de Cloudinary
 const eliminarAsset = async (req, res) => {

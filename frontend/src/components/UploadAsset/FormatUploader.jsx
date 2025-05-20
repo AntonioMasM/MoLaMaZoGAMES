@@ -34,8 +34,6 @@ const FormatUploader = ({
   const handleFileSelect = (e, id) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // reset input for duplicate file selection
     e.target.value = "";
 
     const sizeInMB = file.size / 1024 / 1024;
@@ -57,7 +55,11 @@ const FormatUploader = ({
   const handleAdd = () => {
     onAddFormato({
       id: uuidv4(),
-      file: null
+      file: null,
+      tipo: "",
+      tamaño: 0,
+      url: "",
+      public_id: ""
     });
   };
 
@@ -71,8 +73,14 @@ const FormatUploader = ({
             .slice()
             .sort((a, b) => (a.file?.name || "").localeCompare(b.file?.name || ""))
             .map((formato) => {
-              const { id, file } = formato;
+              const { id, file, url } = formato;
               const hasError = file && (file.size / 1024 / 1024) > MAX_FILE_SIZE_MB;
+              const fileName = file?.name || url?.split("/").pop() || "Sin archivo";
+              const fileSize = file?.size
+                ? formatFileSize(file.size)
+                : formato.tamaño
+                ? formatFileSize(formato.tamaño * 1024 * 1024)
+                : "-";
 
               return (
                 <div
@@ -80,15 +88,15 @@ const FormatUploader = ({
                   className={`${styles.formatoItem} ${deletingId === id ? styles.fadeOut : styles.bounceIn} ${hasError ? styles.errorFormato : ""}`}
                 >
                   <div className={styles.fileIcon}>
-                    {getFileIcon(file?.name)}
+                    {getFileIcon(file?.name || url)}
                   </div>
 
                   <div className={styles.fileName}>
-                    {file ? truncateFileName(file.name) : "Sin archivo"}
+                    {truncateFileName(fileName)}
                   </div>
 
                   <div className={styles.fileSize}>
-                    {file ? formatFileSize(file.size) : "-"}
+                    {fileSize}
                   </div>
 
                   <div className={styles.fileActions}>
@@ -98,7 +106,7 @@ const FormatUploader = ({
                       tabIndex={0}
                       aria-label={`Seleccionar archivo para formato`}
                     >
-                      {file ? "Cambiar" : "Seleccionar"}
+                      {file || url ? "Cambiar" : "Seleccionar"}
                       <input
                         key={id}
                         type="file"
@@ -110,11 +118,11 @@ const FormatUploader = ({
                       />
                     </label>
 
-                    {file && (
+                    {(file || url) && (
                       <button
                         type="button"
                         className={styles.deleteFileButton}
-                        aria-label={`Eliminar archivo ${file.name}`}
+                        aria-label={`Eliminar archivo ${fileName}`}
                         onClick={() => handleRemove(id)}
                       >
                         ✖
@@ -132,8 +140,6 @@ const FormatUploader = ({
             })}
         </div>
       )}
-
-
 
       {toastMessage && (
         <Toast

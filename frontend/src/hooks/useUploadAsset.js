@@ -132,9 +132,12 @@ export function useUploadAsset() {
     try {
       const imagenPrincipalSubida = await uploadFileToCloudinary(formData.imagenPrincipal);
 
-      const galeriaSubida = await Promise.all(
-        formData.galeriaMultimedia.map((file) => uploadFileToCloudinary(file))
-      );
+const galeriaSubida = await Promise.all(
+  formData.galeriaMultimedia
+    .filter((item) => item instanceof File || (item?.file instanceof File))
+    .map((item) => uploadFileToCloudinary(item.file || item))
+);
+
 
       const formatosSubidos = await Promise.all(
         formData.formatos.map(async (formato) => {

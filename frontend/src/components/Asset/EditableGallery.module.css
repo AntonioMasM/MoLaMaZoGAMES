@@ -14,16 +14,24 @@
   gap: var(--spacing-md);
 }
 
-/* 🧩 Contenedor individual de imagen con botón */
+/* 🧩 Contenedor individual */
 .imageContainer {
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius-md);
   background-color: var(--color-bg-secondary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInItemAnimation 0.4s ease forwards;
 }
 
-/* 🖼️ Imagen previsualizada */
+/* 🔰 Acento visual para nuevos archivos */
+.imageContainer[data-new="true"] {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  box-shadow: 0 0 0 3px var(--color-accent-alpha);
+}
+
+/* 🖼️ Imagen o vídeo */
 .image {
   width: 100%;
   height: auto;
@@ -38,7 +46,13 @@
   box-shadow: var(--shadow-md);
 }
 
-/* ❌ Botón de eliminar imagen */
+/* 🎵 Audio */
+.audio {
+  width: 100%;
+  margin-top: var(--spacing-xs);
+}
+
+/* ❌ Botón de eliminar */
 .deleteButton {
   position: absolute;
   top: 6px;
@@ -61,12 +75,26 @@
   transform: scale(1.1);
 }
 
-/* ➕ Input oculto para subir archivos */
+/* 🏷️ Badge tipo de archivo */
+.typeBadge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  font-size: 1.1rem;
+  background: var(--color-dark-transparent);
+  color: white;
+  padding: 2px 6px;
+  border-radius: var(--border-radius-sm);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ➕ Input oculto */
 .fileInput {
   display: none;
 }
 
-/* 🆕 Estilo del botón de carga */
+/* ⬆️ Botón de subida */
 .uploadLabel {
   align-self: flex-start;
   padding: var(--spacing-sm) var(--spacing-md);
@@ -85,26 +113,17 @@
   transform: translateY(-2px);
 }
 
-/* 🔁 Animación suave para cada imagen */
-.fadeInItem {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInItemAnimation 0.6s ease forwards;
-}
-
+/* ✨ Animación fade-in */
 @keyframes fadeInItemAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-/* ⏱️ Delay progresivo */
-.imageContainer:nth-child(1) { animation-delay: 0.1s; }
-.imageContainer:nth-child(2) { animation-delay: 0.2s; }
-.imageContainer:nth-child(3) { animation-delay: 0.3s; }
-.imageContainer:nth-child(4) { animation-delay: 0.4s; }
-.imageContainer:nth-child(5) { animation-delay: 0.5s; }
 
 /* 📱 Responsive */
 @media (max-width: 768px) {
