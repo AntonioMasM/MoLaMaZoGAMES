@@ -59,7 +59,14 @@ export const incrementViews = async (assetId) => {
 
 /* ✏️ Actualizar asset */
 export const updateAsset = async (assetId, updatedData) => {
-  const { data } = await axios.put(`http://localhost:5000/api/assets/${assetId}`, updatedData, {
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
+if (!BASE_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido en el entorno.");
+}
+
+const API_URL = `${BASE_URL}/api/assets${assetId}`;
+  const { data } = await axios.put(`${API_URL}`, updatedData, {
     headers: { "Content-Type": "application/json" },
   });
   return data;

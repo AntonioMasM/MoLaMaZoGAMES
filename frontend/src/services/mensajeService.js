@@ -1,7 +1,12 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/mensajes";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
+if (!BASE_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido en el entorno.");
+}
+
+const API_URL = `${BASE_URL}/mensajes`;
 // Crear un nuevo mensaje
 export const crearMensaje = async (mensajeData) => {
   const response = await axios.post(`${API_URL}`, mensajeData);

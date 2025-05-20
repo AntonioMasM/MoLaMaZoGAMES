@@ -1,7 +1,12 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/assets"; // Ajusta si tienes variable de entorno
+const BASE_URL = import.meta.env.VITE_API_URL;
 
+if (!BASE_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido en el entorno.");
+}
+
+const API_URL = `${BASE_URL}/assets`;
 /* 🎯 Crear un nuevo asset */
 export const createAssetInDB = async (assetData) => {
   try {
@@ -106,7 +111,7 @@ export const obtenerAssetsPorCategoria = async (categoriaId) => {
 /* 🎯 Obtener assets por nombre de categoría */
 export const obtenerAssetsPorNombreCategoria = async (nombreCategoria) => {
   try {
-    const { data } = await axios.get(`http://localhost:5000/api/assets/categoria/nombre/${encodeURIComponent(nombreCategoria)}`);
+    const { data } = await axios.get(`${API_URL}/categoria/nombre/${encodeURIComponent(nombreCategoria)}`);
     return data;
   } catch (error) {
     console.error("Error al obtener assets por nombre de categoría:", error);

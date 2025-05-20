@@ -68,8 +68,15 @@ export const uploadFile = async (file) => {
 
 /* 🗑️ Eliminar archivo de Cloudinary desde tu API */
 export const deleteFile = async (publicId) => {
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+if (!BASE_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido en el entorno.");
+}
+
+const API_URL = `${BASE_URL}/cloudinary/eliminar`;
   try {
-    const response = await fetch("http://localhost:5000/api/cloudinary/eliminar", {
+    const response = await fetch(`${API_URL}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ public_id: publicId }),

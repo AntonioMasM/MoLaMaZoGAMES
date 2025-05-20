@@ -62,7 +62,10 @@ export const useSocial = () => {
   };
 
   const obtenerSeguidores = async (email) => {
-    const res = await fetch(`http://localhost:5000/api/usuarios/${email}/seguidores`);
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${BASE_URL}/usuarios/${email}/seguidores`;
+    const res = await fetch(`${API_URL}`);
     if (!res.ok) {
       const text = await res.text();
       throw new Error("Error al obtener seguidores: " + text);

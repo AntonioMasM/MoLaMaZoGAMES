@@ -1,6 +1,12 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/notificaciones";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+if (!BASE_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido en el entorno.");
+}
+
+const API_URL = `${BASE_URL}/notificaciones`;
 
 // Helper para manejar errores de Axios de manera limpia
 const handleError = (error) => {

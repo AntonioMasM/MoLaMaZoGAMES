@@ -1,7 +1,13 @@
 // src/services/userService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/usuarios";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+if (!BASE_URL) {
+  throw new Error("⚠️ VITE_API_URL no está definido en el entorno.");
+}
+
+const API_URL = `${BASE_URL}/usuarios`;
 
 // Crear nuevo usuario
 export const crearUsuario = async (datosUsuario) => {
@@ -51,7 +57,9 @@ export const getUsuarioPorId = async (id) => {
     return response.data;
   };
 
-  const CATEGORIA_API_URL = "http://localhost:5000/api/categorias";
+
+
+  const CATEGORIA_API_URL = `${BASE_URL}/categorias`;
 
   // Seguir una categoría
   export const seguirCategoria = async (idUsuario, idCategoria) => {
