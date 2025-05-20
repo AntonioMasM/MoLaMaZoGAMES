@@ -61,7 +61,7 @@
 
 .inviteButton {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light);
   padding: var(--spacing-sm) var(--spacing-md);
   border: none;
   border-radius: var(--border-radius-md);

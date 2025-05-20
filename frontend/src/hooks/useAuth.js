@@ -18,6 +18,7 @@ export const useAuth = () => {
     setError(null);
     try {
       const data = await login(email, password);
+      console.log(data);
       return data;
     } catch (err) {
       console.error("🔥 Error en iniciarSesion:", err);

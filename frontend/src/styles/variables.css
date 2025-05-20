@@ -1,20 +1,26 @@
+/* 🌙 Modo Oscuro (por defecto, en :root) */
 :root {
-  /* 🎨 PALETA DE COLORES - Modo Oscuro */
+  /* 🎨 COLORES */
   --color-bg: #1e1e1e;
   --color-bg-secondary: #2a2a2a;
   --color-text: #f0f0f0;
   --color-text-secondary: #c0c0c0;
+  --color-text-light: #ffffff;
   --color-accent: #338bff;
   --color-hover: #4ca4ff;
-  --color-border: #444;
+  --color-border: #444444;
   --color-error: #ef4444;
-
-  /* 🧱 ESTRUCTURA Y ESPACIADO */
+  --color-success: #2ecc71;
+  --color-success-light: #d4f6e8;
+  --color-success-dark: #1e8449;
+  --color-category-entorno: #33aa99;
+  --color-category-audio: #8833ff;
+  --color-category-scifi: #3366ff;
+  /* 🧱 ESPACIADO Y BORDES */
   --navbar-height: 80px;
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
-
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -24,7 +30,6 @@
   /* 🔤 TIPOGRAFÍA */
   --font-primary: "Segoe UI", Arial, sans-serif;
   --font-logo: 'Jersey 10', sans-serif;
-
   --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-md: 16px;
@@ -32,40 +37,42 @@
   --font-size-xl: 28px;
   --font-size-xxl: 36px;
 
-  /* 🧩 ICONOS Y SOMBRAS */
+  /* 🌫️ SOMBRAS E ICONOS */
   --icon-size: 20px;
-
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
 
+
+/* ☀️ Modo Claro */
+:root.light {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f9f9f9;
+  --color-text: #111111;
+  --color-text-secondary: #333333;
+  --color-text-light: #ffffff;
+  --color-accent: #2b7bff;
+  --color-hover: #155bcc;
+  --color-border: #cccccc;
+  --color-error: #e02424;
   --color-success: #2ecc71;
   --color-success-light: #d4f6e8;
   --color-success-dark: #1e8449;
 }
 
-/* ☀️ Modo Claro */
-:root.light {
-  --color-bg: #ffffff;
-  --color-bg-secondary: #f4f4f4;
-  --color-text: #111;
-  --color-text-secondary: #444;
-  --color-accent: #338bff;
-  --color-hover: #1d6cff;
-  --color-border: #ddd;
-}
-
-/* ⚫ Alto Contraste */
+/* ⚫ Modo Alto Contraste */
 :root.high-contrast {
   --color-bg: #000000;
-  --color-bg-secondary: #000000;
+  --color-bg-secondary: #1a1a1a;
   --color-text: #ffffff;
-  --color-text-secondary: #ffffff;
-  --color-accent: #00ffff;
-  --color-hover: #00ffcc;
+  --color-text-secondary: #e5e5e5;
+  --color-text-light: #000000; /* ⚠️ texto para botones con fondo amarillo */
+  --color-accent: #ffff00;
+  --color-hover: #ffcc00;
   --color-border: #ffffff;
-
-
-
-
+  --color-error: #ff3333;
+  --color-success: #00ff00;
+  --color-success-light: #003300;
+  --color-success-dark: #00aa00;
 }

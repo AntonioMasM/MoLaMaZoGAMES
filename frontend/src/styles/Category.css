@@ -50,7 +50,7 @@
   .filter button {
     margin: 0 5px;
     background-color: #333;
-    color: white;
+    color: var(--color-text-light);
     padding: 10px;
     border: none;
     cursor: pointer;
@@ -81,7 +81,7 @@
   
   .follow-btn {
     background-color: #0066cc;
-    color: white;
+    color: var(--color-text-light);
     padding: 10px 15px;
     border: none;
     cursor: pointer;

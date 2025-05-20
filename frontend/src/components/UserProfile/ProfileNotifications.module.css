@@ -68,7 +68,7 @@
 
 .item:hover {
   background-color: var(--color-hover);
-  color: white;
+  color: var(--color-text-light);
 }
 
 .unread {

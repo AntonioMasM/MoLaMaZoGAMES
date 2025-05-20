@@ -10,8 +10,26 @@ const API_URL = `${BASE_URL}/usuarios`;
 
 export const login = async (email, password) => {
   const { data } = await axios.post(`${API_URL}/login`, { email, password });
-  const { token, nickname, fotoPerfil, email: userEmail, id, ultimoInicioSesion } = data;
-  return { token, nickname, fotoPerfil, email: userEmail, id, ultimoInicioSesion };
+
+  const {
+    token,
+    nickname,
+    fotoPerfil,
+    email: userEmail,
+    id,
+    ultimoInicioSesion,
+    theme, // ✅ Añadido
+  } = data;
+
+  return {
+    token,
+    nickname,
+    fotoPerfil,
+    email: userEmail,
+    id,
+    ultimoInicioSesion,
+    theme, // ✅ Incluido en la respuesta al frontend
+  };
 };
 
 export const register = async (userData) => {

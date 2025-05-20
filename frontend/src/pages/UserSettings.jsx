@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useUser } from "../context/UserContext";
 import { getUsuarioPorEmail, actualizarUsuario } from "../services/userService";
 import Sidebar from "../components/UserProfile/Sidebar";
 import uploadImageToCloudinary from "../services/uploadImageToCloudinary";
 import deleteImageFromCloudinary from "../services/deleteImageFromCloudinary";
 import { useTheme } from "../hooks/useTheme";
+import { useAlertQueue } from "../context/AlertQueueContext";
 import styles from "../styles/UserSettings.module.css";
 
 const getInitialFormData = (user) => ({
@@ -37,6 +38,7 @@ const getInitialFormData = (user) => ({
 const UserSettings = () => {
   const { user: contextUser, updateUser } = useUser();
   const { setDark, setLight, setContrast } = useTheme();
+  const { showAlert } = useAlertQueue();
   const email = contextUser?.email;
   const fileInputRef = useRef(null);
 
@@ -166,12 +168,10 @@ const UserSettings = () => {
       await actualizarUsuario(email, payload);
       updateUser({ ...userData, ...payload });
       aplicarTema(formData.modo);
-      setMensaje("Perfil actualizado correctamente ✅");
+      showAlert("Perfil actualizado correctamente ✅", "success");
     } catch (error) {
       console.error(error);
-      setMensaje("Error al actualizar el perfil ❌");
-    } finally {
-      setTimeout(() => setMensaje(""), 3000);
+      showAlert("Error al actualizar el perfil ❌", "error");
     }
   };
 

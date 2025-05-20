@@ -62,7 +62,7 @@
 /* Badge especial (opcional: Verified, Admin, etc.) */
 .badge {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light);
   font-size: var(--font-size-xs);
   padding: 2px 6px;
   border-radius: var(--border-radius-sm);

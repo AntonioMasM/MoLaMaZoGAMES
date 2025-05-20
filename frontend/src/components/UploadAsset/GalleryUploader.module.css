@@ -81,7 +81,7 @@
 /* 🗑️ Botón limpiar galería */
 .clearGalleryButton {
   background-color: var(--color-error);
-  color: white;
+  color: var(--color-text-light);
   border: none;
   border-radius: var(--border-radius-sm);
   padding: var(--spacing-sm) var(--spacing-md);

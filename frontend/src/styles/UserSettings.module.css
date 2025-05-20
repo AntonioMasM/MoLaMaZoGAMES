@@ -61,7 +61,7 @@
   border: none;
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--border-radius-sm);
-  color: white;
+  color: var(--color-text-light); /* ✅ VARIABLE */
   cursor: pointer;
   font-size: var(--font-size-sm);
   transition: background-color 0.3s ease;
@@ -127,21 +127,35 @@ select:focus {
 .arrayInput {
   display: flex;
   gap: var(--spacing-sm);
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .arrayInput input {
   flex: 1;
+  min-width: 180px;
 }
+
 
 .arrayInput button {
   background-color: var(--color-accent);
   border: none;
-  color: white;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
+  color: var(--color-text-light); /* ✅ VARIABLE */
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+
+.arrayInput button::before {
+  content: "+";
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 .arrayInput button:hover {
@@ -154,27 +168,44 @@ select:focus {
   flex-wrap: wrap;
   gap: var(--spacing-xs);
   margin-top: var(--spacing-sm);
+  transition: all 0.3s ease;
 }
 
 .tagList li {
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--border-radius-sm);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: 0.5rem;
   font-size: var(--font-size-xs);
   color: var(--color-text);
+  transition: all 0.3s ease;
+  animation: fadeInTag 0.25s ease;
 }
 
+
+@keyframes fadeInTag {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 /* ❌ Botón de eliminar tags */
 .tagList button {
   background: none;
   border: none;
   color: var(--color-error);
-  font-size: var(--font-size-sm);
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1;
   cursor: pointer;
+  padding: 0;
   transition: color 0.2s ease;
 }
 
@@ -182,10 +213,15 @@ select:focus {
   color: var(--color-hover);
 }
 
+.tagList button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 /* 💾 Botón Guardar Cambios */
 .saveButton {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light); /* ✅ VARIABLE */
   border: none;
   padding: var(--spacing-sm) var(--spacing-lg);
   font-size: var(--font-size-md);

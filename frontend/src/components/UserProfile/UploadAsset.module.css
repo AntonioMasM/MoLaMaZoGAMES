@@ -61,7 +61,7 @@
 
 .button {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light);
   padding: var(--spacing-sm);
   border: none;
   border-radius: var(--border-radius-md);

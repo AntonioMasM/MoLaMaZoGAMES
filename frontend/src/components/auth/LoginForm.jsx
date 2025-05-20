@@ -47,9 +47,10 @@ const LoginForm = () => {
 
       // ✅ Validar que data exista antes de continuar
       if (data && data.token) {
-        const { token, nickname, fotoPerfil, id, email: userEmail, ultimoInicioSesion } = data;
+        console.log(data);
+        const { token, nickname, fotoPerfil, id, email: userEmail, ultimoInicioSesion, theme } = data;
         const fotoPerfilUrl = typeof fotoPerfil === "object" ? fotoPerfil.secure_url : fotoPerfil;
-        userLogin({ userData: { _id: id, email: userEmail, nickname, fotoPerfil: fotoPerfilUrl, ultimoInicioSesion }, token });
+        userLogin({ userData: { _id: id, email: userEmail, nickname, fotoPerfil: fotoPerfilUrl, ultimoInicioSesion, theme }, token });
         authLogin(token);;
         showAlert(`¡Bienvenido, ${nickname}! 👋🏻`, "success");
 

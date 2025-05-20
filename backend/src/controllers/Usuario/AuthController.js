@@ -29,6 +29,7 @@ const iniciarSesion = async (req, res) => {
         fotoPerfil: usuario.fotoPerfil,
         email: usuario.email,
         id: usuario._id,
+        theme: usuario.modo,
         ultimoInicioSesion: usuario.ultimoInicioSesion,
       });
     } catch (error) {

@@ -75,6 +75,8 @@ const Home = () => {
                 <CategoriaAssetSection categoriasSeguidas={categorias} />
               </section>
             )}
+            <AssetSection />
+            <UserSection />
           </motion.div>
         ) : null}
       </AnimatePresence>

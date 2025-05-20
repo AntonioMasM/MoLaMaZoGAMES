@@ -37,7 +37,7 @@
   right: 2px;
   transform: translate(50%, -50%);
   background-color: var(--color-error);
-  color: white;
+  color: var(--color-text-light);
   font-size: 0.65rem;
   font-weight: 700;
   padding: 2px 5px;

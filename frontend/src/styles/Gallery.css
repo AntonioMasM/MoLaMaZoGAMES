@@ -43,7 +43,7 @@
 /* Botón de subir asset */
 .gallery-upload {
   background-color: var(--hover-color);
-  color: white;
+  color: var(--color-text-light);
   border: none;
   padding: 8px 15px;
   border-radius: 5px;

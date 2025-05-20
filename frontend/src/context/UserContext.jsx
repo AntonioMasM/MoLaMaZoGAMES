@@ -13,6 +13,16 @@ export const UserContext = createContext({
 
 export const useUser = () => useContext(UserContext);
 
+// Utilidad para aplicar el tema desde string
+const applyTheme = (theme) => {
+  const THEMES = ["light", "dark", "high-contrast"];
+  if (!THEMES.includes(theme)) return;
+  const root = document.documentElement;
+  root.classList.remove(...THEMES);
+  root.classList.add(theme);
+  localStorage.setItem("preferred-theme", theme);
+};
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
@@ -33,16 +43,23 @@ export const UserProvider = ({ children }) => {
           }
           setUser(fullUser);
           localStorage.setItem("user", JSON.stringify(fullUser));
+
+          // ✅ Aplicar tema si viene definido
+          if (fullUser.theme) {
+            applyTheme(fullUser.theme);
+          }
         })
         .catch((err) => {
           console.error("❌ Error al obtener el usuario completo:", err);
-          if (parsedUser._id || parsedUser.id) {
-            setUser({
-              ...parsedUser,
-              _id: parsedUser._id || parsedUser.id,
-            });
-          } else {
-            setUser(null);
+          const fallbackUser = {
+            ...parsedUser,
+            _id: parsedUser._id || parsedUser.id,
+          };
+          setUser(fallbackUser);
+
+          // Aplicar tema también al fallback
+          if (parsedUser.theme) {
+            applyTheme(parsedUser.theme);
           }
         })
         .finally(() => setLoading(false));
@@ -56,6 +73,13 @@ export const UserProvider = ({ children }) => {
       ...userData,
       _id: userData._id || userData.id,
     };
+      console.log(normalizedUser);
+
+    // ✅ Aplicar tema si el usuario tiene uno
+    if (normalizedUser.theme) {
+      applyTheme(normalizedUser.theme);
+    }
+
     localStorage.setItem("user", JSON.stringify(normalizedUser));
     localStorage.setItem("token", token);
     setUser(normalizedUser);
@@ -73,6 +97,11 @@ export const UserProvider = ({ children }) => {
     const updatedUser = { ...user, ...updatedData };
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    // ✅ Aplicar nuevo tema si se actualiza
+    if (updatedData.theme) {
+      applyTheme(updatedData.theme);
+    }
   };
 
   if (loading) {

@@ -1,6 +1,5 @@
 @import "../../styles/variables.css";
 
-
 /* 📦 Sección principal de perfil */
 .userInfo {
   padding: var(--spacing-xl) var(--spacing-lg);
@@ -9,6 +8,7 @@
   flex-direction: column;
   gap: var(--spacing-xl);
   font-family: var(--font-primary);
+  transition: all 0.3s ease;
 }
 
 /* 🧭 Grid de dos columnas (responsive) */
@@ -16,16 +16,24 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--spacing-xl);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* 🧩 Columna izquierda y derecha */
+.grid.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 🧩 Columnas */
 .column {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
 }
 
-/* 🎯 Panel individual (cada bloque de contenido) */
+/* 🎯 Panel visual */
 .panel {
   background-color: var(--color-bg-secondary);
   padding: var(--spacing-lg);
@@ -39,7 +47,7 @@
   transform: translateY(-2px);
 }
 
-/* 🏷️ Títulos de secciones */
+/* 🏷️ Títulos */
 .sectionTitle {
   font-size: var(--font-size-xl);
   font-weight: 600;
@@ -54,12 +62,44 @@
   margin-bottom: var(--spacing-sm);
 }
 
-/* 🌟 Sección especial de categorías favoritas */
+/* 🌟 Favoritos */
 .favoritesSection {
   margin-top: var(--spacing-xl);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* 🎯 A11Y: Visibilidad para lectores de pantalla */
+.favoritesSection.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 🔘 Botón y resumen */
+.userSummary {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.toggleButton {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* 🎯 A11Y */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -72,7 +112,7 @@
   border: 0;
 }
 
-/* 📱 Mobile-first refinado */
+/* 📱 Responsive móvil */
 @media (max-width: 768px) {
   .userInfo {
     padding: var(--spacing-lg);
@@ -89,5 +129,14 @@
 
   .subsectionTitle {
     font-size: var(--font-size-md);
+  }
+
+  .userSummary {
+    align-items: center;
+    text-align: center;
+  }
+
+  .toggleButton {
+    align-self: center;
   }
 }

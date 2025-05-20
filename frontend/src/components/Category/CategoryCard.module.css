@@ -90,7 +90,7 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light);
   min-width: 110px;
   text-align: center;
 }
@@ -109,7 +109,7 @@
 
 .followButton.siguiendo:hover {
   background-color: var(--color-success);
-  color: white;
+  color: var(--color-text-light);
   border-color: var(--color-success);
 }
 

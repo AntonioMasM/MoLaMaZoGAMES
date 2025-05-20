@@ -77,7 +77,7 @@
   
   .indicatorDot.active {
     background-color: var(--color-accent);
-    border-color: white;
+    border-color: var(--color-text-light);
   }
   
   .indicatorDot:focus {
@@ -191,7 +191,7 @@
     bottom: 8px;
     right: 12px;
     font-size: 14px;
-    color: white;
+    color: var(--color-text-light);
     background-color: rgba(0, 0, 0, 0.4);
     padding: 4px 8px;
     border-radius: 8px;

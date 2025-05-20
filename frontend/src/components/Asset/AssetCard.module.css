@@ -24,7 +24,7 @@
 .imageWrapper {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, #2d2d2d, #3c3c3c);
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg));
   overflow: hidden;
   display: block;
   text-decoration: none;
@@ -113,8 +113,8 @@
 }
 
 .badge {
-  background-color: var(--color-border);
-  color: var(--color-text);
+  background-color: var(--color-text);
+  color: var(--color-bg);
   padding: 3px 8px;
   font-size: var(--font-size-xs);
   border-radius: var(--border-radius-sm);
@@ -127,14 +127,14 @@
 
 .badge:hover {
   background-color: var(--color-hover);
-  color: white;
+  color: var(--color-text-light);
   text-decoration: none;
 }
 
 /* === Categoría === */
 .category {
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light);
   padding: 4px 10px;
   font-size: var(--font-size-xs);
   border-radius: var(--border-radius-md);
@@ -148,26 +148,27 @@
 .category:hover {
   background-color: var(--color-hover);
   text-decoration: none;
+  color: var(--color-bg);
 }
 
-/* === Categorías por color === */
+/* === Categorías por color (mapeadas a nuevas variables personalizables) === */
 .category-entorno {
-  background-color: #33aa99;
+  background-color: var(--color-category-entorno, #33aa99);
 }
 
 .category-audio {
-  background-color: #8833ff;
+  background-color: var(--color-category-audio, #8833ff);
 }
 
 .category-cienciaficcion {
-  background-color: #3366ff;
+  background-color: var(--color-category-scifi, #3366ff);
 }
 
 .category-general {
   background-color: var(--color-accent);
 }
 
-/* === Enlace externo (envoltura desactivada ahora) === */
+/* === Enlace externo === */
 .linkWrapper {
   text-decoration: none;
   color: inherit;

@@ -70,6 +70,6 @@
 /* Hover en comentarios */
 .comment:hover {
   background-color: var(--hover-color);
-  color: white;
+  color: var(--color-text-light);
   transition: 0.3s ease-in-out;
 }

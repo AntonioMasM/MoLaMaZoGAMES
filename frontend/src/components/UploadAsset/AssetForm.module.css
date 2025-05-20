@@ -111,13 +111,13 @@ span {
 .optionBtn:hover,
 .optionBtn:focus-visible {
   background-color: var(--color-hover);
-  color: white;
+  color: var(--color-text-light);
 }
 
 .optionBtn.active {
   background-color: var(--color-accent);
   border-color: var(--color-accent);
-  color: white;
+  color: var(--color-text-light);
 }
 
 /* 🎯 Grupo de Tags */

@@ -226,7 +226,7 @@
 
 .confirmBtn {
   background-color: #d93025;
-  color: white;
+  color: var(--color-text-light);
   padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 6px;

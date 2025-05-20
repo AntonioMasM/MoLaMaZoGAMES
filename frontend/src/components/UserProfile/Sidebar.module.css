@@ -45,7 +45,7 @@
 }
 
 .active .navLink {
-  color: white;
+  color: var(--color-text-light);
 }
 
 .label {
@@ -65,4 +65,78 @@
   .label {
     display: none;
   }
+}
+
+.deleteContainer {
+  margin-top: auto;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-error, red);
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.deleteButton:hover {
+  background-color: rgba(255, 0, 0, 0.05);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.confirmBtn {
+  background-color: var(--color-error, red);
+  color: var(--color-text-light);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.confirmBtn {
+  background-color: var(--color-error, red);
+  color: var(--color-text-light);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
 }
