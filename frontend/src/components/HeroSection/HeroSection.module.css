@@ -182,6 +182,9 @@
   color: var(--color-text);
 }
 
+.categoryLink {
+  color: var(--color-text);
+}
 /* Contador de imágenes opcional */
 .imageCounter {
     position: absolute;

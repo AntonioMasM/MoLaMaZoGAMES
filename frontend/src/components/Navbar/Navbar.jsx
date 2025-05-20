@@ -7,6 +7,7 @@ import {
   FaFolderOpen,
   FaSignInAlt,
   FaUserPlus,
+  FaCog,
 } from "react-icons/fa";
 
 import styles from "./Navbar.module.css";
@@ -16,7 +17,8 @@ import CategoryDropdown from "./CategoryDropdown";
 import UserSection from "./UserSection";
 import SettingsDropdown from "./SettingsDropdown";
 import NotificationBell from "./NotificationBell";
-import SearchDropdown from "./SearchDropdown"; // 🔥 Nuevo import
+import SearchDropdown from "./SearchDropdown";
+import { useDebounce } from 'use-debounce';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,7 +26,10 @@ const Navbar = () => {
   const [isCategoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [debouncedQuery] = useDebounce(query, 300);
 
+  const isCompactScreen = windowWidth <= 1220;
+  const isHamburgerScreen = windowWidth <= 1000;
   const isSmallScreen = useIsSmallScreen();
   const { user } = useUser();
   const isAuthenticated = !!user;
@@ -41,7 +46,7 @@ const Navbar = () => {
       setShowSettings(false);
       setMenuOpen(false);
       setCategoryDropdownOpen(false);
-      setQuery(""); // 🔥 Cierra también búsqueda si pulsa Escape
+      setQuery("");
     }
   };
 
@@ -63,147 +68,162 @@ const Navbar = () => {
   }, [showSettings, menuOpen, isCategoryDropdownOpen]);
 
   return (
-    <header className={styles.navbar}>
-      {/* Izquierda */}
-      <div className={styles.left}>
-        <Link to="/" className={styles.logo} aria-label="Página principal MoLaMaZoGAMES">
-          <span className={styles.logoText}>MoLaMaZoGAMES</span>
-          <img
-            src="/assets/logo.png"
-            alt="Logo MoLaMaZoGAMES"
-            className={styles.logoImage}
-          />
-        </Link>
+<header className={styles.navbar}>
+  {/* IZQUIERDA */}
+  <div className={styles.left}>
+    <Link to="/" className={styles.logo} aria-label="Página principal MoLaMaZoGAMES">
+      <span className={styles.logoText}>MoLaMaZoGAMES</span>
+      <img src="/assets/logo.png" alt="Logo MoLaMaZoGAMES" className={styles.logoImage} />
+    </Link>
 
-        {windowWidth > 400 && (
-          <div className={styles.search} style={{ position: "relative" }}>
-            <input
-              type="text"
-              placeholder="Buscar assets, categorías..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            />
-            <FaSearch className={styles.searchIcon} onClick={handleSearch} />
+    {/* Buscador visible solo > 400px */}
+{windowWidth > 400 && (
+  <div className={styles.search}>
+    <input
+      type="text"
+      placeholder="Buscar assets, categorías..."
+      aria-label="Buscar contenido"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+    />
+    <button className={styles.searchButton} onClick={handleSearch} aria-label="Buscar">
+      <FaSearch />
+    </button>
 
-            {query && <SearchDropdown
-            query={query}
-            visible={query.trim().length > 0}
-            onClose={() => setQuery("")}
-          />
-          }
-            {/* 🔥 Integrado aquí */}
-            <Link to="/search" className={styles.authButton} aria-label="Búsqueda Avanzada">
-                    Búsqueda Avanzada
-              </Link>
-          </div>
-          
-        )}
-      </div>
+    {/* 🔧 Siempre montado, visibilidad controlada */}
+      <SearchDropdown
+        query={debouncedQuery}
+        visible={debouncedQuery.trim().length > 0}
+        onClose={() => setQuery("")}
+      />
 
-      {/* Derecha */}
-      <div className={styles.right}>
-        <div className={`${styles.navButtons} ${menuOpen ? styles.open : ""}`}>
-          {/* Categorías */}
+
+    {windowWidth > 560 && (
+      <Link
+        to="/search"
+        className={styles.advancedSearchLink}
+        aria-label="Ir a búsqueda avanzada"
+      >
+        Búsqueda Avanzada
+      </Link>
+    )}
+  </div>
+)}
+  </div>
+
+  {/* DERECHA */}
+  <div className={styles.right}>
+    {/* BOTÓN HAMBURGUESA */}
+    {isHamburgerScreen && (
+      <button
+        className={styles.menuToggle}
+        onClick={() => setMenuOpen(!menuOpen)}
+        title="Abrir menú"
+        aria-label="Abrir o cerrar menú"
+      >
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </button>
+    )}
+
+    {/* NAVEGACIÓN RESPONSIVE */}
+    <nav
+      className={`${styles.navButtons} ${
+        isHamburgerScreen ? styles.mobileNav : styles.desktopNav
+      } ${menuOpen ? styles.open : ""}`}
+    >
+      {/* CATEGORÍAS */}
+      {isAuthenticated && (
+        isHamburgerScreen ? (
+          <Link to="/categories" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+            <FaFolderOpen />
+          </Link>
+        ) : (
           <div
             className={styles.navButtonWrapper}
             onMouseEnter={() => setCategoryDropdownOpen(true)}
             onMouseLeave={() => setCategoryDropdownOpen(false)}
           >
-            <div className={styles.navButton} title="Categorías">
-              {isSmallScreen ? <FaFolderOpen /> : "Categorías"}
+            <div className={styles.navButton}>
+              {isCompactScreen ? <FaFolderOpen /> : "Categorías"}
             </div>
             {isCategoryDropdownOpen && <CategoryDropdown />}
           </div>
+        )
+      )}
 
-          {/* Búsqueda en móvil */}
-          {windowWidth <= 400 && (
-            <div className={styles.dropdownSearch} style={{ position: "relative" }}>
-              <input
-                type="text"
-                placeholder="Buscar..."
-                className={styles.dropdownSearchInput}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              />
-              <FaSearch className={styles.dropdownSearchIcon} onClick={handleSearch} />
-              {query && <SearchDropdown
-                query={query}
-                visible={query.trim().length > 0}
-                onClose={() => setQuery("")}
-              />
-              }
-              {/* 🔥 También en versión móvil */}
+      {/* BÚSQUEDA XS (solo hamburguesa) */}
+{windowWidth <= 400 && (
+  <div className={styles.dropdownSearch}>
+    <input
+      type="text"
+      placeholder="Buscar..."
+      className={styles.dropdownSearchInput}
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+      aria-label="Buscar contenido"
+    />
+    <FaSearch className={styles.dropdownSearchIcon} onClick={handleSearch} />
 
-            </div>
-          )}
+    {/* 🔧 Siempre montado */}
+    <SearchDropdown
+      query={debouncedQuery}
+      visible={debouncedQuery.trim().length > 0}
+      onClose={() => setQuery("")}
+    />
 
-          {/* Usuario no autenticado */}
-          {!isAuthenticated && (
-            <>
-              {isSmallScreen ? (
-                <>
-                  <Link
-                    to="/login"
-                    className={styles.navButton}
-                    title="Iniciar sesión"
-                    aria-label="Iniciar sesión"
-                  >
-                    <FaSignInAlt />
-                  </Link>
-                  <Link
-                    to="/register"
-                    className={styles.navButton}
-                    title="Registrarse"
-                    aria-label="Registrarse"
-                  >
-                    <FaUserPlus />
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className={styles.authButton} aria-label="Iniciar sesión">
-                    Iniciar Sesión
-                  </Link>
-                  <Link to="/register" className={styles.authButton} aria-label="Registrarse">
-                    Registrarse
-                  </Link>
-                </>
-              )}
-            </>
-          )}
+  </div>
+)}
 
-          {/* Usuario autenticado */}
-          {isAuthenticated && (
-            <>
-              <UserSection isSmallScreen={isSmallScreen} onLogout={() => setShowSettings(false)} />
-              <NotificationBell />
-            </>
-          )}
+      {/* BÚSQUEDA AVANZADA en XS */}
+      {windowWidth <= 560 && (
+        <Link to="/search" className={styles.navButton} onClick={() => setMenuOpen(false)}>
+          Búsqueda Avanzada
+        </Link>
+      )}
 
-          {/* Configuración */}
-          <button
-            className={styles.iconButton}
-            onClick={() => setShowSettings(!showSettings)}
-            title="Configuración"
-          >
-            ⚙️
-          </button>
+      {/* USUARIO NO AUTENTICADO */}
+      {!isAuthenticated && (
+        isSmallScreen ? (
+          <>
+            <Link to="/login" className={styles.navButton}><FaSignInAlt /></Link>
+            <Link to="/register" className={styles.navButton}><FaUserPlus /></Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className={styles.authButton}>Iniciar Sesión</Link>
+            <Link to="/register" className={styles.authButton}>Registrarse</Link>
+          </>
+        )
+      )}
 
-          {showSettings && <SettingsDropdown onClose={() => setShowSettings(false)} />}
-        </div>
+      {/* USUARIO AUTENTICADO */}
+      {isAuthenticated && (
+        <>
+          <UserSection
+            isCompactScreen={isCompactScreen}
+            isHamburgerScreen={isHamburgerScreen}
+            menuOpen={menuOpen}
+          />
+          <NotificationBell />
+        </>
+      )}
 
-        {/* Menú hamburguesa */}
-        <button
-          className={styles.menuToggle}
-          onClick={() => setMenuOpen(!menuOpen)}
-          title="Abrir menú"
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
-      </div>
-    </header>
+      {/* CONFIGURACIÓN */}
+      <button
+        className={styles.navButton}
+        onClick={() => setShowSettings(!showSettings)}
+        title="Configuración"
+        aria-label="Abrir configuración"
+      >
+        <FaCog />
+      </button>
+      {showSettings && <SettingsDropdown onClose={() => setShowSettings(false)} />}
+    </nav>
+  </div>
+</header>
+
   );
 };
 

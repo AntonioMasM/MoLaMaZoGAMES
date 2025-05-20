@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./SearchDropdown.module.css";
 import { useSearch } from "../../hooks/useSearch";
+import React from "react";
 
 const getValidImage = (asset) => {
   if (!asset?.imagenPrincipal?.url) return null;
@@ -115,4 +116,4 @@ const SearchDropdown = ({ query, visible = false, onClose }) => {
   );
 };
 
-export default SearchDropdown;
+export default React.memo(SearchDropdown);

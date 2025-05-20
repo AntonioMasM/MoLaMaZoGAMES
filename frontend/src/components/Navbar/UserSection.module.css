@@ -1,8 +1,96 @@
 @import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
 @import '../../styles/variables.css';
 
-/* --- BOTONES DE USUARIO AUTENTICADO --- */
+/* === CONTENEDOR GENERAL === */
+.userSectionWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
+.userSectionHamburger {
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  gap: 12px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+
+@media (max-width: 1200px) {
+  .userSectionWrapper {
+    gap: 0.75rem;
+  }
+}
+
+/* === BOTONES === */
+.navButton,
+.logoutButton {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: var(--button-font-size);
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: var(--border-radius-md);
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.navButton:hover,
+.logoutButton:hover,
+.logoutButton:focus-visible {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-hover);
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid var(--color-hover);
+}
+
+/* Versión responsive para botones */
+@media (max-width: 1000px) {
+  .navButton,
+  .logoutButton {
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px 16px;
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 6px;
+    gap: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .navButton:hover,
+  .logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: scale(1.03);
+    color: var(--color-hover);
+  }
+}
+
+@media (max-width: 1000px) {
+  .profilePic {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+  }
+}
+.navButton:focus-visible,
+.logoutButton:focus-visible {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 2px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* === IMAGEN DE PERFIL === */
 .profilePic {
   width: 32px;
   height: 32px;
@@ -20,67 +108,4 @@
   transform: scale(1.1);
   box-shadow: 0 0 0 1px var(--color-hover);
   border-color: var(--color-hover);
-}
-
-.logoutButton {
-  background: none;
-  border: none;
-  color: var(--color-text);
-  font-size: 16px;
-  padding: 6px 12px;
-  border-radius: var(--border-radius-md);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background-color 0.2s, color 0.2s, transform 0.2s;
-  cursor: pointer;
-}
-
-.logoutButton:hover,
-.logoutButton:focus-visible {
-  color: var(--color-hover);
-  background-color: rgba(255, 255, 255, 0.08);
-  outline: 2px solid var(--color-hover);
-  transform: scale(1.05);
-}
-
-/* --- BOTONES DE USUARIO NO AUTENTICADO --- */
-
-.navButton {
-  padding: 8px 14px;
-  background: none;
-  border: none;
-  color: var(--color-text);
-  font-size: var(--button-font-size);
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: var(--border-radius-md);
-  transition: transform 0.2s, background-color 0.2s, color 0.2s;
-}
-
-.navButton:hover {
-  transform: scale(1.05);
-  background-color: rgba(255, 255, 255, 0.08);
-  color: var(--color-hover);
-}
-
-/* --- RESPONSIVE --- */
-
-@media (max-width: 768px) {
-  .navButton {
-    justify-content: center;
-    width: 100%;
-    font-size: var(--font-size-md);
-  }
-
-  .navButton svg {
-    margin: 0;
-  }
-
-  .logoutButton {
-    justify-content: center;
-    width: 100%;
-  }
 }

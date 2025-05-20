@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth"; // Hook para login tras registro
 import FormInput from "../ui/FormInput";
 import ErrorMessage from "../ui/ErrorMessage";
 import styles from "../../styles/Register.module.css";
+import { useAuth as useAuthContext } from "../../features/auth/hooks/useAuth"; // 🚀 Acceso al contexto
 
 const RegisterForm = () => {
   const { login } = useUser(); // Context global de usuario
@@ -20,6 +21,7 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); // nuevo campo
   const [cargo, setCargo] = useState("");
+  const { login: authLogin } = useAuthContext();
 
   // Estado de errores de validación
   const [errors, setErrors] = useState({});
@@ -76,7 +78,7 @@ const RegisterForm = () => {
       const { token, nickname: nick, fotoPerfil, id, ultimoInicioSesion } = data;
 
       login({ userData: { _id: id, email, nickname: nick, fotoPerfil, ultimoInicioSesion }, token });
-
+      authLogin(token);
       navigate("/");
     } catch (err) {
       console.error("Error en registro o login:", err);

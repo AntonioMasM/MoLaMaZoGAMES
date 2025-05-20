@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./HeroSection.module.css";
 import { getCategorias } from "../../services/categorias";
 import { useUser } from "../../context/UserContext";
-
+import { Link } from "react-router-dom";
 function dropboxToDirectLink(url) {
   return url
     .replace("www.dropbox.com", "dl.dropboxusercontent.com")
@@ -155,6 +155,13 @@ const HeroSection = () => {
 
             <div className={styles.heroCategories}>
               {categories.map((cat, index) => (
+                  <Link
+    to={`/categories/${encodeURIComponent(cat.nombre)}`}
+    key={cat._id || index}
+    className={styles.categoryLink}
+  >
+
+
                 <div key={index} className={styles.category}>
                   <img
                     src={dropboxToDirectLink(cat.imagen)}
@@ -167,6 +174,7 @@ const HeroSection = () => {
                   />
                   <p className={styles.categoryName}>{cat.nombre}</p>
                 </div>
+                  </Link>
               ))}
             </div>
           </div>
