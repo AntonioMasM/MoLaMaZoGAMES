@@ -20,9 +20,7 @@ const AssetForm = ({
     titulo = "",
     descripcion = "",
     categoriaPrincipal = "",
-    licencia = "",
     otrasCategorias = [],
-    opciones = {},
   } = formData;
 
   const [descripcionLength, setDescripcionLength] = useState(descripcion.length || 0);

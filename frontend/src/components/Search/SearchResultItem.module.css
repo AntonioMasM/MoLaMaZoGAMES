@@ -1,28 +1,26 @@
 @import "../../styles/variables.css";
 
-/* 🎯 Cada resultItem ocupa su celda del grid de forma limpia */
+/* 🎯 Estilo base del item de resultado */
 .resultItem {
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-sm);
-  box-shadow: var(--shadow-sm);
   width: 100%;
-  height: 100%; /* ✅ Importantísimo para que la card estire en su grid */
+  height: 100%; /* Asegura que la card ocupe todo el espacio asignado */
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-bg-secondary);
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  box-sizing: border-box;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  align-items: stretch;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   animation: fadeInUp 0.4s ease forwards;
+  cursor: pointer;
 }
 
-/* 🎯 Hover efecto sutil para mejorar la UX */
-.resultItem:hover {
-  background-color: var(--color-hover);
-  transform: translateY(-4px);
-}
-
-/* 🎯 Animación de aparición */
+/* 🌀 Animación suave de aparición */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -34,9 +32,37 @@
   }
 }
 
-/* 🎯 Responsive: ajuste de padding en móvil */
+/* 🧠 Hover con profundidad y contraste */
+.resultItem:hover {
+  background-color: var(--color-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ♿️ Accesibilidad: resalta foco visible */
+.resultItem:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ✨ Transición suave entre estados */
+.resultItem *,
+.resultItem *::before,
+.resultItem *::after {
+  transition: all 0.2s ease;
+}
+
+/* 📱 Responsive: padding y shadow más ligeros en pantallas pequeñas */
 @media screen and (max-width: 768px) {
   .resultItem {
     padding: var(--spacing-xs);
+    box-shadow: var(--shadow-xs);
+  }
+}
+
+/* 📱 Responsive extra small */
+@media screen and (max-width: 480px) {
+  .resultItem {
+    border-radius: var(--border-radius-md);
   }
 }

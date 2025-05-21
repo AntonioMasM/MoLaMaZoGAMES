@@ -3,7 +3,7 @@ import { searchAssets, getAllAssets } from "@/services/assets";
 import { buscarUsuarios, getAllUsuarios } from "@/services/userService";
 import { getCategorias } from "@/services/categorias";
 
-export const useSearch = (query = "", tipoSeleccionado = "Todos", filtros = {}) => {
+export const useSearch = (query = "", tipoSeleccionado = "Todos", filtros = {}, orden = "relevancia") => {
   const [assets, setAssets] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -58,7 +58,7 @@ lastQueryRef.current = queryTrimmed;
           // 🔄 Buscar todo si no hay query
           if (doAssets) {
             let results = await getAllAssets();
-            results = applyAssetFilters(results, filtros);
+            results = applyAssetFilters(results, filtros, orden);
             setAssets(results);
           }
 
@@ -76,7 +76,7 @@ lastQueryRef.current = queryTrimmed;
           // 🔍 Buscar por query
           if (doAssets) {
             let results = await searchAssets(queryTrimmed);
-            results = applyAssetFilters(results, filtros);
+            results = applyAssetFilters(results, filtros, orden);
             setAssets(results);
           }
 
@@ -115,7 +115,7 @@ lastQueryRef.current = queryTrimmed;
 };
 
 // ✅ Funciones auxiliares limpias y reutilizables
-function applyAssetFilters(results, filtros) {
+function applyAssetFilters(results, filtros, orden = "relevancia") {
   if (filtros.categorias?.length) {
     results = results.filter(asset =>
       asset.categorias?.some(cat => filtros.categorias.includes(cat))
@@ -132,18 +132,33 @@ function applyAssetFilters(results, filtros) {
     results = results.filter(asset => asset.disponible);
   }
 
-  if (filtros.orden === "vistas_desc") {
-    results.sort((a, b) => b.vistas - a.vistas);
-  } else if (filtros.orden === "vistas_asc") {
-    results.sort((a, b) => a.vistas - b.vistas);
-  } else if (filtros.orden === "fecha_desc") {
-    results.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
-  } else if (filtros.orden === "fecha_asc") {
-    results.sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion));
+  // ✅ Ordenamiento global (usando parámetro explícito)
+  switch (orden) {
+    case "vistas_desc":
+      results.sort((a, b) => b.vistas - a.vistas);
+      break;
+    case "vistas_asc":
+      results.sort((a, b) => a.vistas - b.vistas);
+      break;
+    case "fecha_desc":
+      results.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
+      break;
+    case "fecha_asc":
+      results.sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion));
+      break;
+    case "az":
+      results.sort((a, b) => a.titulo.localeCompare(b.titulo));
+      break;
+    case "za":
+      results.sort((a, b) => b.titulo.localeCompare(a.titulo));
+      break;
+    default:
+    // No ordenar (relevancia)
   }
 
   return results;
 }
+
 
 function applyUserFilters(users, filtros) {
   if (filtros.pais) {

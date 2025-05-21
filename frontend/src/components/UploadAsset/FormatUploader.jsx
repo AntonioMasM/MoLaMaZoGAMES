@@ -100,24 +100,6 @@ const FormatUploader = ({
                   </div>
 
                   <div className={styles.fileActions}>
-                    <label
-                      className={styles.selectFileButton}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Seleccionar archivo para formato`}
-                    >
-                      {file || url ? "Cambiar" : "Seleccionar"}
-                      <input
-                        key={id}
-                        type="file"
-                        accept="*/*"
-                        onChange={(e) => handleFileSelect(e, id)}
-                        className={styles.hiddenInput}
-                        aria-invalid={hasError ? "true" : "false"}
-                        aria-describedby={hasError ? `error-formato-${id}` : undefined}
-                      />
-                    </label>
-
                     {(file || url) && (
                       <button
                         type="button"

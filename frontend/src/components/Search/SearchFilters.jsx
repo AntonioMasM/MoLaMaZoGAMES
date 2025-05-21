@@ -4,26 +4,35 @@ const FILTROS = ["Todos", "Assets", "Usuarios", "Categorías"];
 
 const SearchFilters = ({ tipoSeleccionado, onFiltroChange }) => {
   return (
-    <div className={styles.filters} role="radiogroup" aria-label="Filtrar por tipo de resultado">
-      <h2 className={styles.title}>Filtrar por</h2>
+    <fieldset
+      className={styles.filters}
+      role="radiogroup"
+      aria-labelledby="filtro-tipo-label"
+    >
+      <legend id="filtro-tipo-label" className={styles.title}>
+        Filtrar por
+      </legend>
       <div className={styles.filterList}>
         {FILTROS.map((filtro) => {
           const isActive = tipoSeleccionado === filtro;
+
           return (
             <button
               key={filtro}
               type="button"
               role="radio"
               aria-checked={isActive}
+              aria-pressed={isActive}
               className={`${styles.filterButton} ${isActive ? styles.active : ""}`}
               onClick={() => onFiltroChange(filtro)}
+              tabIndex={0}
             >
               {filtro}
             </button>
           );
         })}
       </div>
-    </div>
+    </fieldset>
   );
 };
 

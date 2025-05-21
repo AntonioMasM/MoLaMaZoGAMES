@@ -136,7 +136,7 @@ const UploadZone = ({
         ) : (
           <FaCloudUploadAlt className={styles.icon} />
         )}
-        <span>{selectedFile ? "Archivo seleccionado. Sube más archivos aquí" : "Subir archivo o arrastrar aquí"}</span>
+        <span>{selectedFile ? "Archivo seleccionado. Sube más archivos aquí" : "Subir archivo o arrastrar aquí. Puedes añadir varios archivos"}</span>
 
         <input
           type="file"

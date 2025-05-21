@@ -1,26 +1,27 @@
-// ✅ GroupPage.jsx actualizado con mejoras de UX, accesibilidad y feedback visual
+// ✅ GroupPage.jsx actualizado con mejoras de UX, accesibilidad y control de usuario autenticado
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { obtenerGrupoPorId } from "../services/grupoService";
 import { useMensajes } from "../hooks/useMensajes";
 import { useModal } from "../context/ModalContext";
+import { useGrupos } from "../hooks/useGrupos";
 
 import InviteModal from "../components/Modals/InviteModal";
 import AssetCard from "../components/Asset/AssetCard";
 import UserCard from "../components/User/UserCard";
 
-import { FaUsers, FaBoxOpen, FaUserPlus } from "react-icons/fa";
+import { FaUsers, FaBoxOpen, FaUserPlus, FaTrash } from "react-icons/fa";
 
 import styles from "../styles/GroupPage.module.css";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const getValidImage = (asset) => {
   if (!asset?.imagenPrincipal?.url) return null;
-
   const formatosImagen = ["jpg", "jpeg", "png", "webp", "gif", "svg"];
   const url = asset.imagenPrincipal.url;
   const ext = url.split(".").pop().toLowerCase();
-
   if (formatosImagen.includes(ext)) return url;
   const galeria = asset.galeriaMultimedia?.find((item) => item.tipo === "image");
   return galeria?.url || null;
@@ -34,6 +35,9 @@ const GroupPage = () => {
   const [enviandoInvitacion, setEnviandoInvitacion] = useState(false);
   const { enviarMensaje } = useMensajes();
   const { showModal } = useModal();
+  const { eliminarGrupoPorId } = useGrupos();
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchGrupo = async () => {
@@ -52,26 +56,22 @@ const GroupPage = () => {
   const handleInvitarUsuario = async (email) => {
     try {
       setEnviandoInvitacion(true);
-      const res = await fetch(`http://localhost:5000/api/usuarios/${email}`);
+      const res = await fetch(`${BASE_URL}/usuarios/${email}`);
       if (!res.ok) return showModal("error", { mensaje: "No se encontró el usuario." });
-
-      const user = await res.json();
-      if (user._id === grupo.creador._id)
+      const usuario = await res.json();
+      if (usuario._id === grupo.creador._id)
         return showModal("error", { mensaje: "No puedes invitarte a ti mismo." });
-
-      const yaMiembro = grupo.usuarios.some((u) => u._id === user._id);
+      const yaMiembro = grupo.usuarios.some((u) => u._id === usuario._id);
       if (yaMiembro)
         return showModal("error", { mensaje: "Este usuario ya es miembro del grupo." });
 
-      const contenido = `Te han invitado a colaborar en el grupo "${grupo.titulo}".\nHaz clic aquí: http://localhost:5173/groups/${grupo._id}`;
-
+      const contenido = `Te han invitado a colaborar en el grupo \"${grupo.titulo}\".\nHaz clic aquí: ${BASE_URL}/groups/${grupo._id}`;
       await enviarMensaje({
         remitente: grupo.creador._id,
-        destinatario: user._id,
+        destinatario: usuario._id,
         contenido,
         tipoMensaje: "grupo",
       });
-
       showModal("confirm", { email, grupo });
     } catch (err) {
       console.error("Error al enviar invitación:", err);
@@ -81,23 +81,36 @@ const GroupPage = () => {
     }
   };
 
-  if (loading) {
-    return <div className={styles.loading}><p>Cargando grupo...</p></div>;
-  }
+  const handleEliminarGrupo = async () => {
+    try {
+      const confirmado = confirm("¿Estás seguro de eliminar este grupo?");
+      if (!confirmado) return;
+      await eliminarGrupoPorId(grupo._id);
+      navigate("/");
+    } catch (err) {
+      console.error("Error al eliminar grupo:", err);
+      showModal("error", { mensaje: "Hubo un error al eliminar el grupo." });
+    }
+  };
 
-  if (!grupo) {
-    return <div className={styles.error}><p>No se encontró el grupo solicitado.</p></div>;
-  }
+  if (loading) return <div className={styles.loading}><p>Cargando grupo...</p></div>;
+  if (!grupo) return <div className={styles.error}><p>No se encontró el grupo solicitado.</p></div>;
+
+  const esCreador = user?._id === grupo.creador._id;
 
   return (
     <main className={styles.container} role="main">
-      <GrupoHeader titulo={grupo.titulo} onInvitar={() => setModalVisible(true)} enviando={enviandoInvitacion} />
+      <GrupoHeader
+        titulo={grupo.titulo}
+        onInvitar={() => setModalVisible(true)}
+        enviando={enviandoInvitacion}
+        onEliminar={esCreador ? handleEliminarGrupo : null}
+      />
       <section className={styles.gridTwoColumns} aria-label="Información del grupo">
         <GrupoDescripcion descripcion={grupo.descripcion} />
         <GrupoMiembros usuarios={grupo.usuarios} creadorId={grupo.creador._id} />
       </section>
       <GrupoAssets assets={grupo.assets} />
-
       <InviteModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
@@ -108,18 +121,29 @@ const GroupPage = () => {
   );
 };
 
-const GrupoHeader = ({ titulo, onInvitar, enviando }) => (
+const GrupoHeader = ({ titulo, onInvitar, enviando, onEliminar }) => (
   <header className={styles.groupHeader} aria-labelledby="titulo-grupo">
     <h1 id="titulo-grupo" className={styles.groupTitle}>{titulo}</h1>
-    <button
-      onClick={onInvitar}
-      className={styles.inviteButton}
-      aria-label="Invitar a un usuario"
-      disabled={enviando}
-    >
-      <FaUserPlus style={{ marginRight: "8px" }} />
-      {enviando ? "Enviando..." : "Invitar Usuarios"}
-    </button>
+    <div className={styles.actionsRow}>
+      <button
+        onClick={onInvitar}
+        className={styles.inviteButton}
+        aria-label="Invitar a un usuario"
+        disabled={enviando}
+      >
+        <FaUserPlus style={{ marginRight: "8px" }} />
+        {enviando ? "Enviando..." : "Invitar Usuarios"}
+      </button>
+      {onEliminar && (
+        <button
+          onClick={onEliminar}
+          className={styles.deleteButton}
+          aria-label="Eliminar grupo"
+        >
+          <FaTrash style={{ marginRight: "8px" }} /> Eliminar Grupo
+        </button>
+      )}
+    </div>
   </header>
 );
 

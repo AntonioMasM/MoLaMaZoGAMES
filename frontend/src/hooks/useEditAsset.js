@@ -21,7 +21,6 @@ export const useEditAsset = () => {
     descripcion: "",
     categoriaPrincipal: "",
     otrasCategorias: [],
-    licencia: "",
     opciones: {},
     grupo: "",
     formatos: [],
@@ -36,7 +35,6 @@ export const useEditAsset = () => {
     tituloRef: useRef(null),
     descripcionRef: useRef(null),
     categoriaRef: useRef(null),
-    licenciaRef: useRef(null),
     formatosRef: useRef(null),
     imagenRef: useRef(null),
     grupoRef: useRef(null),
@@ -151,114 +149,130 @@ export const useEditAsset = () => {
     setFormData((prev) => ({ ...prev, imagenPrincipal: file }));
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    setStatus({ mensaje: "", errors: {} });
-    setError(null);
+const handleSave = async () => {
+  console.log("🔍 Datos a guardar:", formData);
 
-    try {
-      const errors = {};
-      if (!formData.titulo.trim()) errors.titulo = "El título es obligatorio.";
-      if (!formData.descripcion.trim()) errors.descripcion = "La descripción es obligatoria.";
-      if (!formData.categoriaPrincipal) errors.categoriaPrincipal = "Selecciona una categoría.";
-      if (!formData.licencia) errors.licencia = "Selecciona una licencia.";
+  if (!formData.titulo || !formData.descripcion || !formData.categoriaPrincipal) {
+    console.warn("❌ Falta algún campo obligatorio");
+    setStatus({ error: "Por favor, completa todos los campos obligatorios." });
+    return;
+  }
 
-      if (Object.keys(errors).length > 0) {
-        setStatus({ mensaje: "", errors });
-        refs[Object.keys(errors)[0] + "Ref"]?.current?.focus();
-        setSaving(false);
-        return;
-      }
+  console.log("✅ Validación pasada. Guardando...");
+  setSaving(true);
+  setStatus({ mensaje: "", errors: {} });
+  setError(null);
 
-const nuevasImagenes = await Promise.all(
-  newFiles.map(async (file) => {
-    const subida = await uploadFileToCloudinary(file);
-    return {
-      url: subida.secure_url,
-      public_id: subida.public_id,
-      tipo: subida.resource_type || "raw",
-    };
-  })
-);
+  try {
+    const errors = {};
+    if (!formData.titulo.trim()) errors.titulo = "El título es obligatorio.";
+    if (!formData.descripcion.trim()) errors.descripcion = "La descripción es obligatoria.";
+    if (!formData.categoriaPrincipal) errors.categoriaPrincipal = "Selecciona una categoría.";
 
+    if (Object.keys(errors).length > 0) {
+      console.warn("⚠️ Validación fallida:", errors);
+      setStatus({ mensaje: "", errors });
+      refs[Object.keys(errors)[0] + "Ref"]?.current?.focus();
+      setSaving(false);
+      return;
+    }
 
-      const galeriaFinal = [
-        ...media
-          .filter((item) => !item.isNew)
-          .map(({ preview, tipo, public_id }) => ({
-            url: preview,
-            public_id,
-            tipo,
-          })),
-        ...nuevasImagenes,
-      ];
-
-      let imagenPrincipal = formData.imagenPrincipal;
-if (imagenPrincipal instanceof File) {
-  const subida = await uploadFileToCloudinary(imagenPrincipal);
-  imagenPrincipal = {
-    url: subida.secure_url,
-    public_id: subida.public_id,
-  };
-}
-else if (typeof imagenPrincipal === "string") {
-        imagenPrincipal = {
-          url: imagenPrincipal,
-          public_id: extraerPublicId(imagenPrincipal),
+    console.log("📦 Subiendo nuevas imágenes...");
+    const nuevasImagenes = await Promise.all(
+      newFiles.map(async (file) => {
+        const subida = await uploadFileToCloudinary(file);
+        console.log("📸 Imagen subida:", subida.secure_url);
+        return {
+          url: subida.secure_url,
+          public_id: subida.public_id,
+          tipo: subida.resource_type || "raw",
         };
-      }
+      })
+    );
 
-      if (!imagenPrincipal) {
-        const primeraImagen = galeriaFinal.find((i) => i.tipo === "image");
-        if (primeraImagen) {
-          imagenPrincipal = {
-            url: primeraImagen.url,
-            public_id: primeraImagen.public_id,
-          };
-        }
-      }
+    const galeriaFinal = [
+      ...media
+        .filter((item) => !item.isNew)
+        .map(({ preview, tipo, public_id }) => ({
+          url: preview,
+          public_id,
+          tipo,
+        })),
+      ...nuevasImagenes,
+    ];
 
-      // Subir nuevos archivos de formatos si tienen .file
-const formatosProcesados = await Promise.all(
-  formData.formatos.map(async (formato) => {
-    if (formato.file) {
-      const subida = await uploadFileToCloudinary(formato.file);
-      return {
-        tipo: formato.tipo.toLowerCase(),
-        tamaño: parseFloat(formato.tamaño),
+    let imagenPrincipal = formData.imagenPrincipal;
+    if (imagenPrincipal instanceof File) {
+      console.log("📤 Subiendo imagen principal...");
+      const subida = await uploadFileToCloudinary(imagenPrincipal);
+      imagenPrincipal = {
         url: subida.secure_url,
         public_id: subida.public_id,
       };
-    } else {
-      return {
-        tipo: formato.tipo?.toLowerCase() || "desconocido",
-        tamaño: parseFloat(formato.tamaño) || 0,
-        url: formato.url || "",
-        public_id: formato.public_id || "",
+      console.log("✅ Imagen principal subida:", imagenPrincipal);
+    } else if (typeof imagenPrincipal === "string") {
+      imagenPrincipal = {
+        url: imagenPrincipal,
+        public_id: extraerPublicId(imagenPrincipal),
       };
     }
-  })
-);
 
+    if (!imagenPrincipal) {
+      const primeraImagen = galeriaFinal.find((i) => i.tipo === "image");
+      if (primeraImagen) {
+        imagenPrincipal = {
+          url: primeraImagen.url,
+          public_id: primeraImagen.public_id,
+        };
+        console.log("🔁 Imagen principal asignada desde galería:", imagenPrincipal);
+      }
+    }
 
-const updatedData = {
-  ...formData,
-  imagenPrincipal,
-  galeriaMultimedia: galeriaFinal,
-  formatos: formatosProcesados,
+    console.log("📁 Procesando formatos...");
+    const formatosProcesados = await Promise.all(
+      formData.formatos.map(async (formato) => {
+        if (formato.file) {
+          console.log("📤 Subiendo archivo de formato:", formato.tipo);
+          const subida = await uploadFileToCloudinary(formato.file);
+          return {
+            tipo: formato.tipo.toLowerCase(),
+            tamaño: parseFloat(formato.tamaño),
+            url: subida.secure_url,
+            public_id: subida.public_id,
+          };
+        } else {
+          return {
+            tipo: formato.tipo?.toLowerCase() || "desconocido",
+            tamaño: parseFloat(formato.tamaño) || 0,
+            url: formato.url || "",
+            public_id: formato.public_id || "",
+          };
+        }
+      })
+    );
+
+    const updatedData = {
+      ...formData,
+      imagenPrincipal,
+      galeriaMultimedia: galeriaFinal,
+      formatos: formatosProcesados,
+    };
+
+    console.log("📤 Enviando a updateAsset con:", updatedData);
+    await updateAsset(id, updatedData);
+    console.log("✅ Asset actualizado con éxito");
+
+    setStatus({ mensaje: "Cambios guardados correctamente ✅", errors: {} });
+    navigate(`/asset/${id}`);
+    console.log("🔄 Navegando a: /asset/" + id);
+  } catch (err) {
+    console.error("❌ Error al guardar el asset:", err);
+    setStatus({ error: "No se pudo guardar el asset.", errors: {} });
+  } finally {
+    setSaving(false);
+  }
 };
 
-
-      await updateAsset(id, updatedData);
-      setStatus({ mensaje: "Cambios guardados correctamente ✅", errors: {} });
-      navigate(`/asset/${id}`);
-    } catch (err) {
-      console.error("Error al guardar el asset:", err);
-      setStatus({ error: "No se pudo guardar el asset.", errors: {} });
-    } finally {
-      setSaving(false);
-    }
-  };
 
   const extraerPublicId = (url) => {
     const partes = url.split("/");

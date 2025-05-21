@@ -1,7 +1,38 @@
 import { useState, useEffect } from "react";
 import styles from "./FiltrosAvanzados.module.css";
 import { getCategorias } from "@/services/categorias";
-import { FaFilter, FaCheckSquare, FaList, FaSortAmountDown } from "react-icons/fa";
+import {
+  FaFilter,
+  FaCheckSquare,
+  FaList,
+  FaSortAmountDown,
+} from "react-icons/fa";
+
+const FORMATOS_DISPONIBLES = [
+  // 2D
+  "png", "jpeg", "jpg", "svg",
+
+  // 3D
+  "fbx", "obj", "stl", "gltf", "glb", "blend",
+
+  // Audio
+  "mp3", "wav", "ogg",
+
+  // Video
+  "mp4", "webm", "mov",
+
+  // Código / texto
+  "txt", "json", "html", "css", "js",
+
+  // Otros
+  "zip", "rar", "7z"
+];
+
+
+const SOFTWARES_DISPONIBLES = [
+  "Blender", "Photoshop", "Figma", "Maya", "Unity", "Unreal", "ZBrush",
+  "Illustrator", "Cinema 4D", "Substance Painter", "After Effects", "Premiere"
+];
 
 const FormatoChip = ({ formato, activos, onToggle }) => {
   const activo = activos.includes(formato);
@@ -23,7 +54,8 @@ const FiltrosAvanzados = ({ tipo, filtros, onChange }) => {
   const [categoriasDisponibles, setCategoriasDisponibles] = useState([]);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
   const [errorCategorias, setErrorCategorias] = useState(null);
-
+  const [busquedaFormato, setBusquedaFormato] = useState("");
+  const [busquedaSoftware, setBusquedaSoftware] = useState("");
   useEffect(() => {
     setFiltrosLocales(filtros);
   }, [filtros]);
@@ -67,72 +99,99 @@ const FiltrosAvanzados = ({ tipo, filtros, onChange }) => {
     }
   };
 
-  const renderFiltrosAssets = () => (
-    <fieldset className={styles.filtrosGrupo} aria-labelledby="titulo-filtros-assets">
-      <legend id="titulo-filtros-assets" className={styles.subtitulo}><FaFilter /> Filtros de Assets</legend>
+const renderFiltrosAssets = () => (
+  <fieldset
+    className={styles.filtrosGrupo}
+    aria-labelledby="titulo-filtros-assets"
+  >
 
-      <label htmlFor="filtro-categorias" className={styles.label}><FaList /> Categorías</label>
+
+    {/* 🎯 Categorías como lista de botones en lugar de select múltiple */}
+    <div className={styles.categoriaWrapper}>
+      <span className={styles.label}><FaList /> Categorías</span>
       {loadingCategorias ? (
         <p className={styles.mensaje}>Cargando categorías...</p>
       ) : errorCategorias ? (
-        <p className={styles.error} role="alert">{errorCategorias}</p>
+        <p className={styles.error} role="alert" aria-live="assertive">
+          {errorCategorias}
+        </p>
       ) : (
-        <select
-          id="filtro-categorias"
-          multiple
-          className={styles.selectMultiple}
-          value={filtrosLocales.categorias || []}
-          onChange={(e) => {
-            const opciones = Array.from(e.target.selectedOptions).map(o => o.value);
-            actualizarFiltro("categorias", opciones);
-          }}
+        <div
+          role="group"
+          aria-label="Selecciona una o más categorías"
+          className={styles.categoriaChipList}
         >
-          {categoriasDisponibles.map(cat => (
-            <option key={cat._id} value={cat.nombre}>{cat.nombre}</option>
-          ))}
-        </select>
+          {categoriasDisponibles.map((cat) => {
+            const activa = (filtrosLocales.categorias || []).includes(cat.nombre);
+            return (
+              <button
+                key={cat._id}
+                type="button"
+                className={`${styles.categoriaChip} ${activa ? styles.active : ""}`}
+                onClick={() => {
+                  const actuales = filtrosLocales.categorias || [];
+                  const nuevas = actuales.includes(cat.nombre)
+                    ? actuales.filter((c) => c !== cat.nombre)
+                    : [...actuales, cat.nombre];
+                  actualizarFiltro("categorias", nuevas);
+                }}
+                aria-pressed={activa}
+              >
+                {cat.nombre}
+              </button>
+            );
+          })}
+        </div>
       )}
+    </div>
 
       <fieldset className={styles.fieldset}>
-        <legend className={styles.legend}><FaCheckSquare /> Formatos</legend>
-        {["png", "fbx", "obj", "glb", "mp4"].map((formato) => (
-          <FormatoChip
-            key={formato}
-            formato={formato}
-            activos={filtrosLocales.formatos || []}
-            onToggle={toggleFormato}
-          />
-        ))}
+        <legend className={styles.legend}><FaList /> Formatos</legend>
+
+        <input
+          type="text"
+          placeholder="Buscar formato..."
+          className={styles.input}
+          value={busquedaFormato}
+          onChange={(e) => setBusquedaFormato(e.target.value.toLowerCase())}
+        />
+
+        <div className={styles.chipList}>
+          {FORMATOS_DISPONIBLES
+            .filter((formato) => formato.toLowerCase().includes(busquedaFormato))
+            .map((formato) => (
+              <FormatoChip
+                key={formato}
+                formato={formato}
+                activos={filtrosLocales.formatos || []}
+                onToggle={toggleFormato}
+              />
+            ))}
+        </div>
       </fieldset>
 
-      <label htmlFor="filtro-disponible" className={styles.switchLabel}>
-        <input
-          type="checkbox"
-          id="filtro-disponible"
-          checked={filtrosLocales.disponible || false}
-          onChange={(e) => actualizarFiltro("disponible", e.target.checked)}
-        />
-        Solo disponibles
-      </label>
 
-      <label htmlFor="filtro-orden" className={styles.label}><FaSortAmountDown /> Orden</label>
-      <select
-        id="filtro-orden"
-        value={filtrosLocales.orden || "vistas_desc"}
-        onChange={(e) => actualizarFiltro("orden", e.target.value)}
-        className={styles.select}
-      >
-        <option value="vistas_desc">Más vistos</option>
-        <option value="vistas_asc">Menos vistos</option>
-        <option value="fecha_desc">Más recientes</option>
-        <option value="fecha_asc">Más antiguos</option>
-      </select>
-    </fieldset>
-  );
+
+    {/* 🎯 Disponible toggle */}
+    <label htmlFor="filtro-disponible" className={styles.switchLabel}>
+      <input
+        type="checkbox"
+        id="filtro-disponible"
+        checked={filtrosLocales.disponible || false}
+        onChange={(e) => actualizarFiltro("disponible", e.target.checked)}
+      />
+      Solo disponibles
+    </label>
+  </fieldset>
+);
+
 
   const renderFiltrosUsuarios = () => (
-    <fieldset className={styles.filtrosGrupo} aria-labelledby="titulo-filtros-usuarios">
-      <legend id="titulo-filtros-usuarios" className={styles.subtitulo}><FaFilter /> Filtros de Usuarios</legend>
+    <fieldset
+      className={styles.filtrosGrupo}
+      aria-labelledby="titulo-filtros-usuarios"
+    >
+
 
       <label htmlFor="filtro-pais" className={styles.label}>País</label>
       <input
@@ -144,21 +203,41 @@ const FiltrosAvanzados = ({ tipo, filtros, onChange }) => {
         placeholder="Ej: España, México..."
       />
 
-      <label htmlFor="filtro-software" className={styles.label}>Software</label>
-      <select
-        id="filtro-software"
-        multiple
-        className={styles.selectMultiple}
-        value={filtrosLocales.software || []}
-        onChange={(e) => {
-          const opciones = Array.from(e.target.selectedOptions).map(o => o.value);
-          actualizarFiltro("software", opciones);
-        }}
-      >
-        {["Blender", "Photoshop", "Figma", "Maya", "Unity", "Unreal"].map(sw => (
-          <option key={sw} value={sw}>{sw}</option>
-        ))}
-      </select>
+<label htmlFor="filtro-software" className={styles.label}>Software</label>
+
+<input
+  type="text"
+  placeholder="Buscar software..."
+  className={styles.input}
+  value={busquedaSoftware}
+  onChange={(e) => setBusquedaSoftware(e.target.value.toLowerCase())}
+/>
+
+<div className={styles.chipList}>
+  {SOFTWARES_DISPONIBLES
+    .filter((sw) => sw.toLowerCase().includes(busquedaSoftware))
+    .map((sw) => {
+      const activos = filtrosLocales.software || [];
+      const activo = activos.includes(sw);
+      return (
+        <button
+          key={sw}
+          type="button"
+          className={`${styles.formatChip} ${activo ? styles.active : ""}`}
+          onClick={() => {
+            const nuevos = activo
+              ? activos.filter((s) => s !== sw)
+              : [...activos, sw];
+            actualizarFiltro("software", nuevos);
+          }}
+          aria-pressed={activo}
+        >
+          {sw}
+        </button>
+      );
+    })}
+</div>
+
 
       <label htmlFor="filtro-cargo" className={styles.label}>Cargo</label>
       <select
@@ -167,7 +246,9 @@ const FiltrosAvanzados = ({ tipo, filtros, onChange }) => {
         value={filtrosLocales.cargo || ""}
         onChange={(e) => actualizarFiltro("cargo", e.target.value)}
       >
-        <option value="" disabled hidden>Selecciona un cargo</option>
+        <option value="" disabled hidden>
+          Selecciona un cargo
+        </option>
         <option value="Diseñador Gráfico">Diseñador Gráfico</option>
         <option value="Modelador 3D">Modelador 3D</option>
         <option value="Programador">Programador</option>
@@ -176,8 +257,11 @@ const FiltrosAvanzados = ({ tipo, filtros, onChange }) => {
   );
 
   const renderFiltrosCategorias = () => (
-    <fieldset className={styles.filtrosGrupo} aria-labelledby="titulo-filtros-categorias">
-      <legend id="titulo-filtros-categorias" className={styles.subtitulo}><FaFilter /> Filtros de Categorías</legend>
+    <fieldset
+      className={styles.filtrosGrupo}
+      aria-labelledby="titulo-filtros-categorias"
+    >
+
 
       <label htmlFor="filtro-nombre" className={styles.label}>Nombre contiene</label>
       <input
@@ -211,14 +295,22 @@ const FiltrosAvanzados = ({ tipo, filtros, onChange }) => {
 
   return (
     <section className={styles.panel} aria-labelledby="titulo-panel-filtros">
-      <h3 id="titulo-panel-filtros" className={styles.panelTitle}><FaFilter /> Filtros Avanzados</h3>
+      <h3 id="titulo-panel-filtros" className={styles.panelTitle}>
+        <FaFilter /> Filtros Avanzados
+      </h3>
 
       {tipo === "Assets" && renderFiltrosAssets()}
       {tipo === "Usuarios" && renderFiltrosUsuarios()}
       {tipo === "Categorías" && renderFiltrosCategorias()}
 
       <div className={styles.footer}>
-        <button onClick={resetFiltros} className={styles.resetButton}>Limpiar filtros</button>
+        <button
+          onClick={resetFiltros}
+          className={styles.resetButton}
+          aria-label="Limpiar todos los filtros"
+        >
+          Limpiar filtros
+        </button>
       </div>
     </section>
   );
