@@ -6,6 +6,7 @@
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
   min-height: 80vh;
+  background-color: var(--color-bg);
 }
 
 /* --- Sidebar de filtros --- */

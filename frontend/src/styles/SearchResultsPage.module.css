@@ -150,9 +150,12 @@
     flex-direction: row;
     overflow-x: auto;
     border-right: none;
+    display: block;
+    position: unset;
     border-bottom: 1px solid var(--color-border);
     padding: var(--spacing-md);
     gap: var(--spacing-md);
+    height: fit-content;
   }
 
   .results {
