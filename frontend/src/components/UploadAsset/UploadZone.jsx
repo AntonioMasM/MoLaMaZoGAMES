@@ -36,7 +36,13 @@ const UploadZone = ({
   
       // Código fuente y texto
       "text/plain", "application/json", "text/html", "text/css", "application/javascript",
-  
+    "text/x-c",                    // .c
+  "text/x-c++",                  // .cpp
+  "text/x-python",               // .py
+  "text/x-java-source",          // .java
+  "text/x-sh",                   // .sh
+  "text/x-typescript",           // .ts
+  "application/x-httpd-php",    // .php
       // Otros posibles
       "application/zip", "application/x-rar-compressed", "application/x-7z-compressed"
     ];
