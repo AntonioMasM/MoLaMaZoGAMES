@@ -36,9 +36,10 @@ const dummyAssets = [
 
 const CategorySection = () => {
   const [categories, setCategories] = useState([]);
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/categorias')
+    fetch(`${BASE_URL}/categorias`)
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error al obtener categorías:", error));

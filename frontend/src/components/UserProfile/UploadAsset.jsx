@@ -74,7 +74,9 @@ const UploadAsset = () => {
     try {
       setEnviandoInvitacion(true);
       // 1) buscamos al usuario por email
-      const res = await fetch(`http://localhost:5000/api/usuarios/${email}`);
+      const BASE_URL = import.meta.env.VITE_API_URL;
+
+      const res = await fetch(`${BASE_URL}/usuarios/${email}`);
       if (!res.ok) {
         return showModal("error", { mensaje: "No se encontró el usuario." });
       }

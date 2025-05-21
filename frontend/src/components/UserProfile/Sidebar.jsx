@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  FaHome, FaImages, FaHeart, FaCog, FaUserFriends, FaEnvelope, FaTrash
+  FaHome, FaImages, FaHeart, FaCog, FaUserFriends, FaEnvelope, FaTrash, FaUser
 } from "react-icons/fa";
 import BaseModal from "../ui/BaseModal";
 import styles from "./Sidebar.module.css";
@@ -23,7 +23,8 @@ const Sidebar = () => {
   const { showAlert } = useAlertQueue();
 
   const links = [
-    { to: "/profile", icon: <FaHome />, label: "Inicio" },
+    { to: "/", icon: <FaHome />, label: "Inicio" },
+    { to: "/profile", icon: <FaUser />, label: "Perfil" },
     { to: "/gallery", icon: <FaImages />, label: "Galería" },
     { to: "/favourites", icon: <FaHeart />, label: "Favoritos" },
     { to: "/settings", icon: <FaCog />, label: "Configuración" },
