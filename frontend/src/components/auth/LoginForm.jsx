@@ -109,7 +109,7 @@ const LoginForm = () => {
         isValid={isPasswordValid}
       />
 
-      <a href="/recuperar" className={styles.link}>¿Se te ha olvidado la contraseña?</a>
+      <a href="/login" className={styles.link}>¿Se te ha olvidado la contraseña?</a>
 
       <button type="submit" className={styles.button} disabled={loading}>
         {loading ? "Entrando..." : "Iniciar Sesión"}
