@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import styles from "./AssetDetails.module.css";
 
 // 🎨 Icono genérico para archivos descargables
@@ -37,6 +38,18 @@ const AssetDetails = ({ asset }) => {
     return [...formatos].sort((a, b) => a.tamaño - b.tamaño);
   }, [formatos]);
 
+  // 🚫 Eliminar categorías duplicadas (case-insensitive)
+  const categoriasUnicas = useMemo(() => {
+    if (!categorias) return [];
+    const seen = new Set();
+    return categorias.filter((cat) => {
+      const normalized = cat.trim().toLowerCase();
+      if (seen.has(normalized)) return false;
+      seen.add(normalized);
+      return true;
+    });
+  }, [categorias]);
+
   return (
     <section className={styles.detailsSection} aria-labelledby="asset-details">
       {/* 📜 Descripción */}
@@ -46,13 +59,20 @@ const AssetDetails = ({ asset }) => {
       </article>
 
       {/* 🏷️ Categorías */}
-      {categorias?.length > 0 && (
+      {categoriasUnicas.length > 0 && (
         <article className={styles.detailsBlock}>
           <h3 className={styles.subTitle}>Categorías</h3>
           <ul className={styles.categoryList}>
-            {categorias.map((categoria, index) => (
+            {categoriasUnicas.map((categoria, index) => (
               <li key={index} className={styles.categoryItem}>
-                <span className={styles.categoryBadge}>#{categoria}</span>
+                <Link
+                  to={`/categories/${encodeURIComponent(categoria)}`}
+                  className={styles.categoryBadge}
+                  title={`Ver categoría ${categoria}`}
+                  aria-label={`Ir a categoría ${categoria}`}
+                >
+                  #{categoria}
+                </Link>
               </li>
             ))}
           </ul>

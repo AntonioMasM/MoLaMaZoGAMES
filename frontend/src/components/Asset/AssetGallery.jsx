@@ -1,16 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SkeletonGallery from "@/components/ui/SkeletonGallery";
+import ZoomImage from "./ZoomImage";
 import styles from "./AssetGallery.module.css";
 
 const AssetGallery = ({ galeria = [] }) => {
   const [loading, setLoading] = useState(true);
-  const [verTodas, setVerTodas] = useState(false);
+  const [seleccionado, setSeleccionado] = useState(0);
+  const [fade, setFade] = useState(false);
+  const autoplayRef = useRef(null);
 
   useEffect(() => {
-    if (galeria && galeria.length > 0) {
-      setLoading(false);
-    }
+    if (galeria.length > 0) setLoading(false);
   }, [galeria]);
+
+  // ⏱️ Autoplay carrusel
+  useEffect(() => {
+    autoplayRef.current = setInterval(() => {
+      setFade(true);
+      setTimeout(() => {
+        setSeleccionado((prev) => (prev + 1) % galeria.length);
+        setFade(false);
+      }, 300);
+    }, 5000);
+
+    return () => clearInterval(autoplayRef.current);
+  }, [galeria]);
+
+  const handleUserSelect = (index) => {
+    clearInterval(autoplayRef.current);
+    setFade(true);
+    setTimeout(() => {
+      setSeleccionado(index);
+      setFade(false);
+    }, 300);
+  };
 
   if (!galeria || galeria.length === 0) {
     return (
@@ -20,56 +43,73 @@ const AssetGallery = ({ galeria = [] }) => {
     );
   }
 
-  // 🔥 Mostrar 6 primero, o todos si el usuario pulsa "Ver más"
-  const galeriaVisible = verTodas ? galeria : galeria.slice(0, 6);
+  const recurso = galeria[seleccionado];
 
   return (
-    <section className={styles.gallerySection} aria-label="Galería multimedia">
+    <section
+      className={styles.gallerySection}
+      aria-label="Galería multimedia del asset"
+      aria-live="polite"
+    >
       {loading ? (
         <SkeletonGallery />
       ) : (
         <>
-          <div className={styles.galleryGrid}>
-            {galeriaVisible.map((item, index) => (
-              <figure key={index} className={`${styles.galleryItem} ${styles.fadeInItem}`}>
-                {item.tipo === "image" && (
-                  <img
-                    src={item.url}
-                    alt={`Imagen ${index + 1} del asset`}
-                    className={styles.media}
-                    loading="lazy"
-                  />
-                )}
-                {item.tipo === "video" && (
-                  <video controls className={styles.media}>
-                    <source src={item.url} type="video/mp4" />
-                    Tu navegador no soporta el video.
-                  </video>
-                )}
-                {item.tipo === "audio" && (
-                  <audio controls className={styles.audio}>
-                    <source src={item.url} type="audio/mpeg" />
-                    Tu navegador no soporta el audio.
-                  </audio>
-                )}
-                {/* Opcional: Caption para identificar tipo de recurso */}
-                <figcaption className={styles.caption}>
-                  {item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1)}
-                </figcaption>
-              </figure>
-            ))}
+          {/* 🎯 Vista principal con efecto fade */}
+          <div
+            className={`${styles.previewContainer} ${fade ? styles.fadeOut : styles.fadeIn}`}
+          >
+            {recurso.tipo === "image" && (
+              <ZoomImage
+                src={recurso.url}
+                alt={`Vista previa imagen ${seleccionado + 1}`}
+              />
+            )}
+            {recurso.tipo === "video" && (
+              <video
+                controls
+                className={styles.previewMedia}
+                aria-label={`Vista previa video ${seleccionado + 1}`}
+              >
+                <source src={recurso.url} type="video/mp4" />
+              </video>
+            )}
+            {recurso.tipo === "audio" && (
+              <div className={styles.previewAudio}>
+                <audio controls>
+                  <source src={recurso.url} type="audio/mpeg" />
+                </audio>
+              </div>
+            )}
           </div>
 
-          {/* 🖱️ Botón Ver Más */}
-          {!verTodas && galeria.length > 6 && (
-            <button
-              onClick={() => setVerTodas(true)}
-              className={styles.viewAllButton}
-              aria-label="Mostrar toda la galería"
-            >
-              Ver toda la galería
-            </button>
-          )}
+          {/* 🖼️ Miniaturas */}
+          <div className={styles.thumbnailRow}>
+            {galeria.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => handleUserSelect(index)}
+                className={`${styles.thumbnailButton} ${
+                  index === seleccionado ? styles.activeThumbnail : ""
+                }`}
+                aria-label={`Seleccionar ${item.tipo} ${index + 1}`}
+              >
+                {item.tipo === "image" && (
+                  <img src={item.url} alt={`Miniatura ${index + 1}`} className={styles.thumbnailImage} />
+                )}
+                {item.tipo === "video" && (
+                  <div className={styles.videoThumb}>
+                    <video muted>
+                      <source src={item.url} type="video/mp4" />
+                    </video>
+                  </div>
+                )}
+                {item.tipo === "audio" && (
+                  <div className={styles.audioThumb}>🎵</div>
+                )}
+              </button>
+            ))}
+          </div>
         </>
       )}
     </section>

@@ -1,0 +1,51 @@
+@import "@/styles/variables.css";
+
+/* 🖼️ Contenedor principal del zoom */
+.zoomContainer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover; /* Tamaño original por defecto */
+  background-position: center;
+  background-color: #111;
+  transition: background-size 0.3s ease, background-position 0.3s ease;
+  cursor: zoom-in;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Al hacer hover: aplicar el zoom real */
+.zoomContainer:hover {
+  background-size: 200%;
+  transition: background-size 0.3s ease, background-position 0.2s ease;
+}
+/* 🧑‍🦯 Texto oculto para accesibilidad */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 💻 Transición suave en desktop */
+.zoomContainer:hover {
+  background-size: 200%;
+  transition: background-size 0.3s ease, background-position 0.2s ease;
+}
+
+/* Dispositivos táctiles: mantener imagen normal */
+@media (hover: none) and (pointer: coarse) {
+  .zoomContainer {
+    background-size: cover !important;
+    background-position: center !important;
+    cursor: default;
+  }
+}
