@@ -16,16 +16,30 @@ const LoginRequiredModal = ({ visible, onClose }) => {
     navigate("/register");
   };
 
+  const handleCloseAndGoHome = () => {
+    onClose();
+    navigate("/");
+  };
+
+
   return (
     <BaseModal
       visible={visible}
       onClose={onClose}
       title="Acceso restringido"
     >
+
+      <button className={styles.closeButton} onClick={handleCloseAndGoHome} aria-label="Cerrar modal">
+        &times;
+      </button>
+
+      
       <p className={styles.message}>
         Debes haber iniciado sesión para acceder a esta sección.
       </p>
       <div className={styles.actions}>
+        
+
         <button className={styles.loginButton} onClick={handleLogin}>
           Iniciar sesión
         </button>

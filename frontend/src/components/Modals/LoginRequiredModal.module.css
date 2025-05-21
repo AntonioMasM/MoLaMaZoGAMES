@@ -47,3 +47,28 @@
   background-color: var(--color-neutral-dark);
   transform: scale(1.03);
 }
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-md);
+}
+
+.closeButton {
+  position: absolute;
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+

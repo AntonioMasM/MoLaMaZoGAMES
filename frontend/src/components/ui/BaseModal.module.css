@@ -15,6 +15,7 @@
 
 
 .modal {
+  position: relative;
   background: var(--color-bg-secondary);
   color: var(--color-text);
   padding: var(--spacing-xl);
