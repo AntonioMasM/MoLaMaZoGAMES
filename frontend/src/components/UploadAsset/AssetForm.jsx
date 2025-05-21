@@ -168,28 +168,6 @@ const handleCategoriaPrincipalChange = (e) => {
           )}
           {errors.categoriaPrincipal && <p id="error-categoriaPrincipal" className={styles.errorMsg}>{errors.categoriaPrincipal}</p>}
         </label>
-
-        <label htmlFor="licencia">
-          Licencia*
-          <select
-            id="licencia"
-            name="licencia"
-            value={licencia}
-            onChange={onChange}
-            required
-            ref={refs.licenciaRef}
-            aria-invalid={errors.licencia ? "true" : "false"}
-            aria-describedby={errors.licencia ? "error-licencia" : undefined}
-          >
-            <option value="">Licencia a usar</option>
-            {LICENCIAS.map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-          {errors.licencia && <p id="error-licencia" className={styles.errorMsg}>{errors.licencia}</p>}
-        </label>
       </div>
 
       {/* Otras Categorías desde BD */}
@@ -221,23 +199,6 @@ const handleCategoriaPrincipalChange = (e) => {
         )}
       </div>
 
-      {/* Opciones */}
-      <div className={styles.opcionesWrapper}>
-        <span>Opciones:</span>
-        <div className={styles.opciones}>
-          {OPCIONES.map((op) => (
-            <button
-              type="button"
-              key={op.key}
-              className={`${styles.optionBtn} ${opciones[op.key] ? styles.active : ""}`}
-              onClick={() => onToggleOption(op.key)}
-              aria-pressed={opciones[op.key] ? "true" : "false"}
-            >
-              {op.label}
-            </button>
-          ))}
-        </div>
-      </div>
     </section>
   );
 };
