@@ -20,6 +20,9 @@ const AssetCard = ({ id, image, title, author, formats = [], category }) => {
     fetchEmail();
   }, [author]);
 
+  // Eliminar formatos duplicados (case-insensitive)
+  const uniqueFormats = [...new Set(formats.map(f => f.toLowerCase()))];
+
   const formattedCategory = category
     ? category.toLowerCase().replace(/\s+/g, "")
     : "general";
@@ -64,7 +67,7 @@ const AssetCard = ({ id, image, title, author, formats = [], category }) => {
 
         <div className={styles.meta}>
           <div className={styles.formats} aria-label="Formatos disponibles">
-            {formats.slice(0, 3).map((format, i) => (
+            {uniqueFormats.slice(0, 3).map((format, i) => (
               <Link
                 key={i}
                 to={`/search?formato=${encodeURIComponent(format)}`}
@@ -75,12 +78,12 @@ const AssetCard = ({ id, image, title, author, formats = [], category }) => {
                 {format}
               </Link>
             ))}
-            {formats.length > 3 && (
+            {uniqueFormats.length > 3 && (
               <span
                 className={styles.badge}
-                title={`+${formats.length - 3} formatos adicionales`}
+                title={`+${uniqueFormats.length - 3} formatos adicionales`}
               >
-                +{formats.length - 3}
+                +{uniqueFormats.length - 3}
               </span>
             )}
           </div>
