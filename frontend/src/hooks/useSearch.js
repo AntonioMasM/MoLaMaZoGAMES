@@ -12,6 +12,7 @@ export const useSearch = (query = "", tipoSeleccionado = "Todos", filtros = {}) 
   const [error, setError] = useState(null);
 
   const lastQueryRef = useRef("");
+  const hasFetchedInitially = useRef(false);
 
   // ✅ Cargar categorías una vez
   useEffect(() => {
@@ -40,9 +41,9 @@ export const useSearch = (query = "", tipoSeleccionado = "Todos", filtros = {}) 
 
     // ❌ Si el query no cambió, no volver a buscar
 if (lastQueryRef.current === queryTrimmed && tipoSeleccionado === "Todos") {
-  // Solo evitar si query y tipo no han cambiado y no hay filtros nuevos
   const filtrosVacios = Object.keys(filtros).length === 0;
-  if (filtrosVacios) return;
+  const yaHayDatos = assets.length || usuarios.length || categorias.length;
+  if (filtrosVacios && yaHayDatos) return;
 }
 
 lastQueryRef.current = queryTrimmed;
