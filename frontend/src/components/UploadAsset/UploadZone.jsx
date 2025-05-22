@@ -19,57 +19,67 @@ const UploadZone = ({
   const [selectedFile, setSelectedFile] = useState(null);
   const [dynamicPreview, setDynamicPreview] = useState("");
 
-  const handleFile = (file) => {
-    const allowedTypes = [
-      // 2D
-      "image/png", "image/jpeg", "image/jpg", "image/svg+xml",
-  
-      // 3D
-      "model/fbx", "model/obj", "model/stl", "model/gltf+json", "model/gltf-binary",
-      "application/octet-stream", // usado por .blend, .fbx y otros binarios
-  
-      // Audio
-      "audio/*",
-  
-      // Video
-      "video/*",
-  
-      // Código fuente y texto
-      "text/plain", "application/json", "text/html", "text/css", "application/javascript",
-    "text/x-c",                    // .c
-  "text/x-c++",                  // .cpp
-  "text/x-python",               // .py
-  "text/x-java-source",          // .java
-  "text/x-sh",                   // .sh
-  "text/x-typescript",           // .ts
-  "application/x-httpd-php",    // .php
-      // Otros posibles
-      "application/zip", "application/x-rar-compressed", "application/x-7z-compressed"
-    ];
-  
-    const maxSizeMB = 100;
-  
-    const isValidType = allowedTypes.some((type) =>
-      file.type === type || file.type.startsWith(type.replace("*", ""))
-    );
-  
-    if (!isValidType) {
-      setLocalError("Tipo de archivo no permitido.");
-      return;
-    }
-  
-    if (file.size > maxSizeMB * 1024 * 1024) {
-      setLocalError("Archivo demasiado grande (máximo 100MB).");
-      return;
-    }
-  
-    setLocalError("");
-    setSelectedFile(file);
-    onFileSelect(file);
-  
-    const tempUrl = URL.createObjectURL(file);
-    setDynamicPreview(tempUrl);
-  };
+const handleFile = (file) => {
+  const allowedExtensions = [
+    // 2D
+    "png", "jpg", "jpeg", "svg",
+
+    // 3D
+    "fbx", "obj", "stl", "gltf", "glb", "blend", "wrml",
+
+    // Audio
+    "mp3", "wav", "aac", "ogg",
+
+    // Video
+    "mp4", "webm", "avi", "mov",
+
+    // Código fuente y texto
+    "txt", "json", "html", "css", "js", "c", "cpp", "py", "java", "sh", "ts", "php",
+
+    // Comprimidos
+    "zip", "rar", "7z"
+  ];
+
+  const maxSizeMB = 100;
+
+  const extension = file.name.split(".").pop().toLowerCase();
+  const mimeType = file.type || "";
+
+  const allowedTypes = [
+    "image/png", "image/jpeg", "image/jpg", "image/svg+xml",
+    "model/fbx", "model/obj", "model/stl", "model/gltf+json", "model/gltf-binary",
+    "application/octet-stream", // .blend, .fbx y otros binarios
+    "audio/", "video/",
+    "text/plain", "application/json", "text/html", "text/css", "application/javascript",
+    "text/x-c", "text/x-c++", "text/x-python", "text/x-java-source", "text/x-sh", "text/x-typescript",
+    "application/x-httpd-php",
+    "application/zip", "application/x-rar-compressed", "application/x-7z-compressed"
+  ];
+
+  const isValidMime = allowedTypes.some((type) =>
+    mimeType === type || mimeType.startsWith(type.replace("*", ""))
+  );
+
+  const isValidExtension = allowedExtensions.includes(extension);
+
+  if (!isValidMime && !isValidExtension) {
+    setLocalError("Tipo de archivo no permitido.");
+    return;
+  }
+
+  if (file.size > maxSizeMB * 1024 * 1024) {
+    setLocalError("Archivo demasiado grande (máximo 100MB).");
+    return;
+  }
+
+  setLocalError("");
+  setSelectedFile(file);
+  onFileSelect(file);
+
+  const tempUrl = URL.createObjectURL(file);
+  setDynamicPreview(tempUrl);
+};
+
   
 
   const handleDrop = (e) => {
@@ -146,7 +156,7 @@ const UploadZone = ({
 
         <input
           type="file"
-          accept=".png,.jpg,.jpeg,.svg,.fbx,.obj,.stl,.blend,.gltf,.glb,.wrml,.mp3,.wav,.aac,.ogg,.mp4,.webm,.avi,.mov,.txt,.html,.css,.js,.json,.zip,.rar,.7z"
+          accept=".png,.jpg,.jpeg,.svg,.fbx,.obj,.stl,.blend,.gltf,.glb,.wrml,.mp3,.wav,.aac,.ogg,.mp4,.webm,.avi,.mov,.txt,.html,.css,.js,.json,.zip,.rar,.7z, .py"
           onChange={handleChange}
           hidden
           ref={inputRef}
